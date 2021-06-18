@@ -1,9 +1,0 @@
-com\javatechie\aws\lambda\config\DynamoBdConfig.class
-com\javatechie\aws\lambda\service\FuncionarioService.class
-com\javatechie\aws\lambda\OrderHandler.class
-com\javatechie\aws\lambda\domain\Funcionario.class
-com\javatechie\aws\lambda\service\ICrud.class
-com\javatechie\aws\lambda\domain\Order.class
-com\javatechie\aws\lambda\respository\RepoFuncionario.class
-com\javatechie\aws\lambda\SpringbootAwsLambdaApplication.class
-com\javatechie\aws\lambda\service\impl\FuncionarioServiceImpl.class

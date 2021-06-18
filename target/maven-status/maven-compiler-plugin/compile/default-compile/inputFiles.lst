@@ -1,9 +1,0 @@
-F:\DatosPC\Documents\SunInversiones\Backend\springboot-aws-lambda\src\main\java\com\javatechie\aws\lambda\domain\Funcionario.java
-F:\DatosPC\Documents\SunInversiones\Backend\springboot-aws-lambda\src\main\java\com\javatechie\aws\lambda\SpringbootAwsLambdaApplication.java
-F:\DatosPC\Documents\SunInversiones\Backend\springboot-aws-lambda\src\main\java\com\javatechie\aws\lambda\respository\RepoFuncionario.java
-F:\DatosPC\Documents\SunInversiones\Backend\springboot-aws-lambda\src\main\java\com\javatechie\aws\lambda\OrderHandler.java
-F:\DatosPC\Documents\SunInversiones\Backend\springboot-aws-lambda\src\main\java\com\javatechie\aws\lambda\config\DynamoBdConfig.java
-F:\DatosPC\Documents\SunInversiones\Backend\springboot-aws-lambda\src\main\java\com\javatechie\aws\lambda\service\ICrud.java
-F:\DatosPC\Documents\SunInversiones\Backend\springboot-aws-lambda\src\main\java\com\javatechie\aws\lambda\service\impl\FuncionarioServiceImpl.java
-F:\DatosPC\Documents\SunInversiones\Backend\springboot-aws-lambda\src\main\java\com\javatechie\aws\lambda\service\FuncionarioService.java
-F:\DatosPC\Documents\SunInversiones\Backend\springboot-aws-lambda\src\main\java\com\javatechie\aws\lambda\domain\Order.java
