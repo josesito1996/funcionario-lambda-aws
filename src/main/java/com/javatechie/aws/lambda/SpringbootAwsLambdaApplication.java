@@ -1,6 +1,7 @@
 package com.javatechie.aws.lambda;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -29,15 +30,15 @@ public class SpringbootAwsLambdaApplication {
   }
 
   @Bean
-  public Function<Funcionario, Funcionario> save() {
+  public Consumer<Funcionario> save() {
     return (funcionario) -> service.registrar(funcionario);
   }
 
   @Bean
-  public Function<Funcionario, Funcionario> update() {
-    return (funcionario) -> service.registrar(funcionario);
+  public Consumer<Funcionario> update() {
+    return (funcionario) -> service.modificar(funcionario);
   }
-
+  
   public static void main(String[] args) {
     SpringApplication.run(SpringbootAwsLambdaApplication.class, args);
   }
