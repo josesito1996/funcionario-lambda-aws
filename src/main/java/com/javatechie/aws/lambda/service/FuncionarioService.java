@@ -1,13 +1,18 @@
 package com.javatechie.aws.lambda.service;
 
+import java.util.List;
+
 import com.javatechie.aws.lambda.domain.Funcionario;
 import com.javatechie.aws.lambda.domain.request.FuncionarioBody;
+import com.javatechie.aws.lambda.domain.response.FuncionarioResponse;
 
 public interface FuncionarioService extends ICrud<Funcionario, String> {
 
-	Funcionario registrar(FuncionarioBody request);
+	FuncionarioResponse registrar(FuncionarioBody request);
 	
-	Funcionario actualizar(FuncionarioBody request);
+	FuncionarioResponse actualizar(FuncionarioBody request);
 	
-	Funcionario verPorIdFuncionario(String id);
+	FuncionarioResponse verPorIdFuncionario(String id);
+	
+	List<FuncionarioResponse> listarFuncionarios();
 }
