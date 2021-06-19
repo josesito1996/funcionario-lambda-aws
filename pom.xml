@@ -90,5 +90,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>samy-application</finalName>
 	</build>
 </project>
