@@ -1,6 +1,7 @@
 package com.javatechie.aws.lambda.service;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ICrud <T,ID>{
 
@@ -10,6 +11,6 @@ public interface ICrud <T,ID>{
   
   public List<T> listar();
   
-  public T verPorId(ID id);
+  public Optional<T> verPorId(ID id);
   
 }

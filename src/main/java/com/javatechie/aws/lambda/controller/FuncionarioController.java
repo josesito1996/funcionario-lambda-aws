@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.Funcionario;
+import com.javatechie.aws.lambda.domain.request.FuncionarioBody;
 import com.javatechie.aws.lambda.service.FuncionarioService;
 
 
@@ -27,19 +28,19 @@ public class FuncionarioController {
       return service.listar();
   }
 
-  @GetMapping(path = "/listById/{id}")
+  @GetMapping(path = "/findById/{id}")
   public Funcionario buscarPorId(@PathVariable String id) {
-      return service.verPorId(id);
+      return service.verPorIdFuncionario(id);
   }
 
   @PostMapping(path = "/save")
-  public Funcionario registrar(@RequestBody Funcionario request) {
+  public Funcionario registrar(@RequestBody FuncionarioBody request) {
       return service.registrar(request);
   }
 
   @PutMapping(path = "/update")
-  public Funcionario modificar(@RequestBody Funcionario request) {
-      return service.modificar(request);
+  public Funcionario modificar(@RequestBody FuncionarioBody request) {
+      return service.actualizar(request);
   }
 
 }
