@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.javatechie.aws.lambda.domain.request.FuncionarioBody;
-import com.javatechie.aws.lambda.domain.response.FuncionarioResponse;
-import com.javatechie.aws.lambda.service.FuncionarioService;
+import com.javatechie.aws.lambda.domain.request.TipoActuacionBody;
+import com.javatechie.aws.lambda.domain.response.TipoActuacionResponse;
+import com.javatechie.aws.lambda.service.TipoActuacionService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -24,45 +24,45 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
-@RequestMapping("/api-funcionario")
-public class FuncionarioController {
+@RequestMapping("/api-tipoActuacion")
+public class TipoActuacionController {
 
 	@Autowired
-	private FuncionarioService service;
+	private TipoActuacionService service;
 
-	@Operation(summary = "Lista los Funcionario de la BD")
+	@Operation(summary = "Lista los tipo de actuaciones de la BD")
 	@ApiResponses(value = {
 	        @ApiResponse(responseCode = "200", description = "successful operation", 
-	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = FuncionarioResponse.class)))) })	
+	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = TipoActuacionResponse.class)))) })	
 	@GetMapping(path = "/listAll")
-	public List<FuncionarioResponse> listarTodos() {
-		return service.listarFuncionarios();
+	public List<TipoActuacionResponse> listarTodos() {
+		return service.listarTipoActuacions();
 	}
 
-	@Operation(summary = "Busca Funcionario por ID")
+	@Operation(summary = "Busca TIpo de actuacion por ID")
 	@ApiResponses(value = {
 	        @ApiResponse(responseCode = "200", description = "successful operation", 
-	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = FuncionarioResponse.class))) })	
+	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TipoActuacionResponse.class))) })	
 	@GetMapping(path = "/findById/{id}")
-	public FuncionarioResponse buscarPorId(@PathVariable String id) {
-		return service.verPorIdFuncionario(id);
+	public TipoActuacionResponse buscarPorId(@PathVariable String id) {
+		return service.verPorIdTipoActuacion(id);
 	}
 
-	@Operation(summary = "Registra nuevo Funcionario")
+	@Operation(summary = "Registra el tipo de Actuacion")
 	@ApiResponses(value = {
 	        @ApiResponse(responseCode = "200", description = "successful operation", 
-	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = FuncionarioResponse.class))) })	
+	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TipoActuacionResponse.class))) })	
 	@PostMapping(path = "/save")
-	public FuncionarioResponse registrar(@RequestBody FuncionarioBody request) {
+	public TipoActuacionResponse registrar(@RequestBody TipoActuacionBody request) {
 		return service.registrar(request);
 	}
 
-	@Operation(summary = "Actualiza funcionario de la BD")
+	@Operation(summary = "Actualiza el tipo de ACtuacion")
 	@ApiResponses(value = {
 	        @ApiResponse(responseCode = "200", description = "successful operation", 
-	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = FuncionarioResponse.class))) })	
+	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TipoActuacionResponse.class))) })	
 	@PutMapping(path = "/update")
-	public FuncionarioResponse modificar(@RequestBody FuncionarioBody request) {
+	public TipoActuacionResponse modificar(@RequestBody TipoActuacionBody request) {
 		return service.actualizar(request);
 	}
 
