@@ -17,15 +17,19 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class TipoActuacionBody {
-	@Schema(title = "Id de Tipo de actuacion", name = "id", type = "String", example = "67b37518-97ea-4359-9b6d-6a41b0214b6b")
+public class EquipoBody {
+	@Schema(title = "Id Equipo", name = "id", type = "String", example = "67b37518-97ea-4359-9b6d-6a41b0214b6b")
 	private String id;
-	@Schema(title = "Nombre tipo de actuacion", name = "nombre_tipo_actuacion", required = true, type = "String", example = "Requerimiento de comparecencia")
+	@Schema(title = "Nombre de Equipo", name = "nombre_equipo", required = true, type = "String", example = "Equipo 1")
 	@NotNull
 	@NotEmpty
-	@JsonProperty("nombre_tipo_actuacion")
-	private String nombreTipoActuacion;
+	@JsonProperty("nombre_equipo")
+	private String nombreEquipo;
+	@Schema(title = "Color", name = "color", required = true, type = "string", example = "red|green|yellow")
 	@NotNull
+	@NotEmpty
+	private String color;
 	@Schema(title = "estado", name = "estado", required = true, type = "Boolean", example = "True|False")
+	@NotNull
 	private Boolean estado;
 }

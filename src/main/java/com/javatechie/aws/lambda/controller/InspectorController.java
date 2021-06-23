@@ -2,6 +2,8 @@ package com.javatechie.aws.lambda.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -60,7 +62,7 @@ public class InspectorController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InspectorResponse.class))) })
 	@PostMapping(path = "/save")
-	public InspectorResponse registrar(@RequestBody InspectorBody request) {
+	public InspectorResponse registrar(@Valid @RequestBody InspectorBody request) {
 		return service.registrar(request);
 	}
 
@@ -68,7 +70,7 @@ public class InspectorController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InspectorResponse.class))) })
 	@PutMapping(path = "/update")
-	public InspectorResponse modificar(@RequestBody InspectorBody request) {
+	public InspectorResponse modificar(@Valid @RequestBody InspectorBody request) {
 		return service.actualizar(request);
 	}
 

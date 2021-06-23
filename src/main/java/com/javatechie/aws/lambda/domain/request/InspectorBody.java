@@ -30,6 +30,7 @@ public class InspectorBody {
 	@Schema(title = "Tipo de inspector", name = "tipo_inspector", required = true, type = "String", example = "AUXILIAR",description = "Este campo sera usado como filtro para poder identificar el tipo de INSPECTOR puede ser AUXLIAR o TRABAJO")
 	@JsonProperty("tipo_inspector")
 	private String tipoInspector;
+	@NotNull
 	@Schema(title = "estado", name = "estado", required = true, type = "Boolean", example = "True|False")
 	private Boolean estado;
 }

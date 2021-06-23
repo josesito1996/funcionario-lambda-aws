@@ -26,6 +26,7 @@ public class FuncionarioBody {
 	@NotNull
 	@NotEmpty
 	private String apellidos;
+	@NotNull
 	@Schema(title = "Estado", name = "estado", type = "Boolean", description = "Puede ser true|false, indica el estado de actividad del funcionario", example = "Pedro Jose")
 	private Boolean estado;
 }

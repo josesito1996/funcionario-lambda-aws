@@ -2,6 +2,8 @@ package com.javatechie.aws.lambda.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +55,7 @@ public class FuncionarioController {
 	        @ApiResponse(responseCode = "200", description = "successful operation", 
 	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = FuncionarioResponse.class))) })	
 	@PostMapping(path = "/save")
-	public FuncionarioResponse registrar(@RequestBody FuncionarioBody request) {
+	public FuncionarioResponse registrar(@Valid @RequestBody FuncionarioBody request) {
 		return service.registrar(request);
 	}
 
@@ -62,7 +64,7 @@ public class FuncionarioController {
 	        @ApiResponse(responseCode = "200", description = "successful operation", 
 	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = FuncionarioResponse.class))) })	
 	@PutMapping(path = "/update")
-	public FuncionarioResponse modificar(@RequestBody FuncionarioBody request) {
+	public FuncionarioResponse modificar(@Valid @RequestBody FuncionarioBody request) {
 		return service.actualizar(request);
 	}
 

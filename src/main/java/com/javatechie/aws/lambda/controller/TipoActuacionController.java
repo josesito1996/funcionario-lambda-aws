@@ -2,6 +2,8 @@ package com.javatechie.aws.lambda.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +55,7 @@ public class TipoActuacionController {
 	        @ApiResponse(responseCode = "200", description = "successful operation", 
 	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TipoActuacionResponse.class))) })	
 	@PostMapping(path = "/save")
-	public TipoActuacionResponse registrar(@RequestBody TipoActuacionBody request) {
+	public TipoActuacionResponse registrar(@Valid @RequestBody TipoActuacionBody request) {
 		return service.registrar(request);
 	}
 
@@ -62,7 +64,7 @@ public class TipoActuacionController {
 	        @ApiResponse(responseCode = "200", description = "successful operation", 
 	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TipoActuacionResponse.class))) })	
 	@PutMapping(path = "/update")
-	public TipoActuacionResponse modificar(@RequestBody TipoActuacionBody request) {
+	public TipoActuacionResponse modificar(@Valid @RequestBody TipoActuacionBody request) {
 		return service.actualizar(request);
 	}
 
