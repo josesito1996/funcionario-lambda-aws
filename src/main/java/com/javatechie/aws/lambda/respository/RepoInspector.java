@@ -7,11 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.javatechie.aws.lambda.domain.Inspector;
 
-
 @EnableScan
 @Repository
 public interface RepoInspector extends GenericRepo<Inspector, String> {
 
 	List<Inspector> findByNombreInspectorContaining(String nombreInspector);
-	
+
+	List<Inspector> findByTipoAndEstado(String tipo, Boolean estado);
+
 }

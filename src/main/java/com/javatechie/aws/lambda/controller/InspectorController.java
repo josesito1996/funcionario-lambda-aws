@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.request.InspectorBody;
 import com.javatechie.aws.lambda.domain.response.InspectorResponse;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.service.InspectorService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,6 +57,14 @@ public class InspectorController {
 	@GetMapping(path = "/filterByName")
 	public List<InspectorResponse> filtraPorNombre(@ParameterObject @RequestParam("name") String name, @RequestParam("type") String type) {
 		return service.buscarPorNombreFiltro(name, type);
+	}
+	
+	@Operation(summary = "Busca inspector por tipo")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InspectorResponse.class))) })
+	@GetMapping(path = "/searchByTipo/{tipo}")
+	public List<ReactSelectResponse> buscarPorNombre(@PathVariable String tipo) {
+		return service.listarInspectoresPorTipo(tipo);
 	}
 
 	@Operation(summary = "Registra el un Inspector")

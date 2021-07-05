@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.javatechie.aws.lambda.domain.Inspector;
 import com.javatechie.aws.lambda.domain.request.InspectorBody;
 import com.javatechie.aws.lambda.domain.response.InspectorResponse;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoInspector;
 import com.javatechie.aws.lambda.service.InspectorService;
@@ -63,6 +64,16 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 	private Inspector bodyToEntity(InspectorBody request) {
 		return new Inspector(request.getId(), request.getNombreInspector(), request.getTipoInspector(),
 				request.getEstado());
+	}
+
+	@Override
+	public List<ReactSelectResponse> listarInspectoresPorTipo(String tipo) {
+		
+		return repo.findByTipoAndEstado(tipo, true).stream().map(this::reactREponse).collect(Collectors.toList());
+	}
+	
+	private ReactSelectResponse reactREponse(Inspector inspector) {
+		return new ReactSelectResponse(inspector.getId(), inspector.getNombreInspector());
 	}
 
 }
