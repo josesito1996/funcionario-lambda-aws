@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.javatechie.aws.lambda.domain.Etapa;
 import com.javatechie.aws.lambda.domain.request.EtapaBody;
 import com.javatechie.aws.lambda.domain.response.EtapaResponse;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoEtapa;
 import com.javatechie.aws.lambda.service.EtapaService;
@@ -59,7 +60,21 @@ public class EtapaServiceImpl extends CrudImpl<Etapa, String> implements EtapaSe
 
 	@Override
 	public List<EtapaResponse> ListarEtapaPorEstado(Boolean estado) {
-		
+
 		return repo.findByEstado(estado).stream().map(this::transformToResponse).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Etapa> listarTipoActuacionPorEstado(Boolean estado) {
+		return repo.findByEstado(estado);
+	}
+
+	@Override
+	public List<ReactSelectResponse> listarTipoActuacionParaReact() {
+		return listarTipoActuacionPorEstado(true).stream().map(this::transformTo).collect(Collectors.toList());
+	}
+
+	public ReactSelectResponse transformTo(Etapa etapa) {
+		return new ReactSelectResponse(etapa.getIdEtapa(), etapa.getNombreEtapa());
 	}
 }

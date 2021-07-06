@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.request.EtapaBody;
 import com.javatechie.aws.lambda.domain.response.EtapaResponse;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.service.EtapaService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,10 +45,10 @@ public class EtapaController {
 	@Operation(summary = "Lista las Etapas activas de la BD")
 	@ApiResponses(value = {
 	        @ApiResponse(responseCode = "200", description = "successful operation", 
-	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = EtapaResponse.class)))) })	
+	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = ReactSelectResponse.class)))) })	
 	@GetMapping(path = "/listAllActives")
-	public List<EtapaResponse> listarActivos() {
-		return service.ListarEtapaPorEstado(true);
+	public List<ReactSelectResponse> listarActivos() {
+		return service.listarTipoActuacionParaReact();
 	}
 
 	@Operation(summary = "Busca una Etapa por ID")

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.javatechie.aws.lambda.domain.TipoActuacion;
 import com.javatechie.aws.lambda.domain.request.TipoActuacionBody;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.domain.response.TipoActuacionResponse;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoTipoActuacion;
@@ -45,13 +46,28 @@ public class TipoActuacionServiceImpl extends CrudImpl<TipoActuacion, String> im
 	}
 
 	private TipoActuacion bodyToEntity(TipoActuacionBody request) {
-		return new TipoActuacion(request.getId(),request.getNombreTipoActuacion(), request.getEstado());
+		return new TipoActuacion(request.getId(), request.getNombreTipoActuacion(), request.getEstado());
 	}
 
 	@Override
 	public List<TipoActuacionResponse> listarTipoActuacions() {
 		return listar().stream().map(this::transformToResponse).collect(Collectors.toList());
 	};
+
+	@Override
+	public List<TipoActuacion> listarTipoActuacionPorEstado(Boolean estado) {
+		return repo.findByEstado(estado);
+	}
+
+	@Override
+	public List<ReactSelectResponse> listarTipoActuacionParaReact() {
+
+		return listarTipoActuacionPorEstado(true).stream().map(this::transformFrom).collect(Collectors.toList());
+	}
+
+	private ReactSelectResponse transformFrom(TipoActuacion tipoActuacion) {
+		return new ReactSelectResponse(tipoActuacion.getIdTipoActuacion(), tipoActuacion.getNombreTipoActuacion());
+	}
 
 	private TipoActuacionResponse transformToResponse(TipoActuacion tipo) {
 		return new TipoActuacionResponse(tipo.getIdTipoActuacion(), tipo.getNombreTipoActuacion());

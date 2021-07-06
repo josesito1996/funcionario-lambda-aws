@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.request.TipoActuacionBody;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.domain.response.TipoActuacionResponse;
 import com.javatechie.aws.lambda.service.TipoActuacionService;
 
@@ -34,17 +35,15 @@ public class TipoActuacionController {
 
 	@Operation(summary = "Lista los tipo de actuaciones de la BD")
 	@ApiResponses(value = {
-	        @ApiResponse(responseCode = "200", description = "successful operation", 
-	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = TipoActuacionResponse.class)))) })	
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = ReactSelectResponse.class)))) })
 	@GetMapping(path = "/listAll")
-	public List<TipoActuacionResponse> listarTodos() {
-		return service.listarTipoActuacions();
+	public List<ReactSelectResponse> listarTodos() {
+		return service.listarTipoActuacionParaReact();
 	}
 
 	@Operation(summary = "Busca TIpo de actuacion por ID")
 	@ApiResponses(value = {
-	        @ApiResponse(responseCode = "200", description = "successful operation", 
-	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TipoActuacionResponse.class))) })	
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TipoActuacionResponse.class))) })
 	@GetMapping(path = "/findById/{id}")
 	public TipoActuacionResponse buscarPorId(@PathVariable String id) {
 		return service.verPorIdTipoActuacion(id);
@@ -52,8 +51,7 @@ public class TipoActuacionController {
 
 	@Operation(summary = "Registra el tipo de Actuacion")
 	@ApiResponses(value = {
-	        @ApiResponse(responseCode = "200", description = "successful operation", 
-	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TipoActuacionResponse.class))) })	
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TipoActuacionResponse.class))) })
 	@PostMapping(path = "/save")
 	public TipoActuacionResponse registrar(@Valid @RequestBody TipoActuacionBody request) {
 		return service.registrar(request);
@@ -61,8 +59,7 @@ public class TipoActuacionController {
 
 	@Operation(summary = "Actualiza el tipo de ACtuacion")
 	@ApiResponses(value = {
-	        @ApiResponse(responseCode = "200", description = "successful operation", 
-	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TipoActuacionResponse.class))) })	
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TipoActuacionResponse.class))) })
 	@PutMapping(path = "/update")
 	public TipoActuacionResponse modificar(@Valid @RequestBody TipoActuacionBody request) {
 		return service.actualizar(request);
