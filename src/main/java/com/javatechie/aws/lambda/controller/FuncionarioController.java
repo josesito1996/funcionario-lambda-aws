@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.request.FuncionarioBody;
 import com.javatechie.aws.lambda.domain.response.FuncionarioResponse;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.service.FuncionarioService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,10 +36,10 @@ public class FuncionarioController {
 	@Operation(summary = "Lista los Funcionario de la BD")
 	@ApiResponses(value = {
 	        @ApiResponse(responseCode = "200", description = "successful operation", 
-	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = FuncionarioResponse.class)))) })	
+	                content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = ReactSelectResponse.class)))) })	
 	@GetMapping(path = "/listAll")
-	public List<FuncionarioResponse> listarTodos() {
-		return service.listarFuncionarios();
+	public List<ReactSelectResponse> listarTodos() {
+		return service.listarFuncionariosParaReact();
 	}
 
 	@Operation(summary = "Busca Funcionario por ID")

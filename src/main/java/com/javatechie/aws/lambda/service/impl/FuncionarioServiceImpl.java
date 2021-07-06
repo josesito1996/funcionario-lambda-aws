@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.javatechie.aws.lambda.domain.Funcionario;
 import com.javatechie.aws.lambda.domain.request.FuncionarioBody;
 import com.javatechie.aws.lambda.domain.response.FuncionarioResponse;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoFuncionario;
 import com.javatechie.aws.lambda.service.FuncionarioService;
@@ -55,6 +56,22 @@ public class FuncionarioServiceImpl extends CrudImpl<Funcionario, String> implem
 
 	private FuncionarioResponse transformToResponse(Funcionario funcionario) {
 		String datos = funcionario.getNombres().concat(" ").concat(funcionario.getApellidos());
-		return new FuncionarioResponse(funcionario.getIdFuncionario(), datos,funcionario.getEstado());
+		return new FuncionarioResponse(funcionario.getIdFuncionario(), datos, funcionario.getEstado());
+	}
+
+	@Override
+	public List<Funcionario> listarFuncionariosPorEstado(Boolean estado) {
+
+		return repo.findByEstado(estado);
+	}
+
+	@Override
+	public List<ReactSelectResponse> listarFuncionariosParaReact() {
+		return listarFuncionariosPorEstado(true).stream().map(this::transfromReact).collect(Collectors.toList());
+	}
+
+	private ReactSelectResponse transfromReact(Funcionario funcionario) {
+		String datos = funcionario.getNombres().concat(" ").concat(funcionario.getApellidos());
+		return new ReactSelectResponse(funcionario.getIdFuncionario(), datos);
 	}
 }
