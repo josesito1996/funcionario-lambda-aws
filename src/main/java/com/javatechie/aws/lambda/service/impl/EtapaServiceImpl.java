@@ -46,7 +46,7 @@ public class EtapaServiceImpl extends CrudImpl<Etapa, String> implements EtapaSe
 	}
 
 	private Etapa bodyToEntity(EtapaBody request) {
-		return new Etapa(request.getIdEtapa(), request.getNombreEtapa(), request.getEstado());
+		return new Etapa(request.getIdEtapa(), request.getNombreEtapa(), request.getEstado(), request.getNroOrden());
 	}
 
 	@Override

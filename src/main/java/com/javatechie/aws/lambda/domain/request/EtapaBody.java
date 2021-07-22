@@ -29,4 +29,8 @@ public class EtapaBody {
 	@NotNull
 	@Schema(title = "Estado", name = "estado", type = "boolean", example = "true")
 	private Boolean estado;
+	@NotNull
+    @Schema(title = "Numero de orden", name = "nro_orden", type = "Integer", example = "1")
+	@JsonProperty("nro_orden")
+	private Integer nroOrden;
 }
