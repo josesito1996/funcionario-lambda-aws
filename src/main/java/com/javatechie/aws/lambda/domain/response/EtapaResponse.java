@@ -1,5 +1,7 @@
 package com.javatechie.aws.lambda.domain.response;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,4 +25,8 @@ public class EtapaResponse {
 	private String nombreEtapa;
 	@Schema(title = "Estado", name = "estado", type = "boolean", example = "true")
 	private Boolean estado;
+	@NotNull
+    @Schema(title = "Numero de orden", name = "nro_orden", type = "Integer", example = "1")
+    @JsonProperty("nro_orden")
+    private Integer nroOrden;
 }

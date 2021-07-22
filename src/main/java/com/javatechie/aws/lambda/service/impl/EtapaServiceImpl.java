@@ -1,5 +1,7 @@
 package com.javatechie.aws.lambda.service.impl;
 
+import static com.javatechie.aws.lambda.util.ListUtils.orderByDesc;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,63 +20,68 @@ import com.javatechie.aws.lambda.service.EtapaService;
 @Service
 public class EtapaServiceImpl extends CrudImpl<Etapa, String> implements EtapaService {
 
-	@Autowired
-	private RepoEtapa repo;
+    @Autowired
+    private RepoEtapa repo;
 
-	@Override
-	public EtapaResponse registrar(EtapaBody request) {
+    @Override
+    public EtapaResponse registrar(EtapaBody request) {
 
-		return transformToResponse(registrar(bodyToEntity(request)));
-	}
+        return transformToResponse(registrar(bodyToEntity(request)));
+    }
 
-	@Override
-	protected GenericRepo<Etapa, String> getRepo() {
+    @Override
+    protected GenericRepo<Etapa, String> getRepo() {
 
-		return repo;
-	}
+        return repo;
+    }
 
-	@Override
-	public EtapaResponse verPorIdEtapa(String id) {
-		Optional<Etapa> option = verPorId(id);
-		return option.isPresent() ? transformToResponse(option.get()) : new EtapaResponse();
-	}
+    @Override
+    public EtapaResponse verPorIdEtapa(String id) {
+        Optional<Etapa> option = verPorId(id);
+        return option.isPresent() ? transformToResponse(option.get()) : new EtapaResponse();
+    }
 
-	@Override
-	public EtapaResponse actualizar(EtapaBody request) {
+    @Override
+    public EtapaResponse actualizar(EtapaBody request) {
 
-		return transformToResponse(modificar(bodyToEntity(request)));
-	}
+        return transformToResponse(modificar(bodyToEntity(request)));
+    }
 
-	private Etapa bodyToEntity(EtapaBody request) {
-		return new Etapa(request.getIdEtapa(), request.getNombreEtapa(), request.getEstado(), request.getNroOrden());
-	}
+    private Etapa bodyToEntity(EtapaBody request) {
+        return new Etapa(request.getIdEtapa(), request.getNombreEtapa(), request.getEstado(),
+                request.getNroOrden());
+    }
 
-	@Override
-	public List<EtapaResponse> ListarEtapaResponse() {
-		return listar().stream().map(this::transformToResponse).collect(Collectors.toList());
-	};
+    @Override
+    public List<EtapaResponse> ListarEtapaResponse() {
+        return listar().stream().map(this::transformToResponse).collect(Collectors.toList());
+    };
 
-	private EtapaResponse transformToResponse(Etapa etapa) {
-		return new EtapaResponse(etapa.getIdEtapa(), etapa.getNombreEtapa(), etapa.getEstado());
-	}
+    private EtapaResponse transformToResponse(Etapa etapa) {
+        return new EtapaResponse(etapa.getIdEtapa(), etapa.getNombreEtapa(), etapa.getEstado(),
+                etapa.getNroOrden());
+    }
 
-	@Override
-	public List<EtapaResponse> ListarEtapaPorEstado(Boolean estado) {
+    @Override
+    public List<EtapaResponse> ListarEtapaPorEstado(Boolean estado) {
 
-		return repo.findByEstado(estado).stream().map(this::transformToResponse).collect(Collectors.toList());
-	}
+        return repo.findByEstado(estado).stream().map(this::transformToResponse)
+                .collect(Collectors.toList());
+    }
 
-	@Override
-	public List<Etapa> listarTipoActuacionPorEstado(Boolean estado) {
-		return repo.findByEstado(estado);
-	}
+    @Override
+    public List<Etapa> listarTipoActuacionPorEstado(Boolean estado) {
+        return repo.findByEstado(estado);
+    }
 
-	@Override
-	public List<ReactSelectResponse> listarTipoActuacionParaReact() {
-		return listarTipoActuacionPorEstado(true).stream().map(this::transformTo).collect(Collectors.toList());
-	}
+    @Override
+    public List<ReactSelectResponse> listarTipoActuacionParaReact() {
+        return orderByDesc(listarTipoActuacionPorEstado(true).stream().map(this::transformTo)
+                .collect(Collectors.toList()));
+    }
 
-	public ReactSelectResponse transformTo(Etapa etapa) {
-		return new ReactSelectResponse(etapa.getIdEtapa(), etapa.getNombreEtapa());
-	}
+    public ReactSelectResponse transformTo(Etapa etapa) {
+        return new ReactSelectResponse(etapa.getIdEtapa(), etapa.getNombreEtapa(),
+                etapa.getNroOrden());
+    }
 }

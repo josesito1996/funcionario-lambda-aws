@@ -66,7 +66,7 @@ public class TipoActuacionServiceImpl extends CrudImpl<TipoActuacion, String> im
 	}
 
 	private ReactSelectResponse transformFrom(TipoActuacion tipoActuacion) {
-		return new ReactSelectResponse(tipoActuacion.getIdTipoActuacion(), tipoActuacion.getNombreTipoActuacion());
+		return new ReactSelectResponse(tipoActuacion.getIdTipoActuacion(), tipoActuacion.getNombreTipoActuacion(), null);
 	}
 
 	private TipoActuacionResponse transformToResponse(TipoActuacion tipo) {
