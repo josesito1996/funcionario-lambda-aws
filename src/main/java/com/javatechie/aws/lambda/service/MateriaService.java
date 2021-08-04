@@ -16,5 +16,7 @@ public interface MateriaService extends ICrud<Materia, String> {
 
 	List<MateriaResponse> ListarMateriaResponse();
 	
+	List<MateriaResponse> ListarMateriasYSubmaterias();
+	
 	List<MateriaResponse> listarMateriasPorEstado(Boolean estado);
 }

@@ -76,5 +76,10 @@ public class MateriaController {
 	public MateriaResponse modificar(@Valid @RequestBody MateriaBody request) {
 		return service.actualizar(request);
 	}
+	
+	@GetMapping(path = "/listMateriasAndSubmaterias")
+	public List<MateriaResponse> listarMateriasYSubmateria(){
+	    return service.ListarMateriasYSubmaterias();
+	}
 
 }
