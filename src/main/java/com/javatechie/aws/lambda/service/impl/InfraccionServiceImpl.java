@@ -1,5 +1,7 @@
 package com.javatechie.aws.lambda.service.impl;
 
+import static com.javatechie.aws.lambda.util.ListUtils.infraccionResponseProccesor;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,35 +33,37 @@ public class InfraccionServiceImpl extends CrudImpl<Infraccion, String>
     }
 
     @Override
+    public List<Infraccion> verPorIdMateria(String idMateria) {
+        return repo.findByIdMateria(idMateria);
+    }
+
+    @Override
     public List<InfraccionResponse> registrarInfraccion(List<InfraccionRequestBody> request) {
         return registrarMasivo(builder.infraccionListBuilder(request)).stream()
-                .map(this::responseTransform).collect(Collectors.toList());
+                .map(infraccion -> infraccionResponseProccesor(infraccion))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<InfraccionResponse> listarInfracciones() {
-        return listar().stream().map(this::responseTransform).collect(Collectors.toList());
+        return listar().stream().map(infraccion -> infraccionResponseProccesor(infraccion))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<SubMateriaResponse> listarSubMateriasPorIdMateria(String idMateria) {
-        return repo.findByIdMateria(idMateria).stream().map(this::getSubmateriaResponse)
+        return verPorIdMateria(idMateria).stream().map(this::getSubmateriaResponse)
                 .collect(Collectors.toList());
     }
 
-    private InfraccionResponse responseTransform(Infraccion infraccion) {
-        return InfraccionResponse.builder().idInfraccion(infraccion.getIdInfraccion())
-                .baseLegal(infraccion.getBaseLegal()).subMateria(infraccion.getSubMateria())
-                .build();
+    @Override
+    public List<Infraccion> verPorIdMateriaYPrioridad(String idMateria, Boolean prioridad) {
+        return repo.findByIdMateriaAndPrioridad(idMateria, prioridad);
     }
 
     private SubMateriaResponse getSubmateriaResponse(Infraccion infraccion) {
-        return SubMateriaResponse.builder()
-                .baseLegal(infraccion.getBaseLegal())
-                .descripcion(infraccion.getDescripcion())
-                .gravedad(infraccion.getGravedad())
-                .subMateria(infraccion.getSubMateria())
-                .build();
+        return SubMateriaResponse.builder().baseLegal(infraccion.getBaseLegal())
+                .descripcion(infraccion.getDescripcion()).gravedad(infraccion.getGravedad())
+                .subMateria(infraccion.getSubMateria()).build();
     }
-
 }

@@ -1,6 +1,6 @@
 package com.javatechie.aws.lambda.service.impl;
 
-import static com.javatechie.aws.lambda.util.ListUtils.orderByDesc;
+import static com.javatechie.aws.lambda.util.ListUtils.selectResponseOrderByNroOrdenDesc;
 
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +76,7 @@ public class EtapaServiceImpl extends CrudImpl<Etapa, String> implements EtapaSe
 
     @Override
     public List<ReactSelectResponse> listarTipoActuacionParaReact() {
-        return orderByDesc(listarTipoActuacionPorEstado(true).stream().map(this::transformTo)
+        return selectResponseOrderByNroOrdenDesc(listarTipoActuacionPorEstado(true).stream().map(this::transformTo)
                 .collect(Collectors.toList()));
     }
 

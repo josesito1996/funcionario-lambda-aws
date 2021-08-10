@@ -11,6 +11,7 @@ import com.javatechie.aws.lambda.domain.Etapa;
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.TipoActuacion;
 import com.javatechie.aws.lambda.service.EtapaService;
+//import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.MateriaService;
 import com.javatechie.aws.lambda.service.TipoActuacionService;
 
@@ -26,6 +27,10 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
     @Autowired
     TipoActuacionService tipoActuacionService;
 
+    /**
+     * @Autowired InfraccionService infraccionService;
+     */
+
     public static void main(String[] args) {
         SpringApplication.run(SpringbootAwsLambdaApplication.class, args);
     }
@@ -35,6 +40,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         cargarMaterias();
         cargarEtapas();
         cargatTipoActuacion();
+        // updateInfraccion();
     }
 
     public void cargarMaterias() {
@@ -95,4 +101,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
                     });
         }
     }
+
+    /**
+     * public void updateInfraccion() { infraccionService.listar().forEach(item -> {
+     * item.setPrioridad(false); infraccionService.modificar(item); }); }
+     */
 }

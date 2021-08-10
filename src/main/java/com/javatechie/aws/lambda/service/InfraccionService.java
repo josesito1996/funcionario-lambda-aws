@@ -9,9 +9,13 @@ import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
 
 public interface InfraccionService extends ICrud<Infraccion, String> {
 
+    List<Infraccion> verPorIdMateria(String idMateria);
+    
+    List<Infraccion> verPorIdMateriaYPrioridad(String idMateria, Boolean prioridad);
+    
     List<SubMateriaResponse> listarSubMateriasPorIdMateria(String idMateria);
-    
+
     List<InfraccionResponse> listarInfracciones();
-    
+
     List<InfraccionResponse> registrarInfraccion(List<InfraccionRequestBody> request);
 }
