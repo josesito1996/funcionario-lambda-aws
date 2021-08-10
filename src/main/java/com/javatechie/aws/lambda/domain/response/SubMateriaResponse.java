@@ -1,5 +1,7 @@
 package com.javatechie.aws.lambda.domain.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,8 +16,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SubMateriaResponse {
-    private String baseLegal;
+    @JsonProperty("id_sub_materia")
+    private String idSubMateria;
+
+    @JsonProperty("sub_materia")
     private String subMateria;
-    private String descripcion;
-    private String gravedad;
 }

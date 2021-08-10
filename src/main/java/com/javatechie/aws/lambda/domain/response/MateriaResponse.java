@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.javatechie.aws.lambda.domain.SubMateria;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,7 @@ public class MateriaResponse {
 
     @JsonInclude(Include.NON_NULL)
     @JsonProperty("sub_materias")
-    private List<SubMateriaResponse> subMaterias;
+    private List<SubMateria> subMaterias;
 
     @Schema(title = "Estado", name = "estado", type = "boolean", example = "true")
     private Boolean estado;

@@ -62,8 +62,8 @@ public class InfraccionServiceImpl extends CrudImpl<Infraccion, String>
     }
 
     private SubMateriaResponse getSubmateriaResponse(Infraccion infraccion) {
-        return SubMateriaResponse.builder().baseLegal(infraccion.getBaseLegal())
-                .descripcion(infraccion.getDescripcion()).gravedad(infraccion.getGravedad())
+        return SubMateriaResponse.builder()
+                .idSubMateria(infraccion.getIdInfraccion())
                 .subMateria(infraccion.getSubMateria()).build();
     }
 }
