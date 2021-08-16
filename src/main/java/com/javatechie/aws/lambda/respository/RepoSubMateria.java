@@ -13,4 +13,5 @@ public interface RepoSubMateria extends GenericRepo<SubMateria, String> {
 
     List<SubMateria> findByIdMateriaAndPrioridad(String idMateria, Boolean prioridad);
 
+    List<SubMateria> findByIdMateria(String idMateria);
 }

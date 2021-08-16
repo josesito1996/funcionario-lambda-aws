@@ -82,7 +82,7 @@ public class MateriaController {
     @PostMapping(path = "/listSubMaterias")
     public List<Map<String, Object>> verSubMateriasDelaMateria(
             @Valid @RequestBody SubMateriaRequestBody request) {
-        return service.verSubMaterias(request.getIds());
+        return service.verSubMaterias(request);
     }
 
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.SubMateria;
 import com.javatechie.aws.lambda.domain.request.MateriaBody;
+import com.javatechie.aws.lambda.domain.request.SubMateriaRequestBody;
 import com.javatechie.aws.lambda.domain.response.MateriaResponse;
 import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 
@@ -25,7 +26,7 @@ public interface MateriaService extends ICrud<Materia, String> {
 
     List<MateriaResponse> listarMateriasPorEstado(Boolean estado);
 
-    List<Map<String, Object>> verSubMaterias(List<String> ids);
+    List<Map<String, Object>> verSubMaterias(SubMateriaRequestBody request);
     
     List<ReactSelectResponse> listarInfraccionesParaReactSelect(List<SubMateria> subMaterias);
 }

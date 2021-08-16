@@ -11,6 +11,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 
 @Configuration
 @EnableDynamoDBRepositories(basePackages = "com.javatechie.aws.lambda.respository")
@@ -34,6 +35,11 @@ public class DynamoBdConfig {
     return AmazonDynamoDBClientBuilder.standard()
         .withEndpointConfiguration(endpointConfiguration())
         .withCredentials(awsCredentialsProvider()).build();
+  }
+  
+  @Bean
+  public DynamoDB getDynamoDB() {
+      return new DynamoDB(amazonDynamoDB());
   }
 
   public AwsClientBuilder.EndpointConfiguration endpointConfiguration() {

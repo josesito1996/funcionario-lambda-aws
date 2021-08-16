@@ -2,6 +2,7 @@ package com.javatechie.aws.lambda.service.impl;
 
 import static com.javatechie.aws.lambda.util.ListUtils.subMateriaResponseProccesor;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,9 +13,16 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+import com.javatechie.aws.lambda.aws.ExternalDbAws;
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.SubMateria;
 import com.javatechie.aws.lambda.domain.request.MateriaBody;
+import com.javatechie.aws.lambda.domain.request.SubMateriaRequestBody;
 import com.javatechie.aws.lambda.domain.response.MateriaResponse;
 import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
@@ -24,11 +32,17 @@ import com.javatechie.aws.lambda.respository.RepoMateria;
 import com.javatechie.aws.lambda.service.MateriaService;
 import com.javatechie.aws.lambda.service.SubMateriaService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class MateriaServiceImpl extends CrudImpl<Materia, String> implements MateriaService {
 
     @Autowired
     private RepoMateria repo;
+
+    @Autowired
+    private ExternalDbAws awsExternal;
 
     @Autowired
     private SubMateriaService subMateriaService;
@@ -84,9 +98,24 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
     }
 
     @Override
-    public List<Map<String, Object>> verSubMaterias(List<String> ids) {
+    public List<Map<String, Object>> verSubMaterias(SubMateriaRequestBody request) {
         List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
-        ids.forEach(id -> {
+
+        Gson gson = new Gson();
+        Type gsonType = new TypeToken<HashMap<String, Object>>() {
+        }.getType();
+        String casoJson = gson.toJson(awsExternal.getTable(request.getIdCaso()), gsonType);
+        JsonObject obj = JsonParser.parseString(casoJson).getAsJsonObject();
+        JsonArray arrayMaterias = obj.get("materias").getAsJsonArray();
+        Map<String, Object> mapMateria = new HashMap<>();
+        arrayMaterias.forEach(element -> {
+            System.out.println(element.getAsJsonObject().get("sub_materias").getAsJsonArray());
+            String idMateria = element.getAsJsonObject().get("id_materia").getAsString();
+            mapMateria.put("id_materia", idMateria);
+            mapMateria.put("subMaterias", subMateriaService.listarPorIdMateria(idMateria));
+        });
+        
+        request.getIds().forEach(id -> {
             Map<String, Object> map = new HashMap<String, Object>();
             Materia materia = buscarPorIdMateria(id);
             map.put("id_materia", materia.getIdMateria());

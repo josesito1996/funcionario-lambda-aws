@@ -11,6 +11,8 @@ public interface SubMateriaService extends ICrud<SubMateria, String> {
     public SubMateria buscarPorIdSubMateria(String idSubMateria);
 
     public List<SubMateria> listarPorIdMateriaYPrioridad(String idMateria, Boolean prioridad);
+    
+    public List<SubMateria> listarPorIdMateria(String idMateria);
 
     List<SubMateriaResponse> registrarInfraccion(List<SubMateriaRequest> request);
 }

@@ -61,4 +61,9 @@ public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
                 .idMateria(request.getIdMateria()).nombreSubMateria(request.getNombreSubMateria())
                 .prioridad(request.getPrioridad()).build();
     }
+
+    @Override
+    public List<SubMateria> listarPorIdMateria(String idMateria) {
+        return repo.findByIdMateria(idMateria);
+    }
 }
