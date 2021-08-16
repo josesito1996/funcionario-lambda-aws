@@ -1,18 +1,31 @@
 package com.javatechie.aws.lambda.service.impl;
 
+import static com.javatechie.aws.lambda.util.ListUtils.articuloResponseBodySorted;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.javatechie.aws.lambda.domain.Articulo;
+import com.javatechie.aws.lambda.domain.Infraccion;
+import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.SubMateria;
 import com.javatechie.aws.lambda.domain.request.SubMateriaRequest;
+import com.javatechie.aws.lambda.domain.response.ArticuloResponseBody;
+import com.javatechie.aws.lambda.domain.response.InfraccionResponseBody;
 import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
 import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoSubMateria;
+import com.javatechie.aws.lambda.service.ArticuloService;
+import com.javatechie.aws.lambda.service.InfraccionService;
+import com.javatechie.aws.lambda.service.MateriaService;
 import com.javatechie.aws.lambda.service.SubMateriaService;
 
 @Service
@@ -21,6 +34,15 @@ public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
 
     @Autowired
     private RepoSubMateria repo;
+
+    @Autowired
+    private MateriaService materiaService;
+
+    @Autowired
+    private InfraccionService infraccionService;
+
+    @Autowired
+    private ArticuloService articuloService;
 
     @Override
     public SubMateria buscarPorIdSubMateria(String idSubMateria) {
@@ -65,5 +87,38 @@ public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
     @Override
     public List<SubMateria> listarPorIdMateria(String idMateria) {
         return repo.findByIdMateria(idMateria);
+    }
+
+    @Override
+    public InfraccionResponseBody infraccionResponseBodyByIdSubMateria(String idSubMateria) {
+        SubMateria subMateria = buscarPorIdSubMateria(idSubMateria);
+        Materia materia = materiaService.buscarPorIdMateria(subMateria.getIdMateria());
+        List<Infraccion> infracciones = infraccionService.verPorIdSubMateria(idSubMateria);
+        List<String> idArticulos = infracciones.stream()
+                .map(infraccion -> infraccion.getIdArticulo()).distinct().collect(Collectors.toList());
+        List<ArticuloResponseBody> articulos = new ArrayList<ArticuloResponseBody>();
+        for (String idArticulo : idArticulos) {
+            Articulo articulo = articuloService.verArticuloPorId(idArticulo);
+            articulos
+                    .add(ArticuloResponseBody.builder().nombreArticulo(articulo.getNombreArticulo())
+                            .subArticulos(subArticulosResponse(infracciones, idArticulo)).build());
+        }
+        return InfraccionResponseBody.builder().nombreMateria(materia.getNombreMateria())
+                .nombreSubMateria(subMateria.getNombreSubMateria())
+                .infracciones("DECRETO SUPREMPO....... N° XX-XXXX").articulos(articuloResponseBodySorted(articulos)).build();
+    }
+
+    private List<Map<String, String>> subArticulosResponse(List<Infraccion> infracciones,
+            String idArticulo) {
+        return infracciones.stream()
+                .filter(infraccion -> infraccion.getIdArticulo().equals(idArticulo))
+                .map(this::transformToMap).collect(Collectors.toList());
+    }
+
+    private Map<String, String> transformToMap(Infraccion infraccion) {
+        Map<String, String> newMap = new HashMap<String, String>();
+        newMap.put("nroSub", infraccion.getBaseLegal());
+        newMap.put("descripcion", infraccion.getDescripcion());
+        return newMap;
     }
 }

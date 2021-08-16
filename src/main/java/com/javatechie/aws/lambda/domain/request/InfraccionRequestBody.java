@@ -25,6 +25,11 @@ public class InfraccionRequestBody implements Serializable {
 
     @NotNull
     @NotEmpty
+    @JsonProperty("id_infraccion")
+    private String idInfraccion;
+    
+    @NotNull
+    @NotEmpty
     @JsonProperty("base_legal")
     private String baseLegal;
 
@@ -32,7 +37,17 @@ public class InfraccionRequestBody implements Serializable {
     @NotEmpty
     @JsonProperty("id_materia")
     private String idMateria;
-
+    
+    @NotNull
+    @NotEmpty
+    @JsonProperty("id_articulo")
+    private String idArticulo;
+    
+    @NotNull
+    @NotEmpty
+    @JsonProperty("id_sub_materia")
+    private String idSubMateria;
+    
     @NotNull
     @NotEmpty
     @JsonProperty("sub_materia")

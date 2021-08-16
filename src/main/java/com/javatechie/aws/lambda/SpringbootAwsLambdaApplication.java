@@ -1,15 +1,18 @@
 package com.javatechie.aws.lambda;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.javatechie.aws.lambda.domain.Articulo;
 import com.javatechie.aws.lambda.domain.Etapa;
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.TipoActuacion;
+import com.javatechie.aws.lambda.service.ArticuloService;
 import com.javatechie.aws.lambda.service.EtapaService;
 //import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.MateriaService;
@@ -27,6 +30,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
     @Autowired
     TipoActuacionService tipoActuacionService;
 
+    @Autowired
+    ArticuloService articuloService;
+
     /**
      * @Autowired InfraccionService infraccionService;
      */
@@ -40,6 +46,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         cargarMaterias();
         cargarEtapas();
         cargatTipoActuacion();
+        registrarArticulos();
         // updateInfraccion();
     }
 
@@ -106,4 +113,16 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
      * public void updateInfraccion() { infraccionService.listar().forEach(item -> {
      * item.setPrioridad(false); infraccionService.modificar(item); }); }
      */
+
+    public void registrarArticulos() {
+        List<Articulo> articulos = articuloService.listar();
+        if (articulos.isEmpty()) {
+            for (int i = 23; i <= 46; i++) {
+                articuloService
+                        .registrar(Articulo.builder()
+                                .nroArticulo(String.valueOf(i))
+                                .nombreArticulo("Articulo nro " + i).build());
+            }
+        }
+    }
 }

@@ -26,11 +26,17 @@ public class Infraccion {
     @DynamoDBAttribute(attributeName = "id_infraccion")
     private String idInfraccion;
 
+    @DynamoDBAttribute(attributeName = "id_articulo")
+    private String idArticulo;
+
     @DynamoDBAttribute(attributeName = "base_legal")
     private String baseLegal;
 
     @DynamoDBAttribute(attributeName = "id_materia")
     private String idMateria;
+
+    @DynamoDBAttribute(attributeName = "id_sub_materia")
+    private String idSubMateria;
 
     @DynamoDBAttribute(attributeName = "sub_materia")
     private String subMateria;

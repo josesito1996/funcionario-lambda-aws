@@ -61,9 +61,13 @@ public class InfraccionServiceImpl extends CrudImpl<Infraccion, String>
         return repo.findByIdMateriaAndPrioridad(idMateria, prioridad);
     }
 
+    @Override
+    public List<Infraccion> verPorIdSubMateria(String idSubMateria) {
+        return repo.findByIdSubMateria(idSubMateria);
+    }
+  
     private SubMateriaResponse getSubmateriaResponse(Infraccion infraccion) {
-        return SubMateriaResponse.builder()
-                .idSubMateria(infraccion.getIdInfraccion())
+        return SubMateriaResponse.builder().idSubMateria(infraccion.getIdInfraccion())
                 .subMateria(infraccion.getSubMateria()).build();
     }
 }

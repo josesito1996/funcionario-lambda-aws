@@ -16,7 +16,11 @@ public class InfraccionRequestBuilder {
     }
 
     private Infraccion transformInfraccion(InfraccionRequestBody request) {
-        return Infraccion.builder().baseLegal(request.getBaseLegal())
+        return Infraccion.builder()
+                .idInfraccion(request.getIdInfraccion())
+                .baseLegal(request.getBaseLegal())
+                .idArticulo(request.getIdArticulo())
+                .idSubMateria(request.getIdSubMateria())
                 .descripcion(request.getDescripcion()).idMateria(request.getIdMateria())
                 .gravedad(request.getGravedad()).subMateria(request.getSubMateria()).build();
     }

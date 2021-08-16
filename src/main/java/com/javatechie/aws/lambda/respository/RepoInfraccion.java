@@ -12,6 +12,8 @@ import com.javatechie.aws.lambda.domain.Infraccion;
 public interface RepoInfraccion extends GenericRepo<Infraccion, String> {
 
     List<Infraccion> findByIdMateria(String idMateria);
+    
+    List<Infraccion> findByIdSubMateria(String idSubMateria);
 
     List<Infraccion> findByIdMateriaAndPrioridad(String idMateria, Boolean prioridad);
 }

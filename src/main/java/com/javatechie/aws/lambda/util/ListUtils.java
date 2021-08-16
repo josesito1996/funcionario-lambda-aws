@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.javatechie.aws.lambda.domain.Infraccion;
 import com.javatechie.aws.lambda.domain.SubMateria;
+import com.javatechie.aws.lambda.domain.response.ArticuloResponseBody;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponse;
 import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
@@ -15,6 +16,12 @@ public class ListUtils {
             List<ReactSelectResponse> select) {
         select.sort(Comparator.comparing(ReactSelectResponse::getNroOrden));
         return select;
+    }
+    
+    public static List<ArticuloResponseBody> articuloResponseBodySorted(
+            List<ArticuloResponseBody> responseBody) {
+        responseBody.sort(Comparator.comparing(ArticuloResponseBody::getNombreArticulo));
+        return responseBody;
     }
 
     public static InfraccionResponse infraccionResponseProccesor(Infraccion infraccion) {

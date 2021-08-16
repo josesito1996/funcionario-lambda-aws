@@ -11,6 +11,8 @@ public interface InfraccionService extends ICrud<Infraccion, String> {
 
     List<Infraccion> verPorIdMateria(String idMateria);
     
+    List<Infraccion> verPorIdSubMateria(String idSubMateria);
+    
     List<Infraccion> verPorIdMateriaYPrioridad(String idMateria, Boolean prioridad);
     
     List<SubMateriaResponse> listarSubMateriasPorIdMateria(String idMateria);
