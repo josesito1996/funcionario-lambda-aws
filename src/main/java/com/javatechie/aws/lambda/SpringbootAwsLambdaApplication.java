@@ -10,10 +10,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.javatechie.aws.lambda.domain.Articulo;
 import com.javatechie.aws.lambda.domain.Etapa;
+import com.javatechie.aws.lambda.domain.Inspector;
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.TipoActuacion;
+import com.javatechie.aws.lambda.respository.jdbc.InspectorJdbc;
 import com.javatechie.aws.lambda.service.ArticuloService;
 import com.javatechie.aws.lambda.service.EtapaService;
+import com.javatechie.aws.lambda.service.InspectorService;
 //import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.MateriaService;
 import com.javatechie.aws.lambda.service.TipoActuacionService;
@@ -25,6 +28,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
     MateriaService materiaService;
 
     @Autowired
+    InspectorService inspectorService;
+
+    @Autowired
     EtapaService etapaService;
 
     @Autowired
@@ -32,6 +38,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 
     @Autowired
     ArticuloService articuloService;
+
+    @Autowired
+    InspectorJdbc inspectorJdbc;
 
     /**
      * @Autowired InfraccionService infraccionService;
@@ -47,6 +56,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         cargarEtapas();
         cargatTipoActuacion();
         registrarArticulos();
+        //testJDBC();
         // updateInfraccion();
     }
 
@@ -118,11 +128,18 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         List<Articulo> articulos = articuloService.listar();
         if (articulos.isEmpty()) {
             for (int i = 23; i <= 46; i++) {
-                articuloService
-                        .registrar(Articulo.builder()
-                                .nroArticulo(String.valueOf(i))
-                                .nombreArticulo("Articulo nro " + i).build());
+                articuloService.registrar(Articulo.builder().nroArticulo(String.valueOf(i))
+                        .nombreArticulo("Articulo nro " + i).build());
             }
         }
+    }
+
+    public void testJDBC() {
+        inspectorJdbc.inspectores().forEach(item -> {
+            Inspector inspector = inspectorService
+                    .registrar(Inspector.builder().identity(item.getIndex()).tipo("TRABAJO")
+                            .nombreInspector(item.getNombreInspector()).estado(true).build());
+            System.out.println(inspector);
+        });
     }
 }
