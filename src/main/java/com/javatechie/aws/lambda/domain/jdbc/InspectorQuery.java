@@ -17,5 +17,4 @@ public class InspectorQuery {
 
     private Integer index;
     private String nombreInspector;
-
 }

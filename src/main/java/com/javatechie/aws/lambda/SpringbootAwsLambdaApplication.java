@@ -1,5 +1,8 @@
 package com.javatechie.aws.lambda;
 
+import static com.javatechie.aws.lambda.util.Utils.generateCorreo;
+import static com.javatechie.aws.lambda.util.Utils.numberRandomGenerator;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.javatechie.aws.lambda.domain.Articulo;
 import com.javatechie.aws.lambda.domain.Etapa;
@@ -21,6 +25,9 @@ import com.javatechie.aws.lambda.service.InspectorService;
 import com.javatechie.aws.lambda.service.MateriaService;
 import com.javatechie.aws.lambda.service.TipoActuacionService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SpringBootApplication
 public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 
@@ -56,7 +63,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         cargarEtapas();
         cargatTipoActuacion();
         registrarArticulos();
-        //testJDBC();
+        // testStoredProcedure();
+        // updateInspector();
+        // testJDBC();
         // updateInfraccion();
     }
 
@@ -141,5 +150,22 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
                             .nombreInspector(item.getNombreInspector()).estado(true).build());
             System.out.println(inspector);
         });
+    }
+
+    @Transactional
+    public void updateInspector() {
+        inspectorService.listar().forEach(item -> {
+            item.setCargo("Cargo Prueba");
+            item.setCorreo(generateCorreo(item.getNombreInspector()));
+            item.setTelefono(String.valueOf(numberRandomGenerator(900000000, 999999999)));
+            Inspector inspector = inspectorService.modificar(item);
+            System.out.println(inspector);
+        });
+    }
+
+    public void testStoredProcedure() {
+       inspectorService.storedProcedure("Poma Canazas Daniel Andres").forEach(item ->{
+           log.info("item : " + item);
+       });
     }
 }

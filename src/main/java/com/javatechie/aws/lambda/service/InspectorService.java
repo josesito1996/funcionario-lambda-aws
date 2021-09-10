@@ -3,14 +3,18 @@ package com.javatechie.aws.lambda.service;
 import java.util.List;
 
 import com.javatechie.aws.lambda.domain.Inspector;
+import com.javatechie.aws.lambda.domain.jdbc.CasosPorInspectorQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspectorQuery;
 import com.javatechie.aws.lambda.domain.request.InspectorBody;
+import com.javatechie.aws.lambda.domain.response.CaseByInspectorResponse;
 import com.javatechie.aws.lambda.domain.response.InspectorResponse;
 import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 
 public interface InspectorService extends ICrud<Inspector, String> {
 
-	InspectorResponse registrar(InspectorBody request);
+	Inspector buscarPorId(String id);
+    
+    InspectorResponse registrar(InspectorBody request);
 	
 	InspectorResponse actualizar(InspectorBody request);
 	
@@ -27,4 +31,8 @@ public interface InspectorService extends ICrud<Inspector, String> {
 	 */
 	
 	List<InspectorQuery> listarInspectoresJdbcAsc();
+	
+	List<CasosPorInspectorQuery> storedProcedure(String isnpectorName);
+
+	CaseByInspectorResponse casosPorInspector(String idInspector);
 }

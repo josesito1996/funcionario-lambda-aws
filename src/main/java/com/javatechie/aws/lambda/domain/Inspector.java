@@ -30,8 +30,19 @@ public class Inspector {
 	
 	@DynamoDBAttribute
 	private String nombreInspector;
+	
 	@DynamoDBAttribute
 	private String tipo;
+	
+	@DynamoDBAttribute
+	private String cargo;
+	
+	@DynamoDBAttribute
+	private String correo;
+	
+	@DynamoDBAttribute
+	private String telefono;
+	
 	@DynamoDBAttribute
 	private Boolean estado;
 }
