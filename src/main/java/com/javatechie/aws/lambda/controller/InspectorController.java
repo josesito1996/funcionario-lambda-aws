@@ -85,6 +85,7 @@ public class InspectorController {
 	}
 	
 	@GetMapping(path = "/searchCasesByInspectorId/{idInspector}")
+	//test
 	public CaseByInspectorResponse findCasesByInspector(@PathVariable String idInspector) {
 	    return service.casosPorInspector(idInspector);
 	}
