@@ -1,8 +1,9 @@
 package com.javatechie.aws.lambda.util;
 
-import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.Random;
 
 public class Utils {
@@ -17,6 +18,18 @@ public class Utils {
 
     public static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
         return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+    
+    public static Date convertToDateViaInstant(LocalDate dateToConvert) {
+        return Date.from(dateToConvert.atStartOfDay()
+          .atZone(ZoneId.systemDefault())
+          .toInstant());
+    }
+    
+    public static Date convertToDateViaInstant(LocalDateTime dateToConvert) {
+        return Date
+          .from(dateToConvert.atZone(ZoneId.systemDefault())
+          .toInstant());
     }
 
     public static String separadorDeCadenas(String cadena, String caracter, int index) {

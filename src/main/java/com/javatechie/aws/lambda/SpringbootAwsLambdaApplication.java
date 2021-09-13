@@ -23,6 +23,7 @@ import com.javatechie.aws.lambda.service.EtapaService;
 import com.javatechie.aws.lambda.service.InspectorService;
 //import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.MateriaService;
+import com.javatechie.aws.lambda.service.PuntuacionService;
 import com.javatechie.aws.lambda.service.TipoActuacionService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
     @Autowired
     InspectorJdbc inspectorJdbc;
 
+    @Autowired
+    PuntuacionService puntuacionService;
+
     /**
      * @Autowired InfraccionService infraccionService;
      */
@@ -67,6 +71,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         // updateInspector();
         // testJDBC();
         // updateInfraccion();
+        //puntuacionTest();
     }
 
     public void cargarMaterias() {
@@ -164,8 +169,8 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
     }
 
     public void testStoredProcedure() {
-       inspectorService.storedProcedure("Poma Canazas Daniel Andres").forEach(item ->{
-           log.info("item : " + item);
-       });
+        inspectorService.storedProcedure("Poma Canazas Daniel Andres").forEach(item -> {
+            log.info("item : " + item);
+        });
     }
 }
