@@ -15,6 +15,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.javatechie.aws.lambda.domain.jdbc.PromedioPuntajeInspectorQuery;
 import com.javatechie.aws.lambda.domain.jdbc.PuntuacionInspector;
 import com.javatechie.aws.lambda.domain.jdbc.PuntuacionMaestro;
 
@@ -24,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PuntuacionJdbc {
 
+    private static final String QUERY_LIST_MAESTRO = "select * from puntuacion_maestro where estado = ?;";
+    
     private static final String QUERY_INSERT_MAESTRO = "insert into puntuacion_maestro "
             + "(item_valoracion,puntaje_maximo,estado) " + "values (?, ?, ?);";
 
@@ -32,9 +35,28 @@ public class PuntuacionJdbc {
             + "(?,?,?,?,?);";
 
     private static final String QUERY_GET_MAESTRO_BY_ID = "select * from puntuacion_maestro where id_item = ?;";
+    
+    private static final String QUERY_GET_PROMEDIO_BY_INSPECTOR = "select "
+            + "p_master.item_valoracion as itemScore, "
+            + "p_master.puntaje_maximo as max, "
+            + "ROUND(AVG(p_ins.calificacion),0) as score "
+            + "from puntuacion_inspector p_ins inner join puntuacion_maestro p_master "
+            + "on p_ins.id_puntuacion_maestro = p_master.id_item "
+            + "where p_ins.id_inspector= ? "
+            + "GROUP BY p_master.item_valoracion order by p_master.id_item;";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    
+    public List<PromedioPuntajeInspectorQuery> listarPromedioPuntajeInspector(String idInspector){
+        log.info("PuntuacionJdbc.listarPromedioPuntajeInspector");
+        return jdbcTemplate.query(QUERY_GET_PROMEDIO_BY_INSPECTOR, new PromedioPuntajeInspectorMapper(),new Object[] { idInspector });
+    }
+    
+    public List<PuntuacionMaestro> listarMaestroPuntuaciones(){
+        log.info("PuntuacionJdbc.listarMaestroPuntuaciones");
+        return jdbcTemplate.query(QUERY_LIST_MAESTRO, new PuntuacionMaestroMapper(),new Object[] { true });
+    }
 
     public PuntuacionMaestro verPorId(int idMaestro) {
         log.info("PuntuacionJdbc.verPorId");

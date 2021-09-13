@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.javatechie.aws.lambda.domain.jdbc.PromedioPuntajeInspectorQuery;
 import com.javatechie.aws.lambda.domain.jdbc.PuntuacionInspector;
 import com.javatechie.aws.lambda.domain.jdbc.PuntuacionMaestro;
 import com.javatechie.aws.lambda.domain.request.PuntajeRequest;
@@ -53,5 +54,15 @@ public class PuntuacionServiceImpl implements PuntuacionService {
                     .build());
         }
         return listPuntuaciones;
+    }
+
+    @Override
+    public List<PuntuacionMaestro> listarPuntuacionMaestro() {
+        return puntuacionJdbc.listarMaestroPuntuaciones();
+    }
+
+    @Override
+    public List<PromedioPuntajeInspectorQuery> listarPromedioPuntajeInspector(String idInspector) {
+        return puntuacionJdbc.listarPromedioPuntajeInspector(idInspector);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.javatechie.aws.lambda.domain.Inspector;
 import com.javatechie.aws.lambda.domain.jdbc.CasosPorInspectorQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspectorQuery;
+import com.javatechie.aws.lambda.domain.jdbc.PromedioPuntajeInspectorQuery;
 import com.javatechie.aws.lambda.domain.request.InspectorBody;
 import com.javatechie.aws.lambda.domain.response.CaseByInspectorResponse;
 import com.javatechie.aws.lambda.domain.response.ContactResponse;
@@ -26,6 +27,7 @@ import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoInspector;
 import com.javatechie.aws.lambda.respository.jdbc.InspectorJdbc;
 import com.javatechie.aws.lambda.service.InspectorService;
+import com.javatechie.aws.lambda.service.PuntuacionService;
 
 @Service
 public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements InspectorService {
@@ -35,6 +37,9 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 
     @Autowired
     private InspectorJdbc inspectorJdbc;
+
+    @Autowired
+    private PuntuacionService puntuacionService;
 
     @Override
     public InspectorResponse registrar(InspectorBody request) {
@@ -118,7 +123,8 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
             int contador = 0;
             for (CasosPorInspectorQuery caso : casosInspector) {
                 if (contador < limit) {
-                    recentCases.add(RecentCaseResponse.builder().caseName(separadorDeCadenas(caso.getRazonSocial(), "/", 1))
+                    recentCases.add(RecentCaseResponse.builder()
+                            .caseName(separadorDeCadenas(caso.getRazonSocial(), "/", 1))
                             .date(caso.getFechaAsignacion())
                             .inspectionOrder(caso.getOrdenInspeccion()).build());
                 }
@@ -131,7 +137,21 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
                 .contact(ContactResponse.builder().email(inspector.getCorreo())
                         .phone(inspector.getTelefono()).build())
                 .name(inspector.getNombreInspector()).position(inspector.getCargo())
-                .score(new ArrayList<ScoreResponse>()).recentCases(recentCases).build();
+                .score(transformScoreResponse(
+                        puntuacionService.listarPromedioPuntajeInspector(idInspector)))
+                .recentCases(recentCases).build();
+    }
+
+    private List<ScoreResponse> transformScoreResponse(List<PromedioPuntajeInspectorQuery> queryList) {
+        return queryList.stream().map(this::transformScoreResponse).collect(Collectors.toList());
+    }
+    
+    private ScoreResponse transformScoreResponse(PromedioPuntajeInspectorQuery query) {
+        return ScoreResponse.builder()
+                .itemScore(query.getItemScore())
+                .max(query.getMax())
+                .score(query.getScore())
+                .build();
     }
 
     @Override
