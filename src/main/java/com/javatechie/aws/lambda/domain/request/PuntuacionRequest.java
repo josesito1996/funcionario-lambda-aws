@@ -1,11 +1,14 @@
 package com.javatechie.aws.lambda.domain.request;
 
+import static com.javatechie.aws.lambda.util.Constants.REGEX_UUID;
+
 import java.io.Serializable;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +30,7 @@ public class PuntuacionRequest implements Serializable {
 
     @NotNull
     @NotEmpty
+    @Pattern(regexp = REGEX_UUID , message = "El idFuncionario no tiene el formato correcto")
     private String idFuncionario;
     
     @NotNull
