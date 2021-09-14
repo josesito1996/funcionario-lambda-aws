@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.request.InspectorBody;
+import com.javatechie.aws.lambda.domain.request.InspectorUpdateRequest;
 import com.javatechie.aws.lambda.domain.response.CaseByInspectorResponse;
 import com.javatechie.aws.lambda.domain.response.InspectorResponse;
 import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
@@ -83,6 +84,14 @@ public class InspectorController {
 	public InspectorResponse modificar(@Valid @RequestBody InspectorBody request) {
 		return service.actualizar(request);
 	}
+	
+	@Operation(summary = "Actualiza Tefono y Correo de un inspector")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InspectorResponse.class))) })
+    @PutMapping(path = "/updateData")
+    public InspectorResponse actualizarDatos(@Valid @RequestBody InspectorUpdateRequest request) {
+        return service.actualizar(request);
+    }
 	
 	@GetMapping(path = "/searchCasesByInspectorId/{idInspector}")
 	//test

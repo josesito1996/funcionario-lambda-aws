@@ -6,6 +6,7 @@ import com.javatechie.aws.lambda.domain.Inspector;
 import com.javatechie.aws.lambda.domain.jdbc.CasosPorInspectorQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspectorQuery;
 import com.javatechie.aws.lambda.domain.request.InspectorBody;
+import com.javatechie.aws.lambda.domain.request.InspectorUpdateRequest;
 import com.javatechie.aws.lambda.domain.response.CaseByInspectorResponse;
 import com.javatechie.aws.lambda.domain.response.InspectorResponse;
 import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
@@ -17,6 +18,8 @@ public interface InspectorService extends ICrud<Inspector, String> {
     InspectorResponse registrar(InspectorBody request);
 	
 	InspectorResponse actualizar(InspectorBody request);
+	
+	InspectorResponse actualizar(InspectorUpdateRequest request);
 	
 	InspectorResponse verPorIdInspector(String id);
 	

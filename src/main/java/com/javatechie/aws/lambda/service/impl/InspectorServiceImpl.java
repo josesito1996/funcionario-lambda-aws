@@ -16,6 +16,7 @@ import com.javatechie.aws.lambda.domain.jdbc.CasosPorInspectorQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspectorQuery;
 import com.javatechie.aws.lambda.domain.jdbc.PromedioPuntajeInspectorQuery;
 import com.javatechie.aws.lambda.domain.request.InspectorBody;
+import com.javatechie.aws.lambda.domain.request.InspectorUpdateRequest;
 import com.javatechie.aws.lambda.domain.response.CaseByInspectorResponse;
 import com.javatechie.aws.lambda.domain.response.ContactResponse;
 import com.javatechie.aws.lambda.domain.response.InspectorResponse;
@@ -163,4 +164,12 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
         return inspectorOp.get();
     }
 
+    @Override
+    public InspectorResponse actualizar(InspectorUpdateRequest request) {
+        Inspector inspector = buscarPorId(request.getIdInspector());
+        inspector.setCorreo(request.getCorreo());
+        inspector.setTelefono(request.getTelefono());
+        inspector.setCargo(request.getNombreCargo());
+        return transformToResponse(modificar(inspector));
+    }
 }
