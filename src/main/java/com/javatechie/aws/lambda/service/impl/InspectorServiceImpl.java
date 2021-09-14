@@ -79,8 +79,14 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
     }
 
     private InspectorResponse transformToResponse(Inspector inspector) {
-        return new InspectorResponse(inspector.getId(), inspector.getNombreInspector(),
-                inspector.getTipo(), inspector.getEstado());
+        return InspectorResponse.builder()
+                .id(inspector.getId())
+                .nombresApellidos(inspector.getNombreInspector())
+                .tipoInspector(inspector.getTipo())
+                .telefono(inspector.getTelefono())
+                .correo(inspector.getCorreo())
+                .estado(inspector.getEstado())
+                .build();
     }
 
     private Inspector bodyToEntity(InspectorBody request) {
