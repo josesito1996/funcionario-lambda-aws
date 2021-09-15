@@ -135,4 +135,14 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
         return new ReactSelectResponse(subMateria.getIdSubMateria(),
                 subMateria.getNombreSubMateria(), 0);
     }
+
+    @Override
+    public List<ReactSelectResponse> listarReactSelect() {
+        List<Materia> materias = listar();
+        List<ReactSelectResponse> newList = new ArrayList<ReactSelectResponse>();
+        for (Materia materia : materias) {
+            newList.add(new ReactSelectResponse(materia.getIdMateria(), materia.getNombreMateria(), null));
+        }
+        return newList;
+    }
 }

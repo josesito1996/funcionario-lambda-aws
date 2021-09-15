@@ -12,6 +12,8 @@ import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 
 public interface MateriaService extends ICrud<Materia, String> {
 
+    List<ReactSelectResponse> listarReactSelect();
+    
     Materia buscarPorIdMateria(String idMateria);
 
     MateriaResponse registrar(MateriaBody request);

@@ -2,6 +2,7 @@ package com.javatechie.aws.lambda.service.impl;
 
 import static com.javatechie.aws.lambda.util.ListUtils.infraccionResponseProccesor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.javatechie.aws.lambda.domain.Infraccion;
 import com.javatechie.aws.lambda.domain.request.InfraccionRequestBody;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponse;
+import com.javatechie.aws.lambda.domain.response.InfraccionResponseSelect;
 import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoInfraccion;
@@ -69,5 +71,19 @@ public class InfraccionServiceImpl extends CrudImpl<Infraccion, String>
     private SubMateriaResponse getSubmateriaResponse(Infraccion infraccion) {
         return SubMateriaResponse.builder().idSubMateria(infraccion.getIdInfraccion())
                 .subMateria(infraccion.getSubMateria()).build();
+    }
+
+    @Override
+    public List<InfraccionResponseSelect> listarSelectPorIdSubMateria(String idSubMateria) {
+        List<Infraccion> infracciones = verPorIdSubMateria(idSubMateria);
+        List<InfraccionResponseSelect> newList = new ArrayList<InfraccionResponseSelect>();
+        for (Infraccion infraccion : infracciones) {
+            newList.add(InfraccionResponseSelect.builder()
+                    .idInfraccion(infraccion.getIdInfraccion())
+                    .baseLegal(infraccion.getBaseLegal())
+                    .descripcion(infraccion.getDescripcion())
+                    .build());
+        }
+        return newList;
     }
 }

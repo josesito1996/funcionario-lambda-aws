@@ -5,6 +5,7 @@ import java.util.List;
 import com.javatechie.aws.lambda.domain.Infraccion;
 import com.javatechie.aws.lambda.domain.request.InfraccionRequestBody;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponse;
+import com.javatechie.aws.lambda.domain.response.InfraccionResponseSelect;
 import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
 
 public interface InfraccionService extends ICrud<Infraccion, String> {
@@ -20,4 +21,6 @@ public interface InfraccionService extends ICrud<Infraccion, String> {
     List<InfraccionResponse> listarInfracciones();
 
     List<InfraccionResponse> registrarInfraccion(List<InfraccionRequestBody> request);
+    
+    List<InfraccionResponseSelect> listarSelectPorIdSubMateria(String idSubMateria);
 }

@@ -5,9 +5,12 @@ import java.util.List;
 import com.javatechie.aws.lambda.domain.SubMateria;
 import com.javatechie.aws.lambda.domain.request.SubMateriaRequest;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponseBody;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
 
 public interface SubMateriaService extends ICrud<SubMateria, String> {
+    
+    public List<ReactSelectResponse> listarSelectPorIdMateria(String idMateria);
 
     public SubMateria buscarPorIdSubMateria(String idSubMateria);
 

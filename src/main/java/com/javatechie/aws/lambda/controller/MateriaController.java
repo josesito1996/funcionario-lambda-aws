@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.javatechie.aws.lambda.domain.request.MateriaBody;
 import com.javatechie.aws.lambda.domain.request.SubMateriaRequestBody;
 import com.javatechie.aws.lambda.domain.response.MateriaResponse;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.service.MateriaService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +35,11 @@ public class MateriaController {
     @Autowired
     private MateriaService service;
 
+    @GetMapping(path = "/listReactSelect")
+    public List<ReactSelectResponse> listarSelectReact(){
+        return service.listarReactSelect();
+    }
+    
     @Operation(summary = "Lista Todas las materias de la BD")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = MateriaResponse.class)))) })

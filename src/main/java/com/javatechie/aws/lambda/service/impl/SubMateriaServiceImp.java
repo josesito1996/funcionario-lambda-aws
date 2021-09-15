@@ -19,6 +19,7 @@ import com.javatechie.aws.lambda.domain.SubMateria;
 import com.javatechie.aws.lambda.domain.request.SubMateriaRequest;
 import com.javatechie.aws.lambda.domain.response.ArticuloResponseBody;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponseBody;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
 import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
@@ -120,5 +121,15 @@ public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
         newMap.put("nroSub", infraccion.getBaseLegal());
         newMap.put("descripcion", infraccion.getDescripcion());
         return newMap;
+    }
+
+    @Override
+    public List<ReactSelectResponse> listarSelectPorIdMateria(String idMateria) {
+        List<SubMateria> materiasPorId = listarPorIdMateria(idMateria);
+        List<ReactSelectResponse> newList = new ArrayList<ReactSelectResponse>();
+        for (SubMateria sub : materiasPorId) {
+            newList.add(new ReactSelectResponse(sub.getIdSubMateria(), sub.getNombreSubMateria(), null));
+        }
+        return newList;
     }
 }

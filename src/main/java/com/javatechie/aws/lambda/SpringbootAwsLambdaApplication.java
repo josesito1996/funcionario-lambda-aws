@@ -16,6 +16,7 @@ import com.javatechie.aws.lambda.domain.Articulo;
 import com.javatechie.aws.lambda.domain.Etapa;
 import com.javatechie.aws.lambda.domain.Inspector;
 import com.javatechie.aws.lambda.domain.Materia;
+import com.javatechie.aws.lambda.domain.Origen;
 import com.javatechie.aws.lambda.domain.TipoActuacion;
 import com.javatechie.aws.lambda.respository.jdbc.InspectorJdbc;
 import com.javatechie.aws.lambda.service.ArticuloService;
@@ -23,6 +24,7 @@ import com.javatechie.aws.lambda.service.EtapaService;
 import com.javatechie.aws.lambda.service.InspectorService;
 //import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.MateriaService;
+import com.javatechie.aws.lambda.service.OrigenService;
 import com.javatechie.aws.lambda.service.PuntuacionService;
 import com.javatechie.aws.lambda.service.TipoActuacionService;
 
@@ -52,6 +54,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 
     @Autowired
     PuntuacionService puntuacionService;
+    
+    @Autowired
+    OrigenService origenService;
 
     /**
      * @Autowired InfraccionService infraccionService;
@@ -67,6 +72,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         cargarEtapas();
         cargatTipoActuacion();
         registrarArticulos();
+        origenTest();
         // testStoredProcedure();
         // updateInspector();
         // testJDBC();
@@ -172,5 +178,24 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         inspectorService.storedProcedure("Poma Canazas Daniel Andres").forEach(item -> {
             log.info("item : " + item);
         });
+    }
+    
+    public void origenTest() {
+        if (origenService.listar().isEmpty()) {
+            Arrays.asList(Origen.builder()
+                    .nombreOrigen("Denuncia")
+                    .estado(true)
+                    .build(),
+                    Origen.builder()
+                    .nombreOrigen("Desconocido")
+                    .estado(true)
+                    .build(),
+                    Origen.builder()
+                    .nombreOrigen("Operativo SUNAFIL")
+                    .estado(true)
+                    .build()).forEach(item ->{
+                       log.info("Origen registrado : " + origenService.registrar(item)); 
+                    });
+        }
     }
 }
