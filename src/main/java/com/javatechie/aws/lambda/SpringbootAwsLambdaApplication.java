@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.javatechie.aws.lambda.domain.Articulo;
 import com.javatechie.aws.lambda.domain.Etapa;
+import com.javatechie.aws.lambda.domain.Infraccion;
 import com.javatechie.aws.lambda.domain.Inspector;
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.Origen;
@@ -21,6 +22,7 @@ import com.javatechie.aws.lambda.domain.TipoActuacion;
 import com.javatechie.aws.lambda.respository.jdbc.InspectorJdbc;
 import com.javatechie.aws.lambda.service.ArticuloService;
 import com.javatechie.aws.lambda.service.EtapaService;
+import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.InspectorService;
 //import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.MateriaService;
@@ -54,13 +56,12 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 
     @Autowired
     PuntuacionService puntuacionService;
-    
+
     @Autowired
     OrigenService origenService;
 
-    /**
-     * @Autowired InfraccionService infraccionService;
-     */
+    @Autowired
+    InfraccionService infraccionService;
 
     public static void main(String[] args) {
         SpringApplication.run(SpringbootAwsLambdaApplication.class, args);
@@ -73,11 +74,12 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         cargatTipoActuacion();
         registrarArticulos();
         origenTest();
+        //updateInfraccion();
         // testStoredProcedure();
         // updateInspector();
         // testJDBC();
         // updateInfraccion();
-        //puntuacionTest();
+        // puntuacionTest();
     }
 
     public void cargarMaterias() {
@@ -139,10 +141,28 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         }
     }
 
-    /**
-     * public void updateInfraccion() { infraccionService.listar().forEach(item -> {
-     * item.setPrioridad(false); infraccionService.modificar(item); }); }
-     */
+    public void updateInfraccion() {
+        infraccionService.listar().forEach(item -> {
+            Infraccion infraccion = item;
+            if (infraccion.getGravedad() != null) {
+                switch (infraccion.getGravedad()) {
+                case "LEVE":
+                    infraccion.setPuntajeGravedad(1);
+                    break;
+                case "GRAVE":
+                    infraccion.setPuntajeGravedad(2);
+                    break;
+                case "MUY GRAVE":
+                    infraccion.setPuntajeGravedad(3);
+                    break;
+                default:
+                    infraccion.setPuntajeGravedad(0);
+                    break;
+                }
+                infraccionService.modificar(infraccion);
+            }
+        });
+    }
 
     public void registrarArticulos() {
         List<Articulo> articulos = articuloService.listar();
@@ -179,22 +199,14 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
             log.info("item : " + item);
         });
     }
-    
+
     public void origenTest() {
         if (origenService.listar().isEmpty()) {
-            Arrays.asList(Origen.builder()
-                    .nombreOrigen("Denuncia")
-                    .estado(true)
-                    .build(),
-                    Origen.builder()
-                    .nombreOrigen("Desconocido")
-                    .estado(true)
-                    .build(),
-                    Origen.builder()
-                    .nombreOrigen("Operativo SUNAFIL")
-                    .estado(true)
-                    .build()).forEach(item ->{
-                       log.info("Origen registrado : " + origenService.registrar(item)); 
+            Arrays.asList(Origen.builder().nombreOrigen("Denuncia").estado(true).build(),
+                    Origen.builder().nombreOrigen("Desconocido").estado(true).build(),
+                    Origen.builder().nombreOrigen("Operativo SUNAFIL").estado(true).build())
+                    .forEach(item -> {
+                        log.info("Origen registrado : " + origenService.registrar(item));
                     });
         }
     }

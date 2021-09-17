@@ -1,6 +1,7 @@
 package com.javatechie.aws.lambda.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.javatechie.aws.lambda.domain.Infraccion;
 import com.javatechie.aws.lambda.domain.request.InfraccionRequestBody;
@@ -10,6 +11,8 @@ import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
 
 public interface InfraccionService extends ICrud<Infraccion, String> {
 
+    Infraccion verPorIdInfraccion(String idInfraccion);
+    
     List<Infraccion> verPorIdMateria(String idMateria);
     
     List<Infraccion> verPorIdSubMateria(String idSubMateria);
@@ -23,4 +26,8 @@ public interface InfraccionService extends ICrud<Infraccion, String> {
     List<InfraccionResponse> registrarInfraccion(List<InfraccionRequestBody> request);
     
     List<InfraccionResponseSelect> listarSelectPorIdSubMateria(String idSubMateria);
+    
+    Map<String, Object> verGravedadPorIdInfraccion(String idInfraccion);
+    
+    Map<String, Object> listarSelectPorIdSubMateriaAux(String idSubMateria);
 }

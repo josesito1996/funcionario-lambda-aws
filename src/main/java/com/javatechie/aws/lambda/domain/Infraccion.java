@@ -43,9 +43,12 @@ public class Infraccion {
 
     @DynamoDBAttribute(attributeName = "descripcion")
     private String descripcion;
-
+    
     @DynamoDBAttribute(attributeName = "gravedad")
     private String gravedad;
+    
+    @DynamoDBAttribute(attributeName = "puntaje_gravedad")
+    private Integer puntajeGravedad;
 
     @DynamoDBAttribute(attributeName = "prioridad")
     private Boolean prioridad;

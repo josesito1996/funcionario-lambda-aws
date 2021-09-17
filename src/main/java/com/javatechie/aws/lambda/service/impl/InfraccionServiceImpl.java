@@ -3,7 +3,10 @@ package com.javatechie.aws.lambda.service.impl;
 import static com.javatechie.aws.lambda.util.ListUtils.infraccionResponseProccesor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,9 @@ import com.javatechie.aws.lambda.domain.Infraccion;
 import com.javatechie.aws.lambda.domain.request.InfraccionRequestBody;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponse;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponseSelect;
+import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
+import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoInfraccion;
 import com.javatechie.aws.lambda.service.InfraccionService;
@@ -67,7 +72,7 @@ public class InfraccionServiceImpl extends CrudImpl<Infraccion, String>
     public List<Infraccion> verPorIdSubMateria(String idSubMateria) {
         return repo.findByIdSubMateria(idSubMateria);
     }
-  
+
     private SubMateriaResponse getSubmateriaResponse(Infraccion infraccion) {
         return SubMateriaResponse.builder().idSubMateria(infraccion.getIdInfraccion())
                 .subMateria(infraccion.getSubMateria()).build();
@@ -79,11 +84,43 @@ public class InfraccionServiceImpl extends CrudImpl<Infraccion, String>
         List<InfraccionResponseSelect> newList = new ArrayList<InfraccionResponseSelect>();
         for (Infraccion infraccion : infracciones) {
             newList.add(InfraccionResponseSelect.builder()
-                    .idInfraccion(infraccion.getIdInfraccion())
-                    .baseLegal(infraccion.getBaseLegal())
-                    .descripcion(infraccion.getDescripcion())
-                    .build());
+                    .idInfraccion(infraccion.getIdInfraccion()).baseLegal(infraccion.getBaseLegal())
+                    .descripcion(infraccion.getDescripcion()).build());
         }
         return newList;
+    }
+
+    @Override
+    public Map<String, Object> listarSelectPorIdSubMateriaAux(String idSubMateria) {
+        List<Infraccion> infracciones = verPorIdSubMateria(idSubMateria);
+        if (infracciones.isEmpty()) {
+            return new HashMap<String, Object>();
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<ReactSelectResponse> listReact = new ArrayList<ReactSelectResponse>();
+        for (Infraccion inf : infracciones) {
+            listReact.add(new ReactSelectResponse(inf.getIdInfraccion(),
+                    inf.getBaseLegal() + " - " + inf.getDescripcion(), null));
+        }
+        map.put("select", listReact);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> verGravedadPorIdInfraccion(String idInfraccion) {
+        Infraccion infraccion = verPorIdInfraccion(idInfraccion);
+        Map<String, Object> newMap = new HashMap<String, Object>();
+        newMap.put("nombre", infraccion.getGravedad());
+        newMap.put("puntaje", infraccion.getPuntajeGravedad());
+        return newMap;
+    }
+
+    @Override
+    public Infraccion verPorIdInfraccion(String idInfraccion) {
+        Optional<Infraccion> infraccionOptional = verPorId(idInfraccion);
+        if (infraccionOptional.isEmpty()) {
+            throw new NotFoundException("No hay infraccion con el Id : " + idInfraccion);
+        }
+        return infraccionOptional.get();
     }
 }

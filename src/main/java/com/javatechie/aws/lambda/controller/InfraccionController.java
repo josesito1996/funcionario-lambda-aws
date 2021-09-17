@@ -3,6 +3,7 @@ package com.javatechie.aws.lambda.controller;
 import static com.javatechie.aws.lambda.util.Constants.REGEX_UUID;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.request.InfraccionRequestBody;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponse;
-import com.javatechie.aws.lambda.domain.response.InfraccionResponseSelect;
 import com.javatechie.aws.lambda.service.InfraccionService;
 
 @RestController
@@ -29,10 +29,23 @@ public class InfraccionController {
     @Autowired
     private InfraccionService service;
 
+    /**
     @GetMapping(path = "/listSelect/{idSubMateria}")
     public List<InfraccionResponseSelect> listarSelectPorIdSubMateria(
             @PathVariable @NotEmpty @NotNull @Pattern(regexp = REGEX_UUID, message = "id no valido") String idSubMateria) {
         return service.listarSelectPorIdSubMateria(idSubMateria);
+    }**/
+    
+    @GetMapping(path = "/viewGravedadByIdInfraccion/{idInfraccion}")
+    public Map<String, Object> verGravedadPorIdInfraccion(
+            @PathVariable @NotEmpty @NotNull @Pattern(regexp = REGEX_UUID, message = "id no valido") String idInfraccion) {
+        return service.verGravedadPorIdInfraccion(idInfraccion);
+    }
+    
+    @GetMapping(path = "/listSelect/{idSubMateria}")
+    public Map<String, Object> listarSelectPorIdSubMateria(
+            @PathVariable @NotEmpty @NotNull @Pattern(regexp = REGEX_UUID, message = "id no valido") String idSubMateria) {
+        return service.listarSelectPorIdSubMateriaAux(idSubMateria);
     }
 
     @GetMapping(path = "/listAll")
