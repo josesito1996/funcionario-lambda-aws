@@ -9,21 +9,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.javatechie.aws.lambda.aws.ExternalDbAws;
 import com.javatechie.aws.lambda.domain.AnalisisRiesgo;
 import com.javatechie.aws.lambda.domain.InfraccionItem;
 import com.javatechie.aws.lambda.domain.ReactSelect;
 import com.javatechie.aws.lambda.domain.request.InfraccionAnalisisRequest;
 import com.javatechie.aws.lambda.domain.request.InfraccionItemRequest;
+import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoAnalisisRiesgo;
 import com.javatechie.aws.lambda.service.AnalisisRiesgoService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
         implements AnalisisRiesgoService {
 
     @Autowired
     private RepoAnalisisRiesgo repo;
+    
+    @Autowired
+    private ExternalDbAws external;
 
     @Override
     protected GenericRepo<AnalisisRiesgo, String> getRepo() {
@@ -33,6 +41,10 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
     @Transactional
     @Override
     public Map<String, Object> registrarAnalisisRiesgo(InfraccionAnalisisRequest request) {
+        log.info("AnalisisRiesgoServiceImpl.registrarAnalisisRiesgo");
+        if (external.getTable(request.getIdCaso()).isEmpty()) {
+            throw new NotFoundException("No existe Caso relacionado al ID : " + request.getIdCaso());
+        }
         AnalisisRiesgo analisisRiesgo = transformAnalisisRiesgo(request);
         AnalisisRiesgo newRow = registrar(analisisRiesgo);
         if (newRow.getIdAnalisis() != null) {
@@ -48,6 +60,7 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
      */
     private AnalisisRiesgo transformAnalisisRiesgo(InfraccionAnalisisRequest request) {
         return AnalisisRiesgo.builder()
+                .idCaso(request.getIdCaso())
                 .origenCaso(ReactSelect.builder().label(request.getOrigenCaso().getLabel())
                         .value(request.getOrigenCaso().getValue()).build())
                 .nombreAsesor(request.getNameAsesor())

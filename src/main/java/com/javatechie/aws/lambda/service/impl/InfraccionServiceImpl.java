@@ -118,7 +118,7 @@ public class InfraccionServiceImpl extends CrudImpl<Infraccion, String>
     @Override
     public Infraccion verPorIdInfraccion(String idInfraccion) {
         Optional<Infraccion> infraccionOptional = verPorId(idInfraccion);
-        if (infraccionOptional.isEmpty()) {
+        if (!infraccionOptional.isPresent()) {
             throw new NotFoundException("No hay infraccion con el Id : " + idInfraccion);
         }
         return infraccionOptional.get();
