@@ -29,7 +29,7 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
 
     @Autowired
     private RepoAnalisisRiesgo repo;
-    
+
     @Autowired
     private ExternalDbAws external;
 
@@ -43,9 +43,14 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
     public Map<String, Object> registrarAnalisisRiesgo(InfraccionAnalisisRequest request) {
         log.info("AnalisisRiesgoServiceImpl.registrarAnalisisRiesgo");
         if (external.getTable(request.getIdCaso()).isEmpty()) {
-            throw new NotFoundException("No existe Caso relacionado al ID : " + request.getIdCaso());
+            throw new NotFoundException(
+                    "No existe Caso relacionado al ID : " + request.getIdCaso());
         }
         AnalisisRiesgo analisisRiesgo = transformAnalisisRiesgo(request);
+        analisisRiesgo.setSumaMultaPotencial(analisisRiesgo.getInfracciones().stream()
+                .mapToDouble(item -> item.getMultaPotencial()).sum());
+        analisisRiesgo.setSumaProvision(analisisRiesgo.getInfracciones().stream()
+                .mapToDouble(item -> item.getProvision()).sum());
         AnalisisRiesgo newRow = registrar(analisisRiesgo);
         if (newRow.getIdAnalisis() != null) {
             Map<String, Object> newMap = new HashMap<String, Object>();
@@ -59,8 +64,7 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
      * Pasar a un clase Aparte
      */
     private AnalisisRiesgo transformAnalisisRiesgo(InfraccionAnalisisRequest request) {
-        return AnalisisRiesgo.builder()
-                .idCaso(request.getIdCaso())
+        return AnalisisRiesgo.builder().idCaso(request.getIdCaso())
                 .origenCaso(ReactSelect.builder().label(request.getOrigenCaso().getLabel())
                         .value(request.getOrigenCaso().getValue()).build())
                 .nombreAsesor(request.getNameAsesor())
@@ -84,6 +88,7 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
                         .label(request.getSelectBaseLegal().getLabel()).build())
                 .gravedad(request.getGravedad()).provision(request.getProvision())
                 .descripcion(request.getDescripcion()).trabajadoresAfectados(request.getAfectados())
-                .build();
+                .uitMultaPotencial(request.getUitMultaPotencial())
+                .multaPotencial(request.getMultaPotencial()).build();
     }
 }

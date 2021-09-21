@@ -40,7 +40,7 @@ public class InfraccionItemRequest implements Serializable {
     private String gravedad;
 
     @NotNull
-    private Integer provision;
+    private Double provision;
 
     @NotNull
     @NotEmpty
@@ -48,5 +48,11 @@ public class InfraccionItemRequest implements Serializable {
 
     @NotNull
     private Integer afectados;
+    
+    @NotNull
+    private Double uitMultaPotencial;
+    
+    @NotNull
+    private Double multaPotencial;
 
 }

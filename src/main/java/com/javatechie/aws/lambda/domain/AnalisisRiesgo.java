@@ -49,4 +49,10 @@ public class AnalisisRiesgo implements Serializable {
     
     @DynamoDBAttribute(attributeName = "id_caso")
     private String idCaso;
+    
+    @DynamoDBAttribute
+    private Double sumaMultaPotencial;
+    
+    @DynamoDBAttribute
+    private Double sumaProvision;
 }

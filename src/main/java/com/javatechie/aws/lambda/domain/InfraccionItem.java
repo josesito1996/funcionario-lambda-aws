@@ -36,12 +36,18 @@ public class InfraccionItem  implements Serializable {
     private String gravedad;
     
     @DynamoDBAttribute
-    private Integer provision;
+    private Double provision;
     
     @DynamoDBAttribute
     private String descripcion;
     
     @DynamoDBAttribute
     private Integer trabajadoresAfectados;
+    
+    @DynamoDBAttribute
+    private Double uitMultaPotencial;
+    
+    @DynamoDBAttribute
+    private Double multaPotencial;
     
 }
