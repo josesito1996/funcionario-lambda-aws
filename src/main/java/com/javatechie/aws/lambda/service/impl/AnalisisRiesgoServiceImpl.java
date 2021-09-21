@@ -64,7 +64,9 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
      * Pasar a un clase Aparte
      */
     private AnalisisRiesgo transformAnalisisRiesgo(InfraccionAnalisisRequest request) {
-        return AnalisisRiesgo.builder().idCaso(request.getIdCaso())
+        return AnalisisRiesgo.builder()
+                .idAnalisis(request.getIdCaso())
+                .idCaso(request.getIdCaso())
                 .origenCaso(ReactSelect.builder().label(request.getOrigenCaso().getLabel())
                         .value(request.getOrigenCaso().getValue()).build())
                 .nombreAsesor(request.getNameAsesor())
