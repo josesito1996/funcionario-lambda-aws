@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.javatechie.aws.lambda.domain.Articulo;
+import com.javatechie.aws.lambda.domain.EstadoCaso;
 import com.javatechie.aws.lambda.domain.Etapa;
 import com.javatechie.aws.lambda.domain.Infraccion;
 import com.javatechie.aws.lambda.domain.Inspector;
@@ -21,6 +22,7 @@ import com.javatechie.aws.lambda.domain.Origen;
 import com.javatechie.aws.lambda.domain.TipoActuacion;
 import com.javatechie.aws.lambda.respository.jdbc.InspectorJdbc;
 import com.javatechie.aws.lambda.service.ArticuloService;
+import com.javatechie.aws.lambda.service.EstadoCasoService;
 import com.javatechie.aws.lambda.service.EtapaService;
 import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.InspectorService;
@@ -63,6 +65,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
     @Autowired
     InfraccionService infraccionService;
 
+    @Autowired
+    EstadoCasoService estadoCasoService;
+
     public static void main(String[] args) {
         SpringApplication.run(SpringbootAwsLambdaApplication.class, args);
     }
@@ -74,7 +79,8 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         cargatTipoActuacion();
         registrarArticulos();
         origenTest();
-        //updateInfraccion();
+        cargarEstadoCaso();
+        // updateInfraccion();
         // testStoredProcedure();
         // updateInspector();
         // testJDBC();
@@ -208,6 +214,44 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
                     .forEach(item -> {
                         log.info("Origen registrado : " + origenService.registrar(item));
                     });
+        }
+    }
+
+    public void cargarEstadoCaso() {
+        List<EstadoCaso> lista = estadoCasoService.listar();
+        if (lista.isEmpty()) {
+            List<EstadoCaso> estados = Arrays.asList(EstadoCaso.builder().orden(1).nombreEstado(
+                    "Pendiente decisión de inspector sobre emisión o no de Medida de Requerimiento")
+                    .estado(true).build(),
+                    EstadoCaso.builder().orden(2).nombreEstado(
+                            "Pendiente decisión de inspector sobre emisión de Informe de Actuaciones Inspectivas o Acta de Infracción")
+                            .estado(true).build(),
+                    EstadoCaso.builder().orden(3)
+                            .nombreEstado("Caso concluido con Informe de Actuaciones Inspectivas")
+                            .estado(true).build(),
+                    EstadoCaso.builder().orden(4).nombreEstado("Pendiente decisión de instructor")
+                            .estado(true).build(),
+                    EstadoCaso.builder().orden(5)
+                            .nombreEstado(
+                                    "Caso concluido con Informe de Instrucción de Archivamiento")
+                            .estado(true).build(),
+                    EstadoCaso.builder().orden(6)
+                            .nombreEstado("Pendiente decisión de primera instancia").estado(true)
+                            .build(),
+                    EstadoCaso.builder().orden(7)
+                            .nombreEstado("Pendiente decisión de segunda instancia").estado(true)
+                            .build(),
+                    EstadoCaso.builder().orden(8)
+                            .nombreEstado("Pendiente decisión de Tribunal de Fiscalización Laboral")
+                            .estado(true).build(),
+                    EstadoCaso.builder().orden(9)
+                            .nombreEstado("Caso con resolución consentida y en etapa de cobranza")
+                            .estado(true).build(),
+                    EstadoCaso.builder().orden(10).nombreEstado("Caso concluido").estado(true)
+                            .build());
+            estados.forEach(item -> {
+                estadoCasoService.registrar(item);
+            });
         }
     }
 }
