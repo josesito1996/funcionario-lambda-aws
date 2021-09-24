@@ -20,6 +20,7 @@ import com.javatechie.aws.lambda.domain.Inspector;
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.Origen;
 import com.javatechie.aws.lambda.domain.TipoActuacion;
+import com.javatechie.aws.lambda.domain.TipoTarea;
 import com.javatechie.aws.lambda.respository.jdbc.InspectorJdbc;
 import com.javatechie.aws.lambda.service.ArticuloService;
 import com.javatechie.aws.lambda.service.EstadoCasoService;
@@ -31,6 +32,7 @@ import com.javatechie.aws.lambda.service.MateriaService;
 import com.javatechie.aws.lambda.service.OrigenService;
 import com.javatechie.aws.lambda.service.PuntuacionService;
 import com.javatechie.aws.lambda.service.TipoActuacionService;
+import com.javatechie.aws.lambda.service.TipoTareaService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -68,6 +70,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
     @Autowired
     EstadoCasoService estadoCasoService;
 
+    @Autowired
+    TipoTareaService tipoTareaService;
+
     public static void main(String[] args) {
         SpringApplication.run(SpringbootAwsLambdaApplication.class, args);
     }
@@ -80,6 +85,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         registrarArticulos();
         origenTest();
         cargarEstadoCaso();
+        llenarTipoTarea();
         // updateInfraccion();
         // testStoredProcedure();
         // updateInspector();
@@ -251,6 +257,18 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
                             .build());
             estados.forEach(item -> {
                 estadoCasoService.registrar(item);
+            });
+        }
+    }
+
+    public void llenarTipoTarea() {
+        List<TipoTarea> lista = tipoTareaService.listar();
+        if (lista.isEmpty()) {
+            List<TipoTarea> newList = Arrays.asList(
+                    TipoTarea.builder().nombreTipo("Solicitud").estado(true).build(),
+                    TipoTarea.builder().nombreTipo("Actividad").estado(true).build());
+            newList.forEach(item -> {
+                tipoTareaService.registrar(item);
             });
         }
     }
