@@ -3,6 +3,7 @@ package com.javatechie.aws.lambda;
 import static com.javatechie.aws.lambda.util.Utils.generateCorreo;
 import static com.javatechie.aws.lambda.util.Utils.numberRandomGenerator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,16 +17,20 @@ import com.javatechie.aws.lambda.domain.Articulo;
 import com.javatechie.aws.lambda.domain.EstadoCaso;
 import com.javatechie.aws.lambda.domain.Etapa;
 import com.javatechie.aws.lambda.domain.Infraccion;
+import com.javatechie.aws.lambda.domain.Insight;
 import com.javatechie.aws.lambda.domain.Inspector;
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.Origen;
 import com.javatechie.aws.lambda.domain.TipoActuacion;
 import com.javatechie.aws.lambda.domain.TipoTarea;
+import com.javatechie.aws.lambda.domain.documents.Costo;
+import com.javatechie.aws.lambda.domain.documents.PlanPrecio;
 import com.javatechie.aws.lambda.respository.jdbc.InspectorJdbc;
 import com.javatechie.aws.lambda.service.ArticuloService;
 import com.javatechie.aws.lambda.service.EstadoCasoService;
 import com.javatechie.aws.lambda.service.EtapaService;
 import com.javatechie.aws.lambda.service.InfraccionService;
+import com.javatechie.aws.lambda.service.InsightService;
 import com.javatechie.aws.lambda.service.InspectorService;
 //import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.MateriaService;
@@ -73,6 +78,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
     @Autowired
     TipoTareaService tipoTareaService;
 
+    @Autowired
+    InsightService insightService;
+
     public static void main(String[] args) {
         SpringApplication.run(SpringbootAwsLambdaApplication.class, args);
     }
@@ -86,6 +94,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         origenTest();
         cargarEstadoCaso();
         llenarTipoTarea();
+        llenarInsight();
         // updateInfraccion();
         // testStoredProcedure();
         // updateInspector();
@@ -269,6 +278,58 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
                     TipoTarea.builder().nombreTipo("Actividad").estado(true).build());
             newList.forEach(item -> {
                 tipoTareaService.registrar(item);
+            });
+        }
+    }
+
+    public void llenarInsight() {
+        List<Insight> lista = insightService.listar();
+        if (lista.isEmpty()) {
+            List<Insight> newLista = Arrays.asList(Insight.builder().estado(true)
+                    .nombreCaracteristica("Alerta nueva inspeccion")
+                    .labelModal("Alerta nueva inspeccion")
+                    .mensaje("Que la proxima inspeccion no te gane con SAMY")
+                    .caracteristicas(Arrays.asList(
+                            "Conoce la <strong>fecha</strong> y detalle de la nueva inspeccion",
+                            "Anticipate y estate listo para la llegada de la inspeccion",
+                            "Creo tu caso y prepara toda la documentacion necesaria"))
+                    .costo(Costo.builder().tiempo("mensual").precio(9.90).moneda("DOLAR").build())
+                    .planesPrecio(new ArrayList<PlanPrecio>()).build(),
+                    Insight.builder().estado(true).nombreCaracteristica("Sincroniza tu casilla")
+                            .labelModal(
+                                    "Vincula SUNAFIL & SAMI y sincroniza tu casilla electronica con total seguridad")
+                            .mensaje(
+                                    "Recibe las notificaciones de tu casilla electrónica SUNAFIL sin tener que ingresar constantemente a tu buzón, solo enlaza a SUNAFIL con Sami y ¡Listo!. \r\n"
+                                            + "Notificaciones más rápidas y seguras.")
+                            .caracteristicas(Arrays.asList(
+                                    "Tus datos privados estaran completamente seguros en SAMY",
+                                    "Contamos con un protocolo de confidencialidad de datos"))
+                            .costo(Costo.builder().tiempo("mensual").precio(9.90).moneda("DOLAR")
+                                    .build())
+                            .planesPrecio(new ArrayList<PlanPrecio>()).build(),
+                    Insight.builder().estado(true).nombreCaracteristica("Servicio Paralegal")
+                            .labelModal("Sami Paralegal : Tu asistente legal en linea")
+                            .mensaje(
+                                    "Nos encargamos del trabajo operativo con Sami Paralegal para que tú te enfoques en la gestión y estrategia de tu cartera de casos.")
+                            .caracteristicas(new ArrayList<String>()).costo(Costo.builder().build())
+                            .planesPrecio(Arrays.asList(
+                                    PlanPrecio.builder().tipoPlan("Basico").costo(15152.361)
+                                            .moneda("Dolar")
+                                            .detalles(Arrays
+                                                    .asList("Detalle 1", "Detalle2", "Detalle3"))
+                                            .build(),
+                                    PlanPrecio.builder().tipoPlan("Regular").costo(199.361)
+                                            .moneda("Dolar")
+                                            .detalles(Arrays.asList("Detalle 1", "Detalle2",
+                                                    "Detalle3"))
+                                            .build(),
+                                    PlanPrecio.builder().tipoPlan("Premium").costo(9999.361)
+                                            .moneda("Dolar").detalles(Arrays.asList("Detalle 1",
+                                                    "Detalle2", "Detalle3"))
+                                            .build()))
+                            .build());
+            newLista.forEach(item -> {
+                insightService.registrar(item);
             });
         }
     }
