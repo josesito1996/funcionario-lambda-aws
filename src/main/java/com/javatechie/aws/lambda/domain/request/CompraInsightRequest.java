@@ -32,6 +32,8 @@ public class CompraInsightRequest implements Serializable {
     @NotNull
     @NotEmpty
     private String celular;
+    
+    private String titulo;
 
     private String consulta;
 }

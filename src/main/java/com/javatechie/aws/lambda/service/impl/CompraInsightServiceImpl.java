@@ -39,6 +39,7 @@ public class CompraInsightServiceImpl extends CrudImpl<CompraInsight, String>
 
     private CompraInsight transformToCompraInsight(CompraInsightRequest request) {
         return CompraInsight.builder().idInsight(request.getIdInsight())
+                .titulo(request.getTitulo())
                 .telefono(request.getCelular()).consulta(request.getConsulta()).estado(true)
                 .build();
     }
