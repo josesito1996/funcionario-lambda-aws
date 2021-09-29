@@ -20,7 +20,7 @@ public class InsightServiceImpl extends CrudImpl<Insight, String> implements Ins
 
 	@Autowired
 	private RepoInsight repo;
-
+	
     @Override
     protected GenericRepo<Insight, String> getRepo() {
         return repo;
