@@ -1,5 +1,6 @@
 package com.javatechie.aws.lambda.domain.request;
 
+import static com.javatechie.aws.lambda.util.Constants.REGEX_EMAIL;
 import static com.javatechie.aws.lambda.util.Constants.REGEX_UUID;
 
 import java.io.Serializable;
@@ -36,4 +37,9 @@ public class CompraInsightRequest implements Serializable {
     private String titulo;
 
     private String consulta;
+    
+    @NotNull
+    @NotEmpty
+    @Pattern(regexp = REGEX_EMAIL, message = "Formato incorrecto")
+    private String nombreUsuario;
 }

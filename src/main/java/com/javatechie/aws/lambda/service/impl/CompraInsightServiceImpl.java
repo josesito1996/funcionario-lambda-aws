@@ -1,5 +1,6 @@
 package com.javatechie.aws.lambda.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,8 @@ public class CompraInsightServiceImpl extends CrudImpl<CompraInsight, String>
     private CompraInsight transformToCompraInsight(CompraInsightRequest request) {
         return CompraInsight.builder().idInsight(request.getIdInsight())
                 .titulo(request.getTitulo())
+                .usuario(request.getNombreUsuario())
+                .fechaHoraRegistro(LocalDateTime.now().toString())
                 .telefono(request.getCelular()).consulta(request.getConsulta()).estado(true)
                 .build();
     }

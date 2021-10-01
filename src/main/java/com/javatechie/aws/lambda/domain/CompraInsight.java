@@ -41,6 +41,12 @@ public class CompraInsight implements Serializable {
 
     @DynamoDBAttribute
     private String consulta;
+    
+    @DynamoDBAttribute
+    private String usuario;
+    
+    @DynamoDBAttribute
+    private String fechaHoraRegistro;
 
     @DynamoDBAttribute
     private boolean estado;
