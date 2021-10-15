@@ -1,5 +1,6 @@
 package com.javatechie.aws.lambda.service.impl;
 
+import static com.javatechie.aws.lambda.util.ListUtils.responseChecksFilterEtapaActuacion;
 import static com.javatechie.aws.lambda.util.ListUtils.selectResponseOrderByNroOrdenDesc;
 
 import java.util.Comparator;
@@ -87,10 +88,10 @@ public class EtapaServiceImpl extends CrudImpl<Etapa, String> implements EtapaSe
     }
 
     @Override
-    public List<EtapaResponse> ListarEtapaResponseFilters() {
+    public List<ReactSelectResponse> ListarEtapaResponseFilters() {
         List<EtapaResponse> list = ListarEtapaResponse();
         if (list.isEmpty()) {
-            return list;
+            return responseChecksFilterEtapaActuacion(list);
         }
         list = list.stream().sorted(Comparator.comparing(EtapaResponse::getNroOrden))
                 .collect(Collectors.toList());
@@ -98,6 +99,6 @@ public class EtapaServiceImpl extends CrudImpl<Etapa, String> implements EtapaSe
                 .IdEtapa("0")
                 .nombreEtapa("Todos")
                 .build());
-        return list;
+        return responseChecksFilterEtapaActuacion(list);
     }
 }

@@ -45,7 +45,7 @@ public class TipoActuacionController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = ReactSelectResponse.class)))) })
     @GetMapping(path = "/listAllFilters")
-    public List<TipoActuacionResponse> listarTodosFilteros() {
+    public List<ReactSelectResponse> listarTodosFilteros() {
         return service.listarTipoActuacionFiltro();
     }
 

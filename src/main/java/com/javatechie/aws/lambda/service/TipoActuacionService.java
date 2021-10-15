@@ -23,5 +23,5 @@ public interface TipoActuacionService extends ICrud<TipoActuacion, String> {
 	/**
 	 * Para Filtros.
 	 */
-	List<TipoActuacionResponse> listarTipoActuacionFiltro();
+	List<ReactSelectResponse> listarTipoActuacionFiltro();
 }

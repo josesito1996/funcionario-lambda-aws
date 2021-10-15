@@ -1,5 +1,7 @@
 package com.javatechie.aws.lambda.service.impl;
 
+import static com.javatechie.aws.lambda.util.ListUtils.responseChecksFilterTipoActuacion;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -79,15 +81,15 @@ public class TipoActuacionServiceImpl extends CrudImpl<TipoActuacion, String>
     }
 
     @Override
-    public List<TipoActuacionResponse> listarTipoActuacionFiltro() {
+    public List<ReactSelectResponse> listarTipoActuacionFiltro() {
         List<TipoActuacionResponse> lista = listarTipoActuacions();
         if (lista.isEmpty()) {
-            return lista;
+            return responseChecksFilterTipoActuacion(lista);
         }
         lista = lista.stream()
                 .sorted(Comparator.comparing(TipoActuacionResponse::getNombreTipoActuacion))
                 .collect(Collectors.toList());
         lista.add(0, TipoActuacionResponse.builder().id("0").nombreTipoActuacion("Todos").build());
-        return lista;
+        return responseChecksFilterTipoActuacion(lista);
     }
 }

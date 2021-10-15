@@ -25,5 +25,5 @@ public interface EtapaService extends ICrud<Etapa, String> {
 	/**
 	 * Para Filtros
 	 */
-	List<EtapaResponse> ListarEtapaResponseFilters();
+	List<ReactSelectResponse> ListarEtapaResponseFilters();
 }
