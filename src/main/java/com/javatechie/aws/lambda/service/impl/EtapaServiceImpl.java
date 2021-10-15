@@ -2,6 +2,7 @@ package com.javatechie.aws.lambda.service.impl;
 
 import static com.javatechie.aws.lambda.util.ListUtils.selectResponseOrderByNroOrdenDesc;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -76,12 +77,27 @@ public class EtapaServiceImpl extends CrudImpl<Etapa, String> implements EtapaSe
 
     @Override
     public List<ReactSelectResponse> listarTipoActuacionParaReact() {
-        return selectResponseOrderByNroOrdenDesc(listarTipoActuacionPorEstado(true).stream().map(this::transformTo)
-                .collect(Collectors.toList()));
+        return selectResponseOrderByNroOrdenDesc(listarTipoActuacionPorEstado(true).stream()
+                .map(this::transformTo).collect(Collectors.toList()));
     }
 
     public ReactSelectResponse transformTo(Etapa etapa) {
         return new ReactSelectResponse(etapa.getIdEtapa(), etapa.getNombreEtapa(),
                 etapa.getNroOrden());
+    }
+
+    @Override
+    public List<EtapaResponse> ListarEtapaResponseFilters() {
+        List<EtapaResponse> list = ListarEtapaResponse();
+        if (list.isEmpty()) {
+            return list;
+        }
+        list = list.stream().sorted(Comparator.comparing(EtapaResponse::getNroOrden))
+                .collect(Collectors.toList());
+        list.add(0, EtapaResponse.builder()
+                .IdEtapa("0")
+                .nombreEtapa("Todos")
+                .build());
+        return list;
     }
 }

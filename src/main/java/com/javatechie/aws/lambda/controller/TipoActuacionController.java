@@ -40,6 +40,14 @@ public class TipoActuacionController {
 	public List<ReactSelectResponse> listarTodos() {
 		return service.listarTipoActuacionParaReact();
 	}
+	
+	@Operation(summary = "Lista los tipo de actuaciones de la BD para los filtros")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = ReactSelectResponse.class)))) })
+    @GetMapping(path = "/listAllFilters")
+    public List<TipoActuacionResponse> listarTodosFilteros() {
+        return service.listarTipoActuacionFiltro();
+    }
 
 	@Operation(summary = "Busca TIpo de actuacion por ID")
 	@ApiResponses(value = {

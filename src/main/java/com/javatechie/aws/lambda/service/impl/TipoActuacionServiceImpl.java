@@ -1,5 +1,6 @@
 package com.javatechie.aws.lambda.service.impl;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,60 +17,77 @@ import com.javatechie.aws.lambda.respository.RepoTipoActuacion;
 import com.javatechie.aws.lambda.service.TipoActuacionService;
 
 @Service
-public class TipoActuacionServiceImpl extends CrudImpl<TipoActuacion, String> implements TipoActuacionService {
+public class TipoActuacionServiceImpl extends CrudImpl<TipoActuacion, String>
+        implements TipoActuacionService {
 
-	@Autowired
-	private RepoTipoActuacion repo;
+    @Autowired
+    private RepoTipoActuacion repo;
 
-	@Override
-	public TipoActuacionResponse registrar(TipoActuacionBody request) {
+    @Override
+    public TipoActuacionResponse registrar(TipoActuacionBody request) {
 
-		return transformToResponse(registrar(bodyToEntity(request)));
-	}
+        return transformToResponse(registrar(bodyToEntity(request)));
+    }
 
-	@Override
-	protected GenericRepo<TipoActuacion, String> getRepo() {
+    @Override
+    protected GenericRepo<TipoActuacion, String> getRepo() {
 
-		return repo;
-	}
+        return repo;
+    }
 
-	@Override
-	public TipoActuacionResponse verPorIdTipoActuacion(String id) {
-		Optional<TipoActuacion> option = verPorId(id);
-		return option.isPresent() ? transformToResponse(option.get()) : new TipoActuacionResponse();
-	}
+    @Override
+    public TipoActuacionResponse verPorIdTipoActuacion(String id) {
+        Optional<TipoActuacion> option = verPorId(id);
+        return option.isPresent() ? transformToResponse(option.get()) : new TipoActuacionResponse();
+    }
 
-	@Override
-	public TipoActuacionResponse actualizar(TipoActuacionBody request) {
+    @Override
+    public TipoActuacionResponse actualizar(TipoActuacionBody request) {
 
-		return transformToResponse(modificar(bodyToEntity(request)));
-	}
+        return transformToResponse(modificar(bodyToEntity(request)));
+    }
 
-	private TipoActuacion bodyToEntity(TipoActuacionBody request) {
-		return new TipoActuacion(request.getId(), request.getNombreTipoActuacion(), request.getEstado());
-	}
+    private TipoActuacion bodyToEntity(TipoActuacionBody request) {
+        return new TipoActuacion(request.getId(), request.getNombreTipoActuacion(),
+                request.getEstado());
+    }
 
-	@Override
-	public List<TipoActuacionResponse> listarTipoActuacions() {
-		return listar().stream().map(this::transformToResponse).collect(Collectors.toList());
-	};
+    @Override
+    public List<TipoActuacionResponse> listarTipoActuacions() {
+        return listar().stream().map(this::transformToResponse).collect(Collectors.toList());
+    };
 
-	@Override
-	public List<TipoActuacion> listarTipoActuacionPorEstado(Boolean estado) {
-		return repo.findByEstado(estado);
-	}
+    @Override
+    public List<TipoActuacion> listarTipoActuacionPorEstado(Boolean estado) {
+        return repo.findByEstado(estado);
+    }
 
-	@Override
-	public List<ReactSelectResponse> listarTipoActuacionParaReact() {
+    @Override
+    public List<ReactSelectResponse> listarTipoActuacionParaReact() {
 
-		return listarTipoActuacionPorEstado(true).stream().map(this::transformFrom).collect(Collectors.toList());
-	}
+        return listarTipoActuacionPorEstado(true).stream().map(this::transformFrom)
+                .collect(Collectors.toList());
+    }
 
-	private ReactSelectResponse transformFrom(TipoActuacion tipoActuacion) {
-		return new ReactSelectResponse(tipoActuacion.getIdTipoActuacion(), tipoActuacion.getNombreTipoActuacion(), null);
-	}
+    private ReactSelectResponse transformFrom(TipoActuacion tipoActuacion) {
+        return new ReactSelectResponse(tipoActuacion.getIdTipoActuacion(),
+                tipoActuacion.getNombreTipoActuacion(), null);
+    }
 
-	private TipoActuacionResponse transformToResponse(TipoActuacion tipo) {
-		return new TipoActuacionResponse(tipo.getIdTipoActuacion(), tipo.getNombreTipoActuacion());
-	}
+    private TipoActuacionResponse transformToResponse(TipoActuacion tipo) {
+        return new TipoActuacionResponse(tipo.getIdTipoActuacion(), tipo.getNombreTipoActuacion());
+    }
+
+    @Override
+    public List<TipoActuacionResponse> listarTipoActuacionFiltro() {
+        List<TipoActuacionResponse> lista = listarTipoActuacions();
+        if (lista.isEmpty()) {
+            return lista;
+        }
+        lista = lista.stream()
+                .sorted(Comparator.comparing(TipoActuacionResponse::getNombreTipoActuacion))
+                .collect(Collectors.toList());
+        lista.add(0, TipoActuacionResponse.builder().id("0").nombreTipoActuacion("Todos").build());
+        return lista;
+    }
 }

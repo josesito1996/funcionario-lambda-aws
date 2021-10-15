@@ -21,5 +21,9 @@ public interface EtapaService extends ICrud<Etapa, String> {
 	List<Etapa> listarTipoActuacionPorEstado(Boolean estado);
 
 	List<ReactSelectResponse> listarTipoActuacionParaReact();
-
+	
+	/**
+	 * Para Filtros
+	 */
+	List<EtapaResponse> ListarEtapaResponseFilters();
 }

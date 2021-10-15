@@ -42,6 +42,15 @@ public class EtapaController {
 		return service.ListarEtapaResponse();
 	}
 	
+	@Operation(summary = "Lista Todas las Etapas de la BD para el Filtro")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", 
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = EtapaResponse.class)))) })  
+    @GetMapping(path = "/listAllFilter")
+    public List<EtapaResponse> listarTodosFiltro() {
+        return service.ListarEtapaResponseFilters();
+    }
+	
 	@Operation(summary = "Lista las Etapas activas de la BD")
 	@ApiResponses(value = {
 	        @ApiResponse(responseCode = "200", description = "successful operation", 
