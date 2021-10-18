@@ -48,10 +48,10 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
             throw new NotFoundException(
                     "No existe Caso relacionado al ID : " + request.getIdCaso());
         }
-        AnalisisRiesgo getAnalisis = buscarPorId(request.getIdCaso());
-        if (getAnalisis.getIdAnalisis() != null) {
-            throw new BadRequestException("Ya existe un registro con este ID");
-        }
+        //AnalisisRiesgo getAnalisis = buscarPorId(request.getIdCaso());
+        //if (getAnalisis.getIdAnalisis() != null) {
+        //    throw new BadRequestException("Ya existe un registro con este ID");
+        //}
         AnalisisRiesgo analisisRiesgo = transformAnalisisRiesgo(request);
         analisisRiesgo.setSumaMultaPotencial(analisisRiesgo.getInfracciones().stream()
                 .mapToDouble(item -> item.getMultaPotencial()).sum());
