@@ -2,6 +2,7 @@ package com.javatechie.aws.lambda;
 
 import static com.javatechie.aws.lambda.util.Utils.generateCorreo;
 import static com.javatechie.aws.lambda.util.Utils.numberRandomGenerator;
+import static com.javatechie.aws.lambda.util.Utils.primeraLetraMayuscula;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ import com.javatechie.aws.lambda.domain.Insight;
 import com.javatechie.aws.lambda.domain.Inspector;
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.Origen;
+import com.javatechie.aws.lambda.domain.SubMateria;
 import com.javatechie.aws.lambda.domain.TipoActuacion;
 import com.javatechie.aws.lambda.domain.TipoTarea;
 import com.javatechie.aws.lambda.domain.documents.Costo;
@@ -36,6 +38,7 @@ import com.javatechie.aws.lambda.service.InspectorService;
 import com.javatechie.aws.lambda.service.MateriaService;
 import com.javatechie.aws.lambda.service.OrigenService;
 import com.javatechie.aws.lambda.service.PuntuacionService;
+import com.javatechie.aws.lambda.service.SubMateriaService;
 import com.javatechie.aws.lambda.service.TipoActuacionService;
 import com.javatechie.aws.lambda.service.TipoTareaService;
 
@@ -81,6 +84,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
     @Autowired
     InsightService insightService;
 
+    @Autowired
+    SubMateriaService subMateriaService;
+
     public static void main(String[] args) {
         SpringApplication.run(SpringbootAwsLambdaApplication.class, args);
     }
@@ -95,6 +101,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         cargarEstadoCaso();
         llenarTipoTarea();
         llenarInsight();
+        //updateSubMaterias();
         // updateInfraccion();
         // testStoredProcedure();
         // updateInspector();
@@ -330,6 +337,19 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
                             .build());
             newLista.forEach(item -> {
                 insightService.registrar(item);
+            });
+        }
+    }
+
+    public void updateSubMaterias() {
+        List<SubMateria> subMaterias = subMateriaService.listar();
+        if (subMaterias.isEmpty()) {
+            // Registrar
+        } else {
+            // actualizar
+            subMaterias.forEach(item -> {
+                item.setNombreSubMateria(primeraLetraMayuscula(item.getNombreSubMateria()));
+                log.info("SubMateria : {}", subMateriaService.modificar(item));
             });
         }
     }

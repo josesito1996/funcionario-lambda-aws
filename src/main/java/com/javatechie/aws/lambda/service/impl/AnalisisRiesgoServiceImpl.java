@@ -3,6 +3,7 @@ package com.javatechie.aws.lambda.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.javatechie.aws.lambda.domain.InfraccionItem;
 import com.javatechie.aws.lambda.domain.ReactSelect;
 import com.javatechie.aws.lambda.domain.request.InfraccionAnalisisRequest;
 import com.javatechie.aws.lambda.domain.request.InfraccionItemRequest;
+import com.javatechie.aws.lambda.exception.BadRequestException;
 import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoAnalisisRiesgo;
@@ -46,6 +48,10 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
             throw new NotFoundException(
                     "No existe Caso relacionado al ID : " + request.getIdCaso());
         }
+        AnalisisRiesgo getAnalisis = buscarPorId(request.getIdCaso());
+        if (getAnalisis.getIdAnalisis() != null) {
+            throw new BadRequestException("Ya existe un registro con este ID");
+        }
         AnalisisRiesgo analisisRiesgo = transformAnalisisRiesgo(request);
         analisisRiesgo.setSumaMultaPotencial(analisisRiesgo.getInfracciones().stream()
                 .mapToDouble(item -> item.getMultaPotencial()).sum());
@@ -64,9 +70,7 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
      * Pasar a un clase Aparte
      */
     private AnalisisRiesgo transformAnalisisRiesgo(InfraccionAnalisisRequest request) {
-        return AnalisisRiesgo.builder()
-                .idAnalisis(request.getIdCaso())
-                .idCaso(request.getIdCaso())
+        return AnalisisRiesgo.builder().idAnalisis(request.getIdCaso()).idCaso(request.getIdCaso())
                 .origenCaso(ReactSelect.builder().label(request.getOrigenCaso().getLabel())
                         .value(request.getOrigenCaso().getValue()).build())
                 .nombreAsesor(request.getNameAsesor())
@@ -92,5 +96,14 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
                 .descripcion(request.getDescripcion()).trabajadoresAfectados(request.getAfectados())
                 .uitMultaPotencial(request.getUitMultaPotencial())
                 .multaPotencial(request.getMultaPotencial()).build();
+    }
+
+    @Override
+    public AnalisisRiesgo buscarPorId(String id) {
+        Optional<AnalisisRiesgo> optional = verPorId(id);
+        if (!optional.isPresent()) {
+            return AnalisisRiesgo.builder().build();
+        }
+        return optional.get();
     }
 }

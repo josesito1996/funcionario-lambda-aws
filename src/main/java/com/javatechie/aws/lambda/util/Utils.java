@@ -19,17 +19,13 @@ public class Utils {
     public static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
         return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
-    
+
     public static Date convertToDateViaInstant(LocalDate dateToConvert) {
-        return Date.from(dateToConvert.atStartOfDay()
-          .atZone(ZoneId.systemDefault())
-          .toInstant());
+        return Date.from(dateToConvert.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
-    
+
     public static Date convertToDateViaInstant(LocalDateTime dateToConvert) {
-        return Date
-          .from(dateToConvert.atZone(ZoneId.systemDefault())
-          .toInstant());
+        return Date.from(dateToConvert.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public static String separadorDeCadenas(String cadena, String caracter, int index) {
@@ -46,4 +42,21 @@ public class Utils {
         return "";
     }
 
+    /**
+     * Metoddo que convierte primera letra del texto en mayuscula.
+     * 
+     * @param texto
+     * @return
+     */
+    public static String primeraLetraMayuscula(String texto) {
+        char[] arr = texto.toCharArray();
+        for (int i = 0; i < arr.length; i++) {
+            if (i == 0) {
+                arr[0] = Character.toUpperCase(arr[0]);
+            } else {
+                arr[i] = Character.toLowerCase(arr[i]);
+            }
+        }
+        return new String(arr);
+    }
 }

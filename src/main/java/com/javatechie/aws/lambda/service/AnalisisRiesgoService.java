@@ -9,4 +9,6 @@ public interface AnalisisRiesgoService extends ICrud<AnalisisRiesgo, String> {
 
     Map<String, Object> registrarAnalisisRiesgo(InfraccionAnalisisRequest request);
     
+    AnalisisRiesgo buscarPorId(String id);
+    
 }
