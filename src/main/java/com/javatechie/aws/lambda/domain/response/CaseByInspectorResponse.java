@@ -33,8 +33,7 @@ public class CaseByInspectorResponse implements Serializable {
     
     private int casesFound;
     
-    @JsonInclude(Include.NON_NULL)
-    private String fineCases;
+    private int fineCases;
     
     @JsonInclude(Include.NON_NULL)
     private ContactResponse contact;

@@ -16,7 +16,6 @@ import com.javatechie.aws.lambda.domain.InfraccionItem;
 import com.javatechie.aws.lambda.domain.ReactSelect;
 import com.javatechie.aws.lambda.domain.request.InfraccionAnalisisRequest;
 import com.javatechie.aws.lambda.domain.request.InfraccionItemRequest;
-import com.javatechie.aws.lambda.exception.BadRequestException;
 import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoAnalisisRiesgo;

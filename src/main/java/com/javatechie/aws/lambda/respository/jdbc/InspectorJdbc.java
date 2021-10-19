@@ -55,10 +55,9 @@ public class InspectorJdbc {
             for (Map<String, Object> map : newList) {
                 lista.add(CasosPorInspectorQuery.builder()
                         .ordenInspeccion(map.get("orden_inspeccion").toString())
-                        .fechaAsignacion(
-                                map.get("fecha_asignacion").toString())
-                        .razonSocial(map.get("razon_social").toString())
-                        .build());
+                        .cantidadInfracciones(Integer.parseInt(map.get("cantidad_infracciones").toString()))
+                        .fechaAsignacion(map.get("fecha_asignacion").toString())
+                        .razonSocial(map.get("razon_social").toString()).build());
             }
         }
         return lista;

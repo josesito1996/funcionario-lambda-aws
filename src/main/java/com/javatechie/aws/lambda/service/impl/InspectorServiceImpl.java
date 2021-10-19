@@ -30,7 +30,10 @@ import com.javatechie.aws.lambda.respository.jdbc.InspectorJdbc;
 import com.javatechie.aws.lambda.service.InspectorService;
 import com.javatechie.aws.lambda.service.PuntuacionService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements InspectorService {
 
     @Autowired
@@ -79,14 +82,10 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
     }
 
     private InspectorResponse transformToResponse(Inspector inspector) {
-        return InspectorResponse.builder()
-                .id(inspector.getId())
-                .nombresApellidos(inspector.getNombreInspector())
-                .tipoInspector(inspector.getTipo())
-                .telefono(inspector.getTelefono())
-                .correo(inspector.getCorreo())
-                .estado(inspector.getEstado())
-                .build();
+        return InspectorResponse.builder().id(inspector.getId())
+                .nombresApellidos(inspector.getNombreInspector()).tipoInspector(inspector.getTipo())
+                .telefono(inspector.getTelefono()).correo(inspector.getCorreo())
+                .estado(inspector.getEstado()).build();
     }
 
     private Inspector bodyToEntity(InspectorBody request) {
@@ -125,6 +124,8 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
         String nombreInspector = inspector.getNombreInspector();
         List<CasosPorInspectorQuery> casosInspector = storedProcedure(nombreInspector);
         List<RecentCaseResponse> recentCases = new ArrayList<RecentCaseResponse>();
+        log.info("Casos de BD : {}", casosInspector);
+        int acumuladorMulta = 0;
         if (!casosInspector.isEmpty()) {
             int limit = 4;
             int contador = 0;
@@ -135,12 +136,13 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
                             .date(caso.getFechaAsignacion())
                             .inspectionOrder(caso.getOrdenInspeccion()).build());
                 }
+                acumuladorMulta = acumuladorMulta + caso.getCantidadInfracciones();
                 contador++;
             }
         }
         return CaseByInspectorResponse.builder()
                 .hasDataContact(inspector.getCorreo() != null && inspector.getTelefono() != null)
-                .casesFound(casosInspector.size())
+                .casesFound(casosInspector.size()).fineCases(acumuladorMulta)
                 .contact(ContactResponse.builder().email(inspector.getCorreo())
                         .phone(inspector.getTelefono()).build())
                 .name(inspector.getNombreInspector()).position(inspector.getCargo())
@@ -149,16 +151,14 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
                 .recentCases(recentCases).build();
     }
 
-    private List<ScoreResponse> transformScoreResponse(List<PromedioPuntajeInspectorQuery> queryList) {
+    private List<ScoreResponse> transformScoreResponse(
+            List<PromedioPuntajeInspectorQuery> queryList) {
         return queryList.stream().map(this::transformScoreResponse).collect(Collectors.toList());
     }
-    
+
     private ScoreResponse transformScoreResponse(PromedioPuntajeInspectorQuery query) {
-        return ScoreResponse.builder()
-                .itemScore(query.getItemScore())
-                .max(query.getMax())
-                .score(query.getScore())
-                .build();
+        return ScoreResponse.builder().itemScore(query.getItemScore()).max(query.getMax())
+                .score(query.getScore()).build();
     }
 
     @Override

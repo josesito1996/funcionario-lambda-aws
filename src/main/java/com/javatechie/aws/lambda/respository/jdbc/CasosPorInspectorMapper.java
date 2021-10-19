@@ -14,6 +14,7 @@ public class CasosPorInspectorMapper implements RowMapper<CasosPorInspectorQuery
         return CasosPorInspectorQuery.builder()
                 .ordenInspeccion(rs.getString("orden_inspeccion"))
                 .razonSocial(rs.getString("razon_social"))
+                .cantidadInfracciones(rs.getInt("cantidad_infracciones"))
                 .fechaAsignacion(rs.getString("fecha_asignacion"))
                 .build();
     }

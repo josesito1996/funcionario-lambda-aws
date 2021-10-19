@@ -22,6 +22,9 @@ public class CasosPorInspectorQuery {
 
     @JsonProperty(value = "orden_inspeccion")
     private String ordenInspeccion;
+    
+    @JsonProperty(value = "cantidad_infracciones")
+    private Integer cantidadInfracciones;
 
     @JsonProperty(value = "fecha_asignacion")
     private String fechaAsignacion;
