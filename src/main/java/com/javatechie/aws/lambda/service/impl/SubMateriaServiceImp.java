@@ -128,7 +128,7 @@ public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
         List<SubMateria> materiasPorId = listarPorIdMateria(idMateria);
         List<ReactSelectResponse> newList = new ArrayList<ReactSelectResponse>();
         for (SubMateria sub : materiasPorId) {
-            newList.add(new ReactSelectResponse(sub.getIdSubMateria(), sub.getNombreSubMateria(), null));
+            newList.add(new ReactSelectResponse(sub.getIdSubMateria(), sub.getNombreSubMateria(), null, null));
         }
         return newList;
     }

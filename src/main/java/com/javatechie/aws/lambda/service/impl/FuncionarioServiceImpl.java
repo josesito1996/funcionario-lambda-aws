@@ -72,6 +72,6 @@ public class FuncionarioServiceImpl extends CrudImpl<Funcionario, String> implem
 
 	private ReactSelectResponse transfromReact(Funcionario funcionario) {
 		String datos = funcionario.getNombres().concat(" ").concat(funcionario.getApellidos());
-		return new ReactSelectResponse(funcionario.getIdFuncionario(), datos, null);
+		return new ReactSelectResponse(funcionario.getIdFuncionario(), datos, null,null);
 	}
 }

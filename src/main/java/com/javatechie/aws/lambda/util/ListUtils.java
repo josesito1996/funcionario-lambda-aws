@@ -20,25 +20,27 @@ public class ListUtils {
         select.sort(Comparator.comparing(ReactSelectResponse::getNroOrden));
         return select;
     }
-    
+
     public static List<ReactSelectResponse> responseChecksFilterTipoActuacion(
             List<TipoActuacionResponse> list) {
-        return list.stream().map(item -> transformReactSelectResponse(item)).collect(Collectors.toList());
+        return list.stream().map(item -> transformReactSelectResponse(item))
+                .collect(Collectors.toList());
     }
-    
+
     private static ReactSelectResponse transformReactSelectResponse(TipoActuacionResponse tipo) {
-        return new ReactSelectResponse(tipo.getId(), tipo.getNombreTipoActuacion(), null);
+        return new ReactSelectResponse(tipo.getId(), tipo.getNombreTipoActuacion(), null, null);
     }
-    
+
     public static List<ReactSelectResponse> responseChecksFilterEtapaActuacion(
             List<EtapaResponse> list) {
-        return list.stream().map(item -> transformReactSelectResponse(item)).collect(Collectors.toList());
+        return list.stream().map(item -> transformReactSelectResponse(item))
+                .collect(Collectors.toList());
     }
-    
+
     private static ReactSelectResponse transformReactSelectResponse(EtapaResponse etapa) {
-        return new ReactSelectResponse(etapa.getIdEtapa(),etapa.getNombreEtapa(),null);
+        return new ReactSelectResponse(etapa.getIdEtapa(), etapa.getNombreEtapa(), null, null);
     }
-    
+
     public static List<ArticuloResponseBody> articuloResponseBodySorted(
             List<ArticuloResponseBody> responseBody) {
         responseBody.sort(Comparator.comparing(ArticuloResponseBody::getNombreArticulo));
@@ -54,6 +56,16 @@ public class ListUtils {
     public static SubMateriaResponse subMateriaResponseProccesor(SubMateria subMateria) {
         return SubMateriaResponse.builder().idSubMateria(subMateria.getIdSubMateria())
                 .subMateria(subMateria.getNombreSubMateria()).build();
+    }
+
+    public static List<ReactSelectResponse> transformList(List<Infraccion> infracciones) {
+        return infracciones.stream().map(item -> transformFromInfraccion(item))
+                .collect(Collectors.toList());
+    }
+
+    public static ReactSelectResponse transformFromInfraccion(Infraccion infraccion) {
+        return new ReactSelectResponse(infraccion.getIdInfraccion(), infraccion.getDescripcion(),
+                null, infraccion.getBaseLegal());
     }
 
 }

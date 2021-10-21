@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.request.InfraccionRequestBody;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponse;
+import com.javatechie.aws.lambda.domain.response.custom.CustomSelectResponse;
 import com.javatechie.aws.lambda.service.InfraccionService;
 
 @RestController
@@ -42,10 +43,19 @@ public class InfraccionController {
         return service.verGravedadPorIdInfraccion(idInfraccion);
     }
     
+    /**
+    @Deprecated
     @GetMapping(path = "/listSelect/{idSubMateria}")
     public Map<String, Object> listarSelectPorIdSubMateria(
             @PathVariable @NotEmpty @NotNull @Pattern(regexp = REGEX_UUID, message = "id no valido") String idSubMateria) {
         return service.listarSelectPorIdSubMateriaAux(idSubMateria);
+    }
+    */
+    
+    @GetMapping(path = "/listSelect/{idSubMateria}")
+    public CustomSelectResponse listarSelectPorIdSubMateriaV2(
+            @PathVariable @NotEmpty @NotNull @Pattern(regexp = REGEX_UUID, message = "id no valido") String idSubMateria) {
+        return service.listarSelectPorIdSubMateriaAuxV2(idSubMateria);
     }
 
     @GetMapping(path = "/listAll")

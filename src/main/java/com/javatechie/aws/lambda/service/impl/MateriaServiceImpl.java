@@ -84,16 +84,15 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public List<ReactSelectResponse> listarInfraccionesParaReactSelect(
             List<SubMateria> subMaterias) {
         return subMaterias.stream().map(this::transformToReactSelect).collect(Collectors.toList());
     }
-    
+
     @Override
     public List<Map<String, Object>> verSubMaterias(SubMateriaRequestBody request) {
-        List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();        
+        List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
         request.getIds().forEach(id -> {
             Map<String, Object> map = new HashMap<String, Object>();
             Materia materia = buscarPorIdMateria(id);
@@ -133,7 +132,7 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
 
     private ReactSelectResponse transformToReactSelect(SubMateria subMateria) {
         return new ReactSelectResponse(subMateria.getIdSubMateria(),
-                subMateria.getNombreSubMateria(), 0);
+                subMateria.getNombreSubMateria(), 0, null);
     }
 
     @Override
@@ -141,7 +140,8 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
         List<Materia> materias = listar();
         List<ReactSelectResponse> newList = new ArrayList<ReactSelectResponse>();
         for (Materia materia : materias) {
-            newList.add(new ReactSelectResponse(materia.getIdMateria(), materia.getNombreMateria(), null));
+            newList.add(new ReactSelectResponse(materia.getIdMateria(), materia.getNombreMateria(),
+                    null, null));
         }
         return newList;
     }

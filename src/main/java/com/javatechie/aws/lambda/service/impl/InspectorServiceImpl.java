@@ -103,7 +103,8 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
     }
 
     private ReactSelectResponse reactREponse(Inspector inspector) {
-        return new ReactSelectResponse(inspector.getId(), inspector.getNombreInspector(), null);
+        return new ReactSelectResponse(inspector.getId(), inspector.getNombreInspector(), null,
+                null);
     }
 
     @Override

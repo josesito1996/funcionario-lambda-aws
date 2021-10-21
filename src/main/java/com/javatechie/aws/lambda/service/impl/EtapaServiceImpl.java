@@ -84,7 +84,7 @@ public class EtapaServiceImpl extends CrudImpl<Etapa, String> implements EtapaSe
 
     public ReactSelectResponse transformTo(Etapa etapa) {
         return new ReactSelectResponse(etapa.getIdEtapa(), etapa.getNombreEtapa(),
-                etapa.getNroOrden());
+                etapa.getNroOrden(),null);
     }
 
     @Override

@@ -30,6 +30,6 @@ public class TipoTareaServiceImpl extends CrudImpl<TipoTarea, String> implements
     }
 
     private ReactSelectResponse transformReactSelectResponse(TipoTarea tipo) {
-        return new ReactSelectResponse(tipo.getIdTipoTarea(), tipo.getNombreTipo(), null);
+        return new ReactSelectResponse(tipo.getIdTipoTarea(), tipo.getNombreTipo(), null, null);
     }
 }

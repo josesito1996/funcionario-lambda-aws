@@ -22,4 +22,7 @@ public class ReactSelectResponse {
 	@JsonInclude(Include.NON_NULL)
 	@JsonIgnore
 	private Integer nroOrden;
+	
+	@JsonInclude(Include.NON_NULL)
+	private String campoAux;
 }

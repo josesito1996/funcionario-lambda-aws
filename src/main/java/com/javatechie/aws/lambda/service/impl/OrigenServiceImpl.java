@@ -39,7 +39,7 @@ public class OrigenServiceImpl extends CrudImpl<Origen, String> implements Orige
         List<Origen> origenes = listar();
         List<ReactSelectResponse> newList = new ArrayList<ReactSelectResponse>();
         for (Origen origen : origenes) {
-            newList.add(new ReactSelectResponse(origen.getIdOrigen(), origen.getNombreOrigen(), null));
+            newList.add(new ReactSelectResponse(origen.getIdOrigen(), origen.getNombreOrigen(), null, null));
         }
         return newList;
     }

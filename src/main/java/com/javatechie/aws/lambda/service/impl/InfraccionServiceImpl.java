@@ -3,6 +3,7 @@ package com.javatechie.aws.lambda.service.impl;
 import static com.javatechie.aws.lambda.util.ListUtils.infraccionResponseProccesor;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,13 @@ import com.javatechie.aws.lambda.domain.response.InfraccionResponse;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponseSelect;
 import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
+import com.javatechie.aws.lambda.domain.response.custom.CustomSelectResponse;
 import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoInfraccion;
 import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.impl.builder.InfraccionRequestBuilder;
+import com.javatechie.aws.lambda.util.ListUtils;
 
 @Service
 public class InfraccionServiceImpl extends CrudImpl<Infraccion, String>
@@ -90,6 +93,7 @@ public class InfraccionServiceImpl extends CrudImpl<Infraccion, String>
         return newList;
     }
 
+    @Deprecated
     @Override
     public Map<String, Object> listarSelectPorIdSubMateriaAux(String idSubMateria) {
         List<Infraccion> infracciones = verPorIdSubMateria(idSubMateria);
@@ -100,7 +104,7 @@ public class InfraccionServiceImpl extends CrudImpl<Infraccion, String>
         List<ReactSelectResponse> listReact = new ArrayList<ReactSelectResponse>();
         for (Infraccion inf : infracciones) {
             listReact.add(new ReactSelectResponse(inf.getIdInfraccion(),
-                    inf.getBaseLegal() + " - " + inf.getDescripcion(), null));
+                    inf.getBaseLegal() + " - " + inf.getDescripcion(), null, null));
         }
         map.put("select", listReact);
         return map;
@@ -122,5 +126,28 @@ public class InfraccionServiceImpl extends CrudImpl<Infraccion, String>
             throw new NotFoundException("No hay infraccion con el Id : " + idInfraccion);
         }
         return infraccionOptional.get();
+    }
+
+    @Override
+    public CustomSelectResponse listarSelectPorIdSubMateriaAuxV2(String idSubMateria) {
+        List<Infraccion> infraccionesList = verPorIdSubMateria(idSubMateria);
+        if (infraccionesList.isEmpty()) {
+            List<ReactSelectResponse> listEmpty = new ArrayList<ReactSelectResponse>();
+            return CustomSelectResponse.builder().baseLegal(listEmpty).restoBaseLegal(listEmpty)
+                    .build();
+        }
+        List<ReactSelectResponse> infracciones = infraccionesList.stream()
+                .map(ListUtils::transformFromInfraccion)
+                .sorted(Comparator.comparing(ReactSelectResponse::getCampoAux))
+                .collect(Collectors.toList());
+        List<ReactSelectResponse> restoInfracciones = listar().stream()
+                .filter(item -> !item.getIdSubMateria().equals(idSubMateria))
+                .map(ListUtils::transformFromInfraccion)
+                .sorted(Comparator.comparing(ReactSelectResponse::getCampoAux))
+                .collect(Collectors.toList());
+        return CustomSelectResponse.builder()
+                .baseLegal(infracciones)
+                .restoBaseLegal(restoInfracciones)
+                .build();
     }
 }

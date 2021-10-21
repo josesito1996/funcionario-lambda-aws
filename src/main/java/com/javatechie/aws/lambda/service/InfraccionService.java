@@ -8,6 +8,7 @@ import com.javatechie.aws.lambda.domain.request.InfraccionRequestBody;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponse;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponseSelect;
 import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
+import com.javatechie.aws.lambda.domain.response.custom.CustomSelectResponse;
 
 public interface InfraccionService extends ICrud<Infraccion, String> {
 
@@ -30,4 +31,6 @@ public interface InfraccionService extends ICrud<Infraccion, String> {
     Map<String, Object> verGravedadPorIdInfraccion(String idInfraccion);
     
     Map<String, Object> listarSelectPorIdSubMateriaAux(String idSubMateria);
+    
+    CustomSelectResponse listarSelectPorIdSubMateriaAuxV2(String idSubMateria);
 }
