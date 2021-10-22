@@ -47,10 +47,10 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
             throw new NotFoundException(
                     "No existe Caso relacionado al ID : " + request.getIdCaso());
         }
-        //AnalisisRiesgo getAnalisis = buscarPorId(request.getIdCaso());
-        //if (getAnalisis.getIdAnalisis() != null) {
-        //    throw new BadRequestException("Ya existe un registro con este ID");
-        //}
+        // AnalisisRiesgo getAnalisis = buscarPorId(request.getIdCaso());
+        // if (getAnalisis.getIdAnalisis() != null) {
+        // throw new BadRequestException("Ya existe un registro con este ID");
+        // }
         AnalisisRiesgo analisisRiesgo = transformAnalisisRiesgo(request);
         analisisRiesgo.setSumaMultaPotencial(analisisRiesgo.getInfracciones().stream()
                 .mapToDouble(item -> item.getMultaPotencial()).sum());
@@ -90,7 +90,8 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
                 .subMaterias(ReactSelect.builder().value(request.getSelectSubmateria().getValue())
                         .label(request.getSelectSubmateria().getLabel()).build())
                 .baseLegal(ReactSelect.builder().value(request.getSelectBaseLegal().getValue())
-                        .label(request.getSelectBaseLegal().getLabel()).build())
+                        .label(request.getSelectBaseLegal().getLabel())
+                        .campoAux(request.getSelectBaseLegal().getCampoAux()).build())
                 .gravedad(request.getGravedad()).provision(request.getProvision())
                 .descripcion(request.getDescripcion()).trabajadoresAfectados(request.getAfectados())
                 .uitMultaPotencial(request.getUitMultaPotencial())

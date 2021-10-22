@@ -28,4 +28,7 @@ public class ReactSelect implements Serializable{
 
     @DynamoDBAttribute
     private String label;
+    
+    @DynamoDBAttribute
+    private String campoAux;
 }
