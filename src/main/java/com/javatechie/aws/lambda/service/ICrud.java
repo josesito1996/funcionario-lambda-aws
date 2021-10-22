@@ -14,5 +14,7 @@ public interface ICrud<T, ID> {
     public List<T> listar();
 
     public Optional<T> verPorId(ID id);
+    
+    public void eliminarPorId(ID id);
 
 }

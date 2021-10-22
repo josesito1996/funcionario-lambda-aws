@@ -38,5 +38,10 @@ public abstract class CrudImpl<T, ID> implements ICrud<T, ID> {
     public Optional<T> verPorId(ID id) {
         return getRepo().findById(id);
     };
+    
+    @Override
+    public void eliminarPorId(ID id) {
+        getRepo().deleteById(id);
+    };
 
 }

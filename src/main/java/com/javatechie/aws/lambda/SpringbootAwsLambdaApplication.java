@@ -1,7 +1,5 @@
 package com.javatechie.aws.lambda;
 
-import static com.javatechie.aws.lambda.util.Utils.generateCorreo;
-import static com.javatechie.aws.lambda.util.Utils.numberRandomGenerator;
 import static com.javatechie.aws.lambda.util.Utils.primeraLetraMayuscula;
 
 import java.util.ArrayList;
@@ -101,7 +99,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         cargarEstadoCaso();
         llenarTipoTarea();
         llenarInsight();
-        //updateSubMaterias();
+        // updateSubMaterias();
         // updateInfraccion();
         // testStoredProcedure();
         // updateInspector();
@@ -204,8 +202,8 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 
     public void testJDBC() {
         inspectorJdbc.inspectores().forEach(item -> {
-            Inspector inspector = inspectorService
-                    .registrar(Inspector.builder().identity(item.getIndex()).tipo("TRABAJO")
+            Inspector inspector = inspectorService.registrar(
+                    Inspector.builder().identity(item.getIndex()).tipo("TRABAJO").cargo("Inspector")
                             .nombreInspector(item.getNombreInspector()).estado(true).build());
             System.out.println(inspector);
         });
@@ -214,11 +212,11 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
     @Transactional
     public void updateInspector() {
         inspectorService.listar().forEach(item -> {
-            item.setCargo("Cargo Prueba");
-            item.setCorreo(generateCorreo(item.getNombreInspector()));
-            item.setTelefono(String.valueOf(numberRandomGenerator(900000000, 999999999)));
+            item.setCargo("Inspector");
+            //item.setCorreo(generateCorreo(item.getNombreInspector()));
+            //item.setTelefono(String.valueOf(numberRandomGenerator(900000000, 999999999)));
             Inspector inspector = inspectorService.modificar(item);
-            System.out.println(inspector);
+            log.info("Inspecor Actualizado {}",inspector);
         });
     }
 

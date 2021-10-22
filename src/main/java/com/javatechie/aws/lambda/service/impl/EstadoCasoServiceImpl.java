@@ -42,6 +42,7 @@ public class EstadoCasoServiceImpl extends CrudImpl<EstadoCaso, String>
         ReactSelectResponse response = new ReactSelectResponse();
         response.setLabel(estadoCaso.getNombreEstado());
         response.setValue(estadoCaso.getIdEstadoCaso());
+        response.setCampoAux(estadoCaso.getOrden().toString());
         return response;
     }
 }
