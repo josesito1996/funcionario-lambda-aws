@@ -89,7 +89,7 @@ public class TipoActuacionServiceImpl extends CrudImpl<TipoActuacion, String>
         lista = lista.stream()
                 .sorted(Comparator.comparing(TipoActuacionResponse::getNombreTipoActuacion))
                 .collect(Collectors.toList());
-        lista.add(0, TipoActuacionResponse.builder().id("0").nombreTipoActuacion("Todos").build());
+        // lista.add(0, TipoActuacionResponse.builder().id("0").nombreTipoActuacion("Todos").build());
         return responseChecksFilterTipoActuacion(lista);
     }
 }

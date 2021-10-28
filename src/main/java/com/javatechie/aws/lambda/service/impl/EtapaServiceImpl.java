@@ -84,7 +84,7 @@ public class EtapaServiceImpl extends CrudImpl<Etapa, String> implements EtapaSe
 
     public ReactSelectResponse transformTo(Etapa etapa) {
         return new ReactSelectResponse(etapa.getIdEtapa(), etapa.getNombreEtapa(),
-                etapa.getNroOrden(),null);
+                etapa.getNroOrden(), null);
     }
 
     @Override
@@ -93,12 +93,10 @@ public class EtapaServiceImpl extends CrudImpl<Etapa, String> implements EtapaSe
         if (list.isEmpty()) {
             return responseChecksFilterEtapaActuacion(list);
         }
-        list = list.stream().sorted(Comparator.comparing(EtapaResponse::getNroOrden))
+        list = list.stream().filter(etapa -> etapa.getNroOrden() != 4)
+                .sorted(Comparator.comparing(EtapaResponse::getNroOrden))
                 .collect(Collectors.toList());
-        list.add(0, EtapaResponse.builder()
-                .IdEtapa("0")
-                .nombreEtapa("Todos")
-                .build());
+        // list.add(0, EtapaResponse.builder().IdEtapa("0").nombreEtapa("Todos").build());
         return responseChecksFilterEtapaActuacion(list);
     }
 }
