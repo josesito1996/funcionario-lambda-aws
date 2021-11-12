@@ -1,5 +1,6 @@
 package com.javatechie.aws.lambda.domain.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,9 +24,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class MateriaResponse {
+public class MateriaResponse implements Serializable {
 
-    @Schema(title = "Id materia", name = "id_materia", type = "String", example = "67b37518-97ea-4359-9b6d-6a41b0214b6b")
+    private static final long serialVersionUID = 1829872715803826461L;
+
+    @Schema(title = "Id materia", name = "id_materia", type = "String", example = "d5dead7f-859e-446a-aea5-3d8eb86e9ca0")
     @JsonProperty("id_materia")
     private String idMateria;
 

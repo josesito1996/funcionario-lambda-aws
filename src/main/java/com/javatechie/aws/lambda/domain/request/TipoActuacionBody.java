@@ -1,5 +1,7 @@
 package com.javatechie.aws.lambda.domain.request;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -17,15 +19,20 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class TipoActuacionBody {
-	@Schema(title = "Id de Tipo de actuacion", name = "id", type = "String", example = "67b37518-97ea-4359-9b6d-6a41b0214b6b")
+public class TipoActuacionBody implements Serializable {
+
+    private static final long serialVersionUID = 2821932289777301489L;
+
+    @Schema(title = "Id de Tipo de actuacion", name = "id", type = "String", example = "67b37518-97ea-4359-9b6d-6a41b0214b6b")
 	private String id;
-	@Schema(title = "Nombre tipo de actuacion", name = "nombre_tipo_actuacion", required = true, type = "String", example = "Requerimiento de comparecencia")
+	
 	@NotNull
 	@NotEmpty
 	@JsonProperty("nombre_tipo_actuacion")
+	@Schema(title = "Nombre tipo de actuacion", name = "nombre_tipo_actuacion", required = true, type = "String", example = "Requerimiento de comparecencia")
 	private String nombreTipoActuacion;
-	@NotNull
+	
+    @NotNull
 	@Schema(title = "estado", name = "estado", required = true, type = "Boolean", example = "True|False")
 	private Boolean estado;
 }

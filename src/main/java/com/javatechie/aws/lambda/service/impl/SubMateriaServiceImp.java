@@ -96,7 +96,8 @@ public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
         Materia materia = materiaService.buscarPorIdMateria(subMateria.getIdMateria());
         List<Infraccion> infracciones = infraccionService.verPorIdSubMateria(idSubMateria);
         List<String> idArticulos = infracciones.stream()
-                .map(infraccion -> infraccion.getIdArticulo()).distinct().collect(Collectors.toList());
+                .map(infraccion -> infraccion.getIdArticulo()).distinct()
+                .collect(Collectors.toList());
         List<ArticuloResponseBody> articulos = new ArrayList<ArticuloResponseBody>();
         for (String idArticulo : idArticulos) {
             Articulo articulo = articuloService.verArticuloPorId(idArticulo);
@@ -106,7 +107,8 @@ public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
         }
         return InfraccionResponseBody.builder().nombreMateria(materia.getNombreMateria())
                 .nombreSubMateria(subMateria.getNombreSubMateria())
-                .infracciones("DECRETO SUPREMPO....... N° XX-XXXX").articulos(articuloResponseBodySorted(articulos)).build();
+                .infracciones("DECRETO SUPREMPO....... N° XX-XXXX")
+                .articulos(articuloResponseBodySorted(articulos)).build();
     }
 
     private List<Map<String, String>> subArticulosResponse(List<Infraccion> infracciones,
@@ -128,7 +130,8 @@ public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
         List<SubMateria> materiasPorId = listarPorIdMateria(idMateria);
         List<ReactSelectResponse> newList = new ArrayList<ReactSelectResponse>();
         for (SubMateria sub : materiasPorId) {
-            newList.add(new ReactSelectResponse(sub.getIdSubMateria(), sub.getNombreSubMateria(), null, null));
+            newList.add(new ReactSelectResponse(sub.getIdSubMateria(), sub.getNombreSubMateria(),
+                    null, null));
         }
         return newList;
     }

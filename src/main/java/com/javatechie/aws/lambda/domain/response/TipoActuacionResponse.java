@@ -1,5 +1,7 @@
 package com.javatechie.aws.lambda.domain.response;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,11 +20,15 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class TipoActuacionResponse {
-	@Schema(title = "Id Funcionario", name = "id", example = "29752d65-ecc3-4633-a9a6-ae88fa95d3fc")
+public class TipoActuacionResponse implements Serializable {
+
+    private static final long serialVersionUID = -3501358736563478372L;
+    
+    @Schema(title = "Id Funcionario", name = "id", example = "0c72985d-65bf-4f1f-b3f3-9b91b6b49eee")
 	@JsonInclude(Include.NON_NULL)
 	private String id;
-	@Schema(title = "Nombre tipo de Actuacion", name = "nombre_tipo_actuacion", example = "Pablito Apellido1 Apellido2")
+	
+    @Schema(title = "Nombre tipo de Actuacion", name = "nombre_tipo_actuacion", example = "Requerimiento de comparecencia")
 	@JsonProperty("nombre_tipo_actuacion")
 	@JsonInclude(Include.NON_NULL)
 	private String nombreTipoActuacion;

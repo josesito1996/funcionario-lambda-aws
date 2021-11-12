@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,23 +24,30 @@ public class CaseByInspectorResponse implements Serializable {
     
     private static final long serialVersionUID = -6365568019613633921L;
     
+    @Schema(title = "Tiene casos", name = "hasDataContact", example = "true")
     private boolean hasDataContact;
     
     @JsonInclude(Include.NON_NULL)
+    @Schema(title = "Name", name = "name", example = "Nakandakari Huaman Maritza Cindy", description = "Nombre del inspector")
     private String name;
     
     @JsonInclude(Include.NON_NULL)
+    @Schema(title = "Position", name = "position", example = "Inspector", description = "Cargo del inspector")
     private String position;
     
+    @Schema(title = "Cases Found", name = "casesFound", example = "6", description = "Cantidad de casos que tiene el inspector")
     private int casesFound;
     
+    @Schema(title = "Fine Cases", name = "fineCases", example = "0", description = "Cantidad de casos con multa que tiene el inspector")
     private int fineCases;
     
     @JsonInclude(Include.NON_NULL)
+    @Schema(title = "Contact", name = "contact")
     private ContactResponse contact;
     
     private List<ScoreResponse> score;
     
+    @Schema(title = "Recent cases", name = "recentCases")
     private List<RecentCaseResponse> recentCases;
 }
 
