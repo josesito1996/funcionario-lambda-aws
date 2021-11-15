@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.jdbc.ResolucionesPorLocalidadQuery;
-import com.javatechie.aws.lambda.domain.jdbc.SubMateriasMasSeñaladasQuery;
+import com.javatechie.aws.lambda.domain.jdbc.SubMateriasMasSenaladasQuery;
 import com.javatechie.aws.lambda.domain.response.EvolucionUltimosMesesResponse;
 import com.javatechie.aws.lambda.service.JurisprudenciaService;
 
@@ -29,7 +29,7 @@ public class JurisprudenciaController {
     }
     
     @GetMapping(path = "/subjectsMostIndicated")
-    public List<SubMateriasMasSeñaladasQuery> subMateriasMasSeñaladasQueries(){
+    public List<SubMateriasMasSenaladasQuery> subMateriasMasSeñaladasQueries(){
         log.info("JurisprudenciaController.subMateriasMasSeñaladasQueries");
         return service.subMateriasMasSeñaladasQueries();
     }

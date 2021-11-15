@@ -15,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class SubMateriasMasSeñaladasQuery implements Serializable {
+public class SubMateriasMasSenaladasQuery implements Serializable {
 
     private static final long serialVersionUID = -4230917402581522019L;
     

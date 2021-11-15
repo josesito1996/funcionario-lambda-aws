@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.javatechie.aws.lambda.domain.jdbc.EvolucionUltimosMesesQuery;
 import com.javatechie.aws.lambda.domain.jdbc.ResolucionesPorLocalidadQuery;
-import com.javatechie.aws.lambda.domain.jdbc.SubMateriasMasSeñaladasQuery;
+import com.javatechie.aws.lambda.domain.jdbc.SubMateriasMasSenaladasQuery;
 import com.javatechie.aws.lambda.domain.response.EvolucionUltimosMesesResponse;
 import com.javatechie.aws.lambda.respository.jdbc.JurisprudenciaJdbc;
 import com.javatechie.aws.lambda.service.JurisprudenciaService;
@@ -36,7 +36,7 @@ public class JurisprudenciaServiceImpl implements JurisprudenciaService {
     }
 
     @Override
-    public List<SubMateriasMasSeñaladasQuery> subMateriasMasSeñaladasQueries() {
+    public List<SubMateriasMasSenaladasQuery> subMateriasMasSeñaladasQueries() {
         return jdbc.subMateriasMasSeñaladasQueries();
     }
 

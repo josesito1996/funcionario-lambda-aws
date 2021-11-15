@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.javatechie.aws.lambda.domain.jdbc.EvolucionUltimosMesesQuery;
 import com.javatechie.aws.lambda.domain.jdbc.ResolucionesPorLocalidadQuery;
-import com.javatechie.aws.lambda.domain.jdbc.SubMateriasMasSeñaladasQuery;
+import com.javatechie.aws.lambda.domain.jdbc.SubMateriasMasSenaladasQuery;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +25,7 @@ public class JurisprudenciaJdbc {
                 new EvolucionUltimosMesesMapper());
     }
     
-    public List<SubMateriasMasSeñaladasQuery> subMateriasMasSeñaladasQueries(){
+    public List<SubMateriasMasSenaladasQuery> subMateriasMasSeñaladasQueries(){
         log.info("JurisprudenciaJdbc.subMateriasMasSeñaladasQueries");
         return jdbcTemplate.query("call SP_subMaterias_mas_senaladas()", new SubMateriasMasSeñaladasMapper());
     }
