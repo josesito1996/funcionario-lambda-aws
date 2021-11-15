@@ -32,6 +32,7 @@ import com.javatechie.aws.lambda.service.EtapaService;
 import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.InsightService;
 import com.javatechie.aws.lambda.service.InspectorService;
+import com.javatechie.aws.lambda.service.JurisprudenciaService;
 //import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.MateriaService;
 import com.javatechie.aws.lambda.service.OrigenService;
@@ -46,6 +47,9 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootApplication
 public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 
+    @Autowired
+    JurisprudenciaService jdbc;
+    
     @Autowired
     MateriaService materiaService;
 
@@ -106,6 +110,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         // testJDBC();
         // updateInfraccion();
         // puntuacionTest();
+        jdbc.subMateriasMasSeñaladasQueries().forEach(item ->{
+            log.info("Juris : {}", item);
+        });
     }
 
     public void cargarMaterias() {

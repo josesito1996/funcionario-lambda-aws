@@ -2,8 +2,11 @@ package com.javatechie.aws.lambda.util;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.ZoneId;
+import java.time.format.TextStyle;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 public class Utils {
@@ -58,5 +61,11 @@ public class Utils {
             }
         }
         return new String(arr);
+    }
+    
+    public static String convertirNumeroAMes(Integer numeroMes) {
+        Locale locale = new Locale("es", "ES");
+        Month mes = Month.of(numeroMes);
+        return mes.getDisplayName(TextStyle.SHORT_STANDALONE, locale).toUpperCase();
     }
 }
