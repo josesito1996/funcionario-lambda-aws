@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.javatechie.aws.lambda.domain.jdbc.SubMateriasMasSenaladasQuery;
 
 
-public class SubMateriasMasSeñaladasMapper implements RowMapper<SubMateriasMasSenaladasQuery>{
+public class SubMateriasMasSenaladasMapper implements RowMapper<SubMateriasMasSenaladasQuery>{
 
     @Override
     public SubMateriasMasSenaladasQuery mapRow(ResultSet rs, int rowNum) throws SQLException {

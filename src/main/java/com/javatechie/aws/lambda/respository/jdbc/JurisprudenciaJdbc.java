@@ -27,7 +27,7 @@ public class JurisprudenciaJdbc {
     
     public List<SubMateriasMasSenaladasQuery> subMateriasMasSeñaladasQueries(){
         log.info("JurisprudenciaJdbc.subMateriasMasSeñaladasQueries");
-        return jdbcTemplate.query("call SP_subMaterias_mas_senaladas()", new SubMateriasMasSeñaladasMapper());
+        return jdbcTemplate.query("call SP_subMaterias_mas_senaladas()", new SubMateriasMasSenaladasMapper());
     }
     
     public List<ResolucionesPorLocalidadQuery> resolucionesPorLocalidadQueries(){
