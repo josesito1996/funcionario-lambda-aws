@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.javatechie.aws.lambda.domain.jdbc.ResolucionesPorInstanciaQuery;
 import com.javatechie.aws.lambda.domain.jdbc.ResolucionesPorLocalidadQuery;
 import com.javatechie.aws.lambda.domain.jdbc.SubMateriasMasSenaladasQuery;
 import com.javatechie.aws.lambda.domain.response.EvolucionUltimosMesesResponse;
@@ -37,6 +38,11 @@ public class JurisprudenciaController {
     @GetMapping(path = "/resolutionsByLocation")
     public List<ResolucionesPorLocalidadQuery> resolucionesPorLocalidadQueries(){
         return service.resolucionesPorLocalidadQueries();
+    }
+    
+    @GetMapping(path = "/resolutionsByIntance")
+    public ResolucionesPorInstanciaQuery resolucionesPorInstanciaQueries(){
+        return service.resolucionesPorInstanciaQueries();
     }
     
 }

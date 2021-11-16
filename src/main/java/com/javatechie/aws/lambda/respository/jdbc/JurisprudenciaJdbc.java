@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.javatechie.aws.lambda.domain.jdbc.EvolucionUltimosMesesQuery;
+import com.javatechie.aws.lambda.domain.jdbc.ResolucionesPorInstanciaQuery;
 import com.javatechie.aws.lambda.domain.jdbc.ResolucionesPorLocalidadQuery;
 import com.javatechie.aws.lambda.domain.jdbc.SubMateriasMasSenaladasQuery;
 
@@ -24,14 +25,22 @@ public class JurisprudenciaJdbc {
         return jdbcTemplate.query("call SP_evolucion_ultimos_meses()",
                 new EvolucionUltimosMesesMapper());
     }
-    
-    public List<SubMateriasMasSenaladasQuery> subMateriasMasSeñaladasQueries(){
+
+    public List<SubMateriasMasSenaladasQuery> subMateriasMasSeñaladasQueries() {
         log.info("JurisprudenciaJdbc.subMateriasMasSeñaladasQueries");
-        return jdbcTemplate.query("call SP_subMaterias_mas_senaladas()", new SubMateriasMasSenaladasMapper());
+        return jdbcTemplate.query("call SP_subMaterias_mas_senaladas()",
+                new SubMateriasMasSenaladasMapper());
     }
-    
-    public List<ResolucionesPorLocalidadQuery> resolucionesPorLocalidadQueries(){
-        return jdbcTemplate.query("call SP_resoluciones_por_localidad()", new ResolucionesPorLocalidadMapper());
+
+    public List<ResolucionesPorLocalidadQuery> resolucionesPorLocalidadQueries() {
+        return jdbcTemplate.query("call SP_resoluciones_por_localidad()",
+                new ResolucionesPorLocalidadMapper());
+    }
+
+    public ResolucionesPorInstanciaQuery resolucionesPorInstanciaQueries() {
+        return jdbcTemplate
+                .query("call SP_resoluciones_por_instancia()", new ResolucionesPorInstanciaMapper())
+                .stream().findFirst().orElse(ResolucionesPorInstanciaQuery.builder().build());
     }
 
 }

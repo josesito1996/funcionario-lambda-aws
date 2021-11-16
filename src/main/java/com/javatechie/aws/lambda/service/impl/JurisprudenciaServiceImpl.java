@@ -1,6 +1,7 @@
 package com.javatechie.aws.lambda.service.impl;
 
 import static com.javatechie.aws.lambda.util.Utils.convertirNumeroAMes;
+import static com.javatechie.aws.lambda.util.Utils.primeraLetraMayuscula;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.javatechie.aws.lambda.domain.jdbc.EvolucionUltimosMesesQuery;
+import com.javatechie.aws.lambda.domain.jdbc.ResolucionesPorInstanciaQuery;
 import com.javatechie.aws.lambda.domain.jdbc.ResolucionesPorLocalidadQuery;
 import com.javatechie.aws.lambda.domain.jdbc.SubMateriasMasSenaladasQuery;
 import com.javatechie.aws.lambda.domain.response.EvolucionUltimosMesesResponse;
@@ -30,9 +32,8 @@ public class JurisprudenciaServiceImpl implements JurisprudenciaService {
 
     private EvolucionUltimosMesesResponse transformToResponse(EvolucionUltimosMesesQuery query) {
         return EvolucionUltimosMesesResponse.builder()
-                .mes(convertirNumeroAMes(query.getMes()))
-                .cantidad(query.getCantidad())
-                .build();
+                .mes(primeraLetraMayuscula(convertirNumeroAMes(query.getMes())))
+                .cantidad(query.getCantidad()).build();
     }
 
     @Override
@@ -43,6 +44,11 @@ public class JurisprudenciaServiceImpl implements JurisprudenciaService {
     @Override
     public List<ResolucionesPorLocalidadQuery> resolucionesPorLocalidadQueries() {
         return jdbc.resolucionesPorLocalidadQueries();
+    }
+
+    @Override
+    public ResolucionesPorInstanciaQuery resolucionesPorInstanciaQueries() {
+        return jdbc.resolucionesPorInstanciaQueries();
     }
 
 }
