@@ -110,9 +110,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
         // testJDBC();
         // updateInfraccion();
         // puntuacionTest();
-        jdbc.subMateriasMasSeñaladasQueries().forEach(item ->{
-            log.info("Juris : {}", item);
-        });
+        //log.info(jdbc.resolucionesRecientesAgregadasQuery(7).toString());
     }
 
     public void cargarMaterias() {

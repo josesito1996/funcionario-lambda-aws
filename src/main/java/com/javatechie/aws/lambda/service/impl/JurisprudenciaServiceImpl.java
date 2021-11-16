@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.javatechie.aws.lambda.domain.jdbc.EvolucionUltimosMesesQuery;
 import com.javatechie.aws.lambda.domain.jdbc.ResolucionesPorInstanciaQuery;
 import com.javatechie.aws.lambda.domain.jdbc.ResolucionesPorLocalidadQuery;
+import com.javatechie.aws.lambda.domain.jdbc.ResolucionesRecientesAgregadasQuery;
 import com.javatechie.aws.lambda.domain.jdbc.SubMateriasMasSenaladasQuery;
 import com.javatechie.aws.lambda.domain.response.EvolucionUltimosMesesResponse;
 import com.javatechie.aws.lambda.respository.jdbc.JurisprudenciaJdbc;
@@ -49,6 +50,11 @@ public class JurisprudenciaServiceImpl implements JurisprudenciaService {
     @Override
     public ResolucionesPorInstanciaQuery resolucionesPorInstanciaQueries() {
         return jdbc.resolucionesPorInstanciaQueries();
+    }
+
+    @Override
+    public ResolucionesRecientesAgregadasQuery resolucionesRecientesAgregadasQuery(Integer semanas) {
+        return jdbc.resolucionesRecientesAgregadasQuery(semanas);
     }
 
 }
