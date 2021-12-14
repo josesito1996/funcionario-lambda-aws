@@ -1,6 +1,8 @@
 package com.javatechie.aws.lambda;
 
 import static com.javatechie.aws.lambda.util.Utils.primeraLetraMayuscula;
+import static com.javatechie.aws.lambda.util.Utils.generateCorreo;
+import static com.javatechie.aws.lambda.util.Utils.numberRandomGenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,313 +49,294 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootApplication
 public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 
-    @Autowired
-    JurisprudenciaService jdbc;
-    
-    @Autowired
-    MateriaService materiaService;
+	@Autowired
+	JurisprudenciaService jdbc;
 
-    @Autowired
-    InspectorService inspectorService;
+	@Autowired
+	MateriaService materiaService;
 
-    @Autowired
-    EtapaService etapaService;
+	@Autowired
+	InspectorService inspectorService;
 
-    @Autowired
-    TipoActuacionService tipoActuacionService;
+	@Autowired
+	EtapaService etapaService;
 
-    @Autowired
-    ArticuloService articuloService;
+	@Autowired
+	TipoActuacionService tipoActuacionService;
 
-    @Autowired
-    InspectorJdbc inspectorJdbc;
+	@Autowired
+	ArticuloService articuloService;
 
-    @Autowired
-    PuntuacionService puntuacionService;
+	@Autowired
+	InspectorJdbc inspectorJdbc;
 
-    @Autowired
-    OrigenService origenService;
+	@Autowired
+	PuntuacionService puntuacionService;
 
-    @Autowired
-    InfraccionService infraccionService;
+	@Autowired
+	OrigenService origenService;
 
-    @Autowired
-    EstadoCasoService estadoCasoService;
+	@Autowired
+	InfraccionService infraccionService;
 
-    @Autowired
-    TipoTareaService tipoTareaService;
+	@Autowired
+	EstadoCasoService estadoCasoService;
 
-    @Autowired
-    InsightService insightService;
+	@Autowired
+	TipoTareaService tipoTareaService;
 
-    @Autowired
-    SubMateriaService subMateriaService;
+	@Autowired
+	InsightService insightService;
 
-    public static void main(String[] args) {
-        SpringApplication.run(SpringbootAwsLambdaApplication.class, args);
-    }
+	@Autowired
+	SubMateriaService subMateriaService;
 
-    @Override
-    public void run(String... args) throws Exception {
-        cargarMaterias();
-        cargarEtapas();
-        cargatTipoActuacion();
-        registrarArticulos();
-        origenTest();
-        cargarEstadoCaso();
-        llenarTipoTarea();
-        llenarInsight();
-        // updateSubMaterias();
-        // updateInfraccion();
-        // testStoredProcedure();
-        // updateInspector();
-        // testJDBC();
-        // updateInfraccion();
-        // puntuacionTest();
-        //log.info(jdbc.resolucionesRecientesAgregadasQuery(7).toString());
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(SpringbootAwsLambdaApplication.class, args);
+	}
 
-    public void cargarMaterias() {
-        if (materiaService.listar().isEmpty()) {
-            Arrays.asList(
-                    Materia.builder().estado(true).color("blue").icono("iconoPromocion")
-                            .nombreMateria("Promocion y formacion").build(),
-                    Materia.builder().estado(true).color("black").icono("iconoIntermediacion")
-                            .nombreMateria("Intermediacion laboral").build(),
-                    Materia.builder().estado(true).color("brown").icono("iconoLaborInspectiva")
-                            .nombreMateria("Labor inspectiva").build(),
-                    Materia.builder().estado(true).color("purple").icono("iconoExtranjeros")
-                            .nombreMateria("Extranjeros").build(),
-                    Materia.builder().estado(true).color("skyblue").icono("iconoSeguridadSocial")
-                            .nombreMateria("Seguridad social").build(),
-                    Materia.builder().estado(true).color("grey").icono("iconoEmpleo")
-                            .nombreMateria("Empleo y colocacion").build(),
-                    Materia.builder().estado(true).color("orange").icono("iconoSeguridad")
-                            .nombreMateria("Seguridad y salud en el trabajo").build(),
-                    Materia.builder().estado(true).color("green").icono("iconoEmpleo")
-                            .nombreMateria("Relaciones laborales").build())
-                    .forEach(materia -> {
-                        materiaService.registrar(materia);
-                    });
-        }
-    }
+	@Override
+	public void run(String... args) throws Exception {
+		// cargarMaterias();
+		// cargarEtapas();
+		// cargatTipoActuacion();
+		// registrarArticulos();
+		// origenTest();
+		// cargarEstadoCaso();
+		// llenarTipoTarea();
+		// llenarInsight();
+		// updateSubMaterias();
+		// updateInfraccion();
+		// testStoredProcedure();
+		// updateInspector();
+		//testJDBC();
+		// updateInfraccion();
+		// puntuacionTest();
+		// log.info(jdbc.resolucionesRecientesAgregadasQuery(7).toString());
+	}
 
-    public void cargarEtapas() {
-        if (etapaService.listar().isEmpty()) {
-            Arrays.asList(Etapa.builder().nombreEtapa("Investigacion").estado(true).build(),
-                    Etapa.builder().nombreEtapa("Sancionadora").estado(true).build(),
-                    Etapa.builder().nombreEtapa("Instruccion").estado(true).build())
-                    .forEach(etapa -> {
-                        etapaService.registrar(etapa);
-                    });
-        }
-    }
+	public void cargarMaterias() {
+		if (materiaService.listar().isEmpty()) {
+			Arrays.asList(
+					Materia.builder().estado(true).color("blue").icono("iconoPromocion")
+							.nombreMateria("Promocion y formacion").build(),
+					Materia.builder().estado(true).color("black").icono("iconoIntermediacion")
+							.nombreMateria("Intermediacion laboral").build(),
+					Materia.builder().estado(true).color("brown").icono("iconoLaborInspectiva")
+							.nombreMateria("Labor inspectiva").build(),
+					Materia.builder().estado(true).color("purple").icono("iconoExtranjeros")
+							.nombreMateria("Extranjeros").build(),
+					Materia.builder().estado(true).color("skyblue").icono("iconoSeguridadSocial")
+							.nombreMateria("Seguridad social").build(),
+					Materia.builder().estado(true).color("grey").icono("iconoEmpleo")
+							.nombreMateria("Empleo y colocacion").build(),
+					Materia.builder().estado(true).color("orange").icono("iconoSeguridad")
+							.nombreMateria("Seguridad y salud en el trabajo").build(),
+					Materia.builder().estado(true).color("green").icono("iconoEmpleo")
+							.nombreMateria("Relaciones laborales").build())
+					.forEach(materia -> {
+						materiaService.registrar(materia);
+					});
+		}
+	}
 
-    public void cargatTipoActuacion() {
-        if (tipoActuacionService.listar().isEmpty()) {
-            Arrays.asList(
-                    TipoActuacion.builder().nombreTipoActuacion("Acta de Infracción").estado(true)
-                            .build(),
-                    TipoActuacion.builder().nombreTipoActuacion("Escrito").estado(true).build(),
-                    TipoActuacion.builder().nombreTipoActuacion("Comparecencia").estado(true)
-                            .build(),
-                    TipoActuacion.builder().nombreTipoActuacion("Requerimiento de comparecencia")
-                            .estado(true).build(),
-                    TipoActuacion.builder().nombreTipoActuacion("Apelacion").estado(true).build(),
-                    TipoActuacion.builder().nombreTipoActuacion("Descargos").estado(true).build(),
-                    TipoActuacion.builder().nombreTipoActuacion("Vista inspectiva").estado(true)
-                            .build(),
-                    TipoActuacion.builder().nombreTipoActuacion("Requerimiento").estado(true)
-                            .build(),
-                    TipoActuacion.builder().nombreTipoActuacion("Resolucion").estado(true).build())
-                    .forEach(tipo -> {
-                        tipoActuacionService.registrar(tipo);
-                    });
-        }
-    }
+	public void cargarEtapas() {
+		if (etapaService.listar().isEmpty()) {
+			Arrays.asList(Etapa.builder().nombreEtapa("Investigacion").estado(true).build(),
+					Etapa.builder().nombreEtapa("Sancionadora").estado(true).build(),
+					Etapa.builder().nombreEtapa("Instruccion").estado(true).build()).forEach(etapa -> {
+						etapaService.registrar(etapa);
+					});
+		}
+	}
 
-    public void updateInfraccion() {
-        infraccionService.listar().forEach(item -> {
-            Infraccion infraccion = item;
-            if (infraccion.getGravedad() != null) {
-                switch (infraccion.getGravedad()) {
-                case "LEVE":
-                    infraccion.setPuntajeGravedad(1);
-                    break;
-                case "GRAVE":
-                    infraccion.setPuntajeGravedad(2);
-                    break;
-                case "MUY GRAVE":
-                    infraccion.setPuntajeGravedad(3);
-                    break;
-                default:
-                    infraccion.setPuntajeGravedad(0);
-                    break;
-                }
-                infraccionService.modificar(infraccion);
-            }
-        });
-    }
+	public void cargatTipoActuacion() {
+		if (tipoActuacionService.listar().isEmpty()) {
+			Arrays.asList(TipoActuacion.builder().nombreTipoActuacion("Acta de Infracción").estado(true).build(),
+					TipoActuacion.builder().nombreTipoActuacion("Escrito").estado(true).build(),
+					TipoActuacion.builder().nombreTipoActuacion("Comparecencia").estado(true).build(),
+					TipoActuacion.builder().nombreTipoActuacion("Requerimiento de comparecencia").estado(true).build(),
+					TipoActuacion.builder().nombreTipoActuacion("Apelacion").estado(true).build(),
+					TipoActuacion.builder().nombreTipoActuacion("Descargos").estado(true).build(),
+					TipoActuacion.builder().nombreTipoActuacion("Vista inspectiva").estado(true).build(),
+					TipoActuacion.builder().nombreTipoActuacion("Requerimiento").estado(true).build(),
+					TipoActuacion.builder().nombreTipoActuacion("Resolucion").estado(true).build()).forEach(tipo -> {
+						tipoActuacionService.registrar(tipo);
+					});
+		}
+	}
 
-    public void registrarArticulos() {
-        List<Articulo> articulos = articuloService.listar();
-        if (articulos.isEmpty()) {
-            for (int i = 23; i <= 46; i++) {
-                articuloService.registrar(Articulo.builder().nroArticulo(String.valueOf(i))
-                        .nombreArticulo("Articulo nro " + i).build());
-            }
-        }
-    }
+	public void updateInfraccion() {
+		infraccionService.listar().forEach(item -> {
+			Infraccion infraccion = item;
+			if (infraccion.getGravedad() != null) {
+				switch (infraccion.getGravedad()) {
+				case "LEVE":
+					infraccion.setPuntajeGravedad(1);
+					break;
+				case "GRAVE":
+					infraccion.setPuntajeGravedad(2);
+					break;
+				case "MUY GRAVE":
+					infraccion.setPuntajeGravedad(3);
+					break;
+				default:
+					infraccion.setPuntajeGravedad(0);
+					break;
+				}
+				infraccionService.modificar(infraccion);
+			}
+		});
+	}
 
-    public void testJDBC() {
-        inspectorJdbc.inspectores().forEach(item -> {
-            Inspector inspector = inspectorService.registrar(
-                    Inspector.builder().identity(item.getIndex()).tipo("TRABAJO").cargo("Inspector")
-                            .nombreInspector(item.getNombreInspector()).estado(true).build());
-            System.out.println(inspector);
-        });
-    }
+	public void registrarArticulos() {
+		List<Articulo> articulos = articuloService.listar();
+		if (articulos.isEmpty()) {
+			for (int i = 23; i <= 46; i++) {
+				articuloService.registrar(
+						Articulo.builder().nroArticulo(String.valueOf(i)).nombreArticulo("Articulo nro " + i).build());
+			}
+		}
+	}
 
-    @Transactional
-    public void updateInspector() {
-        inspectorService.listar().forEach(item -> {
-            item.setCargo("Inspector");
-            //item.setCorreo(generateCorreo(item.getNombreInspector()));
-            //item.setTelefono(String.valueOf(numberRandomGenerator(900000000, 999999999)));
-            Inspector inspector = inspectorService.modificar(item);
-            log.info("Inspecor Actualizado {}",inspector);
-        });
-    }
+	public void testJDBC() {
+		inspectorJdbc.inspectores().forEach(item -> {
+			Inspector inspector = inspectorService.buscarPorNombre(item.getNombreInspector());
+			if (inspector == null) {
+				Inspector nuevoInspector = inspectorService.registrar(Inspector.builder()
+						.tipo("TRABAJO")
+						.telefono(String.valueOf(numberRandomGenerator(900000000, 999999999)))
+						.correo(generateCorreo(item.getNombreInspector()))
+						.nombreInspector(item.getNombreInspector())
+						.identity(item.getIndex())
+						.build());
+				log.info("Nuevo Inspector {}", nuevoInspector);
+			}
+		});
+	}
 
-    public void testStoredProcedure() {
-        inspectorService.storedProcedure("Poma Canazas Daniel Andres").forEach(item -> {
-            log.info("item : " + item);
-        });
-    }
+	@Transactional
+	public void updateInspector() {
+		inspectorService.listar().forEach(item -> {
+			item.setCargo("Inspector");
+			// item.setCorreo(generateCorreo(item.getNombreInspector()));
+			// item.setTelefono(String.valueOf(numberRandomGenerator(900000000,
+			// 999999999)));
+			Inspector inspector = inspectorService.modificar(item);
+			log.info("Inspecor Actualizado {}", inspector);
+		});
+	}
 
-    public void origenTest() {
-        if (origenService.listar().isEmpty()) {
-            Arrays.asList(Origen.builder().nombreOrigen("Denuncia").estado(true).build(),
-                    Origen.builder().nombreOrigen("Desconocido").estado(true).build(),
-                    Origen.builder().nombreOrigen("Operativo SUNAFIL").estado(true).build())
-                    .forEach(item -> {
-                        log.info("Origen registrado : " + origenService.registrar(item));
-                    });
-        }
-    }
+	public void testStoredProcedure() {
+		inspectorService.storedProcedure("Poma Canazas Daniel Andres").forEach(item -> {
+			log.info("item : " + item);
+		});
+	}
 
-    public void cargarEstadoCaso() {
-        List<EstadoCaso> lista = estadoCasoService.listar();
-        if (lista.isEmpty()) {
-            List<EstadoCaso> estados = Arrays.asList(EstadoCaso.builder().orden(1).nombreEstado(
-                    "Pendiente decisión de inspector sobre emisión o no de Medida de Requerimiento")
-                    .estado(true).build(),
-                    EstadoCaso.builder().orden(2).nombreEstado(
-                            "Pendiente decisión de inspector sobre emisión de Informe de Actuaciones Inspectivas o Acta de Infracción")
-                            .estado(true).build(),
-                    EstadoCaso.builder().orden(3)
-                            .nombreEstado("Caso concluido con Informe de Actuaciones Inspectivas")
-                            .estado(true).build(),
-                    EstadoCaso.builder().orden(4).nombreEstado("Pendiente decisión de instructor")
-                            .estado(true).build(),
-                    EstadoCaso.builder().orden(5)
-                            .nombreEstado(
-                                    "Caso concluido con Informe de Instrucción de Archivamiento")
-                            .estado(true).build(),
-                    EstadoCaso.builder().orden(6)
-                            .nombreEstado("Pendiente decisión de primera instancia").estado(true)
-                            .build(),
-                    EstadoCaso.builder().orden(7)
-                            .nombreEstado("Pendiente decisión de segunda instancia").estado(true)
-                            .build(),
-                    EstadoCaso.builder().orden(8)
-                            .nombreEstado("Pendiente decisión de Tribunal de Fiscalización Laboral")
-                            .estado(true).build(),
-                    EstadoCaso.builder().orden(9)
-                            .nombreEstado("Caso con resolución consentida y en etapa de cobranza")
-                            .estado(true).build(),
-                    EstadoCaso.builder().orden(10).nombreEstado("Caso concluido").estado(true)
-                            .build());
-            estados.forEach(item -> {
-                estadoCasoService.registrar(item);
-            });
-        }
-    }
+	public void origenTest() {
+		if (origenService.listar().isEmpty()) {
+			Arrays.asList(Origen.builder().nombreOrigen("Denuncia").estado(true).build(),
+					Origen.builder().nombreOrigen("Desconocido").estado(true).build(),
+					Origen.builder().nombreOrigen("Operativo SUNAFIL").estado(true).build()).forEach(item -> {
+						log.info("Origen registrado : " + origenService.registrar(item));
+					});
+		}
+	}
 
-    public void llenarTipoTarea() {
-        List<TipoTarea> lista = tipoTareaService.listar();
-        if (lista.isEmpty()) {
-            List<TipoTarea> newList = Arrays.asList(
-                    TipoTarea.builder().nombreTipo("Solicitud").estado(true).build(),
-                    TipoTarea.builder().nombreTipo("Actividad").estado(true).build());
-            newList.forEach(item -> {
-                tipoTareaService.registrar(item);
-            });
-        }
-    }
+	public void cargarEstadoCaso() {
+		List<EstadoCaso> lista = estadoCasoService.listar();
+		if (lista.isEmpty()) {
+			List<EstadoCaso> estados = Arrays.asList(
+					EstadoCaso.builder().orden(1)
+							.nombreEstado(
+									"Pendiente decisión de inspector sobre emisión o no de Medida de Requerimiento")
+							.estado(true).build(),
+					EstadoCaso.builder().orden(2).nombreEstado(
+							"Pendiente decisión de inspector sobre emisión de Informe de Actuaciones Inspectivas o Acta de Infracción")
+							.estado(true).build(),
+					EstadoCaso.builder().orden(3).nombreEstado("Caso concluido con Informe de Actuaciones Inspectivas")
+							.estado(true).build(),
+					EstadoCaso.builder().orden(4).nombreEstado("Pendiente decisión de instructor").estado(true).build(),
+					EstadoCaso.builder().orden(5)
+							.nombreEstado("Caso concluido con Informe de Instrucción de Archivamiento").estado(true)
+							.build(),
+					EstadoCaso.builder().orden(6).nombreEstado("Pendiente decisión de primera instancia").estado(true)
+							.build(),
+					EstadoCaso.builder().orden(7).nombreEstado("Pendiente decisión de segunda instancia").estado(true)
+							.build(),
+					EstadoCaso.builder().orden(8)
+							.nombreEstado("Pendiente decisión de Tribunal de Fiscalización Laboral").estado(true)
+							.build(),
+					EstadoCaso.builder().orden(9).nombreEstado("Caso con resolución consentida y en etapa de cobranza")
+							.estado(true).build(),
+					EstadoCaso.builder().orden(10).nombreEstado("Caso concluido").estado(true).build());
+			estados.forEach(item -> {
+				estadoCasoService.registrar(item);
+			});
+		}
+	}
 
-    public void llenarInsight() {
-        List<Insight> lista = insightService.listar();
-        if (lista.isEmpty()) {
-            List<Insight> newLista = Arrays.asList(Insight.builder().estado(true)
-                    .nombreCaracteristica("Alerta nueva inspeccion")
-                    .labelModal("Alerta nueva inspeccion")
-                    .mensaje("Que la proxima inspeccion no te gane con SAMY")
-                    .caracteristicas(Arrays.asList(
-                            "Conoce la <strong>fecha</strong> y detalle de la nueva inspeccion",
-                            "Anticipate y estate listo para la llegada de la inspeccion",
-                            "Creo tu caso y prepara toda la documentacion necesaria"))
-                    .costo(Costo.builder().tiempo("mensual").precio(9.90).moneda("DOLAR").build())
-                    .planesPrecio(new ArrayList<PlanPrecio>()).build(),
-                    Insight.builder().estado(true).nombreCaracteristica("Sincroniza tu casilla")
-                            .labelModal(
-                                    "Vincula SUNAFIL & SAMI y sincroniza tu casilla electronica con total seguridad")
-                            .mensaje(
-                                    "Recibe las notificaciones de tu casilla electrónica SUNAFIL sin tener que ingresar constantemente a tu buzón, solo enlaza a SUNAFIL con Sami y ¡Listo!. \r\n"
-                                            + "Notificaciones más rápidas y seguras.")
-                            .caracteristicas(Arrays.asList(
-                                    "Tus datos privados estaran completamente seguros en SAMY",
-                                    "Contamos con un protocolo de confidencialidad de datos"))
-                            .costo(Costo.builder().tiempo("mensual").precio(9.90).moneda("DOLAR")
-                                    .build())
-                            .planesPrecio(new ArrayList<PlanPrecio>()).build(),
-                    Insight.builder().estado(true).nombreCaracteristica("Servicio Paralegal")
-                            .labelModal("Sami Paralegal : Tu asistente legal en linea")
-                            .mensaje(
-                                    "Nos encargamos del trabajo operativo con Sami Paralegal para que tú te enfoques en la gestión y estrategia de tu cartera de casos.")
-                            .caracteristicas(new ArrayList<String>()).costo(Costo.builder().build())
-                            .planesPrecio(Arrays.asList(
-                                    PlanPrecio.builder().tipoPlan("Basico").costo(15152.361)
-                                            .moneda("Dolar")
-                                            .detalles(Arrays
-                                                    .asList("Detalle 1", "Detalle2", "Detalle3"))
-                                            .build(),
-                                    PlanPrecio.builder().tipoPlan("Regular").costo(199.361)
-                                            .moneda("Dolar")
-                                            .detalles(Arrays.asList("Detalle 1", "Detalle2",
-                                                    "Detalle3"))
-                                            .build(),
-                                    PlanPrecio.builder().tipoPlan("Premium").costo(9999.361)
-                                            .moneda("Dolar").detalles(Arrays.asList("Detalle 1",
-                                                    "Detalle2", "Detalle3"))
-                                            .build()))
-                            .build());
-            newLista.forEach(item -> {
-                insightService.registrar(item);
-            });
-        }
-    }
+	public void llenarTipoTarea() {
+		List<TipoTarea> lista = tipoTareaService.listar();
+		if (lista.isEmpty()) {
+			List<TipoTarea> newList = Arrays.asList(TipoTarea.builder().nombreTipo("Solicitud").estado(true).build(),
+					TipoTarea.builder().nombreTipo("Actividad").estado(true).build());
+			newList.forEach(item -> {
+				tipoTareaService.registrar(item);
+			});
+		}
+	}
 
-    public void updateSubMaterias() {
-        List<SubMateria> subMaterias = subMateriaService.listar();
-        if (subMaterias.isEmpty()) {
-            // Registrar
-        } else {
-            // actualizar
-            subMaterias.forEach(item -> {
-                item.setNombreSubMateria(primeraLetraMayuscula(item.getNombreSubMateria()));
-                log.info("SubMateria : {}", subMateriaService.modificar(item));
-            });
-        }
-    }
+	public void llenarInsight() {
+		List<Insight> lista = insightService.listar();
+		if (lista.isEmpty()) {
+			List<Insight> newLista = Arrays.asList(Insight.builder().estado(true)
+					.nombreCaracteristica("Alerta nueva inspeccion").labelModal("Alerta nueva inspeccion")
+					.mensaje("Que la proxima inspeccion no te gane con SAMY")
+					.caracteristicas(Arrays.asList("Conoce la <strong>fecha</strong> y detalle de la nueva inspeccion",
+							"Anticipate y estate listo para la llegada de la inspeccion",
+							"Creo tu caso y prepara toda la documentacion necesaria"))
+					.costo(Costo.builder().tiempo("mensual").precio(9.90).moneda("DOLAR").build())
+					.planesPrecio(new ArrayList<PlanPrecio>()).build(),
+					Insight.builder().estado(true).nombreCaracteristica("Sincroniza tu casilla")
+							.labelModal(
+									"Vincula SUNAFIL & SAMI y sincroniza tu casilla electronica con total seguridad")
+							.mensaje(
+									"Recibe las notificaciones de tu casilla electrónica SUNAFIL sin tener que ingresar constantemente a tu buzón, solo enlaza a SUNAFIL con Sami y ¡Listo!. \r\n"
+											+ "Notificaciones más rápidas y seguras.")
+							.caracteristicas(Arrays.asList("Tus datos privados estaran completamente seguros en SAMY",
+									"Contamos con un protocolo de confidencialidad de datos"))
+							.costo(Costo.builder().tiempo("mensual").precio(9.90).moneda("DOLAR").build())
+							.planesPrecio(new ArrayList<PlanPrecio>()).build(),
+					Insight.builder().estado(true).nombreCaracteristica("Servicio Paralegal")
+							.labelModal("Sami Paralegal : Tu asistente legal en linea")
+							.mensaje(
+									"Nos encargamos del trabajo operativo con Sami Paralegal para que tú te enfoques en la gestión y estrategia de tu cartera de casos.")
+							.caracteristicas(new ArrayList<String>()).costo(Costo.builder().build())
+							.planesPrecio(Arrays.asList(
+									PlanPrecio.builder().tipoPlan("Basico").costo(15152.361).moneda("Dolar")
+											.detalles(Arrays.asList("Detalle 1", "Detalle2", "Detalle3")).build(),
+									PlanPrecio.builder().tipoPlan("Regular").costo(199.361).moneda("Dolar")
+											.detalles(Arrays.asList("Detalle 1", "Detalle2", "Detalle3")).build(),
+									PlanPrecio.builder().tipoPlan("Premium").costo(9999.361).moneda("Dolar")
+											.detalles(Arrays.asList("Detalle 1", "Detalle2", "Detalle3")).build()))
+							.build());
+			newLista.forEach(item -> {
+				insightService.registrar(item);
+			});
+		}
+	}
+
+	public void updateSubMaterias() {
+		List<SubMateria> subMaterias = subMateriaService.listar();
+		if (subMaterias.isEmpty()) {
+			// Registrar
+		} else {
+			// actualizar
+			subMaterias.forEach(item -> {
+				item.setNombreSubMateria(primeraLetraMayuscula(item.getNombreSubMateria()));
+				log.info("SubMateria : {}", subMateriaService.modificar(item));
+			});
+		}
+	}
 }

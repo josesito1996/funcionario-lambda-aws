@@ -3,10 +3,12 @@ package com.javatechie.aws.lambda.controller;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.javatechie.aws.lambda.domain.request.InspectorBody;
 import com.javatechie.aws.lambda.domain.request.InspectorUpdateRequest;
 import com.javatechie.aws.lambda.domain.response.CaseByInspectorResponse;
+import com.javatechie.aws.lambda.domain.response.InspectorPorNombreResponse;
 import com.javatechie.aws.lambda.domain.response.InspectorResponse;
 import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.service.InspectorService;
@@ -31,6 +34,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
+@Validated
 @RequestMapping("/api-inspector")
 public class InspectorController {
 
@@ -97,6 +101,11 @@ public class InspectorController {
 	//test
 	public CaseByInspectorResponse findCasesByInspector(@PathVariable String idInspector) {
 	    return service.casosPorInspector(idInspector);
+	}
+	
+	@GetMapping(path = "/searchByNameInspector/{nombreInspector}")
+	public List<InspectorPorNombreResponse> inspectorPorNombreResponses(@PathVariable @Size(min = 4, message = "Minimo 4 letras") String nombreInspector){
+		return service.inspectorPorNombreResponses(nombreInspector);
 	}
 
 }

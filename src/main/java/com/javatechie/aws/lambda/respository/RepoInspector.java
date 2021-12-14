@@ -11,6 +11,8 @@ import com.javatechie.aws.lambda.domain.Inspector;
 @Repository
 public interface RepoInspector extends GenericRepo<Inspector, String> {
 
+	Inspector findOneByNombreInspector(String nombreInspector);
+	
 	List<Inspector> findByNombreInspectorContaining(String nombreInspector);
 
 	List<Inspector> findByTipoAndEstado(String tipo, Boolean estado);

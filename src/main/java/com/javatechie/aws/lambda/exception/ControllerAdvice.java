@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -64,5 +66,14 @@ public class ControllerAdvice {
     });
     return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
         "Validacion de campos", details);
+  }
+  
+  @ExceptionHandler(ConstraintViolationException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ErrorResponse handleConstraintViolationException(ConstraintViolationException ex) {
+    log.error("Error de ConstraintViolationException : {}", ex.getMessage());
+    
+    return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
+        ex.getMessage(), null);
   }
 }
