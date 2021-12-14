@@ -121,7 +121,10 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 
 	@Override
 	public CaseByInspectorResponse casosPorInspector(String idInspector) {
-		Inspector inspector = buscarPorId(idInspector);
+		/**
+		 * Se cambia el IdInspector por el nombre
+		 */
+		Inspector inspector = buscarPorNombre(idInspector);
 		String nombreInspector = inspector.getNombreInspector();
 		List<CasosPorInspectorQuery> casosInspector = storedProcedure(nombreInspector);
 		List<RecentCaseResponse> recentCases = new ArrayList<RecentCaseResponse>();
@@ -187,7 +190,6 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 		return inspectores.stream().map(item -> {
 			return InspectorPorNombreResponse
 					.builder()
-					.idInspector(buscarPorNombre(item.getNombreFuncionario()).getId())
 					.nombreFuncionario(item.getNombreFuncionario())
 					.cantidadCasos(item.getCantidadCasos())
 					.fechaRegistro(item.getFechaAsignacion())

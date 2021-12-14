@@ -97,8 +97,12 @@ public class InspectorController {
         return service.actualizar(request);
     }
 	
+	/**
+	 * Aqui se esta modificando el Id Inspector por el name para que busque en la BD por nombre
+	 * @param idInspector
+	 * @return
+	 */
 	@GetMapping(path = "/searchCasesByInspectorId/{idInspector}")
-	//test
 	public CaseByInspectorResponse findCasesByInspector(@PathVariable String idInspector) {
 	    return service.casosPorInspector(idInspector);
 	}

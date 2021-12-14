@@ -20,8 +20,6 @@ public class InspectorPorNombreResponse implements Serializable {
 
 	private static final long serialVersionUID = 8121401179221655721L;
 	
-	private String idInspector;
-	
 	private String nombreFuncionario;
 	
 	private Integer cantidadCasos;
