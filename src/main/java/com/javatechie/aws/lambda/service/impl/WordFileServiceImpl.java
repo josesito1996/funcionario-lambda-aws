@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.javatechie.aws.lambda.aws.ActuacionPojo;
+import com.javatechie.aws.lambda.aws.AnalisisRiesgoPojo;
 import com.javatechie.aws.lambda.aws.CasoPojo;
 import com.javatechie.aws.lambda.aws.ExternalDbAws;
 import com.javatechie.aws.lambda.domain.response.CasoWordFileResponse;

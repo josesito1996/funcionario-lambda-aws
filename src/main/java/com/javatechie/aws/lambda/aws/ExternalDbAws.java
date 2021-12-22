@@ -13,6 +13,7 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.javatechie.aws.lambda.domain.request.ReactSelectRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,7 +41,9 @@ public class ExternalDbAws {
 		GetItemSpec spec = new GetItemSpec().withPrimaryKey("id_analisis", idAnalisis);
 		Item materiaItem = tableMaterias.getItem(spec);
 		if (materiaItem == null) {
-			return AnalisisRiesgoPojo.builder().infracciones(new ArrayList<>()).build();
+			return AnalisisRiesgoPojo.builder()
+					.nivelRiesgo(new ReactSelectRequest())
+					.infracciones(new ArrayList<>()).build();
 		}
 		final ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(materiaItem.asMap(), AnalisisRiesgoPojo.class);
