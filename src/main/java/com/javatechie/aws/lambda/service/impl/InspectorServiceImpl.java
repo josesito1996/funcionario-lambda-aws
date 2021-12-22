@@ -125,6 +125,7 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 		 * Se cambia el IdInspector por el nombre
 		 */
 		Inspector inspector = buscarPorNombre(idInspector);
+		log.info("Inspector {}",inspector);
 		String nombreInspector = inspector.getNombreInspector();
 		List<CasosPorInspectorQuery> casosInspector = storedProcedure(nombreInspector);
 		List<RecentCaseResponse> recentCases = new ArrayList<RecentCaseResponse>();
@@ -148,7 +149,7 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 				.casesFound(casosInspector.size()).fineCases(acumuladorMulta)
 				.contact(ContactResponse.builder().email(inspector.getCorreo()).phone(inspector.getTelefono()).build())
 				.name(inspector.getNombreInspector()).position(inspector.getCargo())
-				.score(transformScoreResponse(puntuacionService.listarPromedioPuntajeInspector(idInspector)))
+				.score(transformScoreResponse(puntuacionService.listarPromedioPuntajeInspector(inspector.getId())))
 				.recentCases(recentCases).build();
 	}
 

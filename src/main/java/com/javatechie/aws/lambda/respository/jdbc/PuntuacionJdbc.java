@@ -50,6 +50,7 @@ public class PuntuacionJdbc {
     
     public List<PromedioPuntajeInspectorQuery> listarPromedioPuntajeInspector(String idInspector){
         log.info("PuntuacionJdbc.listarPromedioPuntajeInspector");
+        log.info("SQL {}",QUERY_GET_PROMEDIO_BY_INSPECTOR + " - " + idInspector);
         return jdbcTemplate.query(QUERY_GET_PROMEDIO_BY_INSPECTOR, new PromedioPuntajeInspectorMapper(),new Object[] { idInspector });
     }
     
