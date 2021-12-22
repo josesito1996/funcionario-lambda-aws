@@ -6,6 +6,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,12 +24,12 @@ public class WordController {
 	@Autowired
 	private WordFileService service;
 
-	@GetMapping(path = "/download")
-	public HttpEntity<ByteArrayResource> getFile(@RequestHeader HttpHeaders headers) {
+	@GetMapping(path = "/download/{idCaso}")
+	public HttpEntity<ByteArrayResource> getFile(@PathVariable String idCaso, @RequestHeader HttpHeaders headers) {
 		log.info("Headers {} ", headers);
 		headers.setContentType(new MediaType("application", "force-download"));
-        headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=ProductTemplate.docx");
-		return service.getWordFileCaso(WordFileCasoRequest.builder().build(),headers);
+		headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=ProductTemplate.docx");
+		return service.getWordFileCaso(idCaso, headers);
 	}
 
 }

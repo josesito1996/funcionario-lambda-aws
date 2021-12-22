@@ -8,6 +8,6 @@ import com.javatechie.aws.lambda.domain.request.WordFileCasoRequest;
 
 public interface WordFileService {
 
-	public ResponseEntity<ByteArrayResource> getWordFileCaso(WordFileCasoRequest request, HttpHeaders headers);
+	public ResponseEntity<ByteArrayResource> getWordFileCaso(String idCaso, HttpHeaders headers);
 
 }
