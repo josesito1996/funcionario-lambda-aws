@@ -36,14 +36,17 @@ public class PuntuacionJdbc {
 
     private static final String QUERY_GET_MAESTRO_BY_ID = "select * from puntuacion_maestro where id_item = ?;";
     
-    private static final String QUERY_GET_PROMEDIO_BY_INSPECTOR = "select "
-            + "p_master.item_valoracion as itemScore, "
-            + "p_master.puntaje_maximo as max, "
-            + "ROUND(AVG(p_ins.calificacion),0) as score "
-            + "from puntuacion_inspector p_ins inner join puntuacion_maestro p_master "
-            + "on p_ins.id_puntuacion_maestro = p_master.id_item "
-            + "where p_ins.id_inspector= ? "
-            + "GROUP BY p_master.item_valoracion order by p_master.id_item;";
+    private static final String QUERY_GET_PROMEDIO_BY_INSPECTOR = "SELECT\r\n"
+    		+ "p_master.id_item,\r\n"
+    		+ "p_master.item_valoracion AS itemScore,\r\n"
+    		+ "p_master.puntaje_maximo AS max,\r\n"
+    		+ "ROUND( AVG( p_ins.calificacion ), 0 ) AS score\r\n"
+    		+ "FROM puntuacion_inspector p_ins\r\n"
+    		+ "INNER JOIN puntuacion_maestro p_master\r\n"
+    		+ "ON p_ins.id_puntuacion_maestro = p_master.id_item\r\n"
+    		+ "WHERE p_ins.id_inspector = ?\r\n"
+    		+ "GROUP BY p_master.item_valoracion\r\n"
+    		+ "ORDER BY p_master.id_item;";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

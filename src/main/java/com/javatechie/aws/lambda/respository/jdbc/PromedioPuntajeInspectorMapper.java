@@ -13,9 +13,10 @@ public class PromedioPuntajeInspectorMapper implements RowMapper<PromedioPuntaje
     public PromedioPuntajeInspectorQuery mapRow(ResultSet rs, int rowNum) throws SQLException {
         
         return PromedioPuntajeInspectorQuery.builder()
-                .itemScore(rs.getString(1))
-                .max(rs.getInt(2))
-                .score(rs.getInt(3))
+        		.idItem(rs.getInt("id_item"))
+                .itemScore(rs.getString("itemScore"))
+                .max(rs.getInt("max"))
+                .score(rs.getInt("score"))
                 .build();
     }
 

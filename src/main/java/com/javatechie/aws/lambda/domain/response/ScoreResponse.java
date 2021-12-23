@@ -23,6 +23,8 @@ public class ScoreResponse implements Serializable {
 
     private static final long serialVersionUID = -1967923227360022119L;
 
+    private Integer idItem;
+    
     @JsonInclude(Include.NON_NULL)
     @Schema(title = "Item Score", name = "itemScore", example = "2")
     private String itemScore;

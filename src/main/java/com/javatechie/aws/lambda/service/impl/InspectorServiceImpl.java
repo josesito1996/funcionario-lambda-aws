@@ -145,6 +145,7 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 			}
 		}
 		return CaseByInspectorResponse.builder()
+				.idInspector(inspector.getId())
 				.hasDataContact(inspector.getCorreo() != null && inspector.getTelefono() != null)
 				.casesFound(casosInspector.size()).fineCases(acumuladorMulta)
 				.contact(ContactResponse.builder().email(inspector.getCorreo()).phone(inspector.getTelefono()).build())
@@ -158,7 +159,9 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 	}
 
 	private ScoreResponse transformScoreResponse(PromedioPuntajeInspectorQuery query) {
-		return ScoreResponse.builder().itemScore(query.getItemScore()).max(query.getMax()).score(query.getScore())
+		return ScoreResponse.builder()
+				.idItem(query.getIdItem())
+				.itemScore(query.getItemScore()).max(query.getMax()).score(query.getScore())
 				.build();
 	}
 

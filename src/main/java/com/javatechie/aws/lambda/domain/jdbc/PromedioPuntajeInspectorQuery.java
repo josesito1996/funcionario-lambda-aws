@@ -15,6 +15,8 @@ import lombok.ToString;
 @ToString
 public class PromedioPuntajeInspectorQuery {
 
+	private Integer idItem;
+	
     private String itemScore;
 
     private Integer max;

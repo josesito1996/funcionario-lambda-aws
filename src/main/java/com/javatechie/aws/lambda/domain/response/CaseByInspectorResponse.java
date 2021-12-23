@@ -24,6 +24,8 @@ public class CaseByInspectorResponse implements Serializable {
     
     private static final long serialVersionUID = -6365568019613633921L;
     
+    private String idInspector;
+    
     @Schema(title = "Tiene casos", name = "hasDataContact", example = "true")
     private boolean hasDataContact;
     
