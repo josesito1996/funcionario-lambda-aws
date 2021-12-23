@@ -46,12 +46,18 @@ public class WordFileServiceImpl implements WordFileService {
 	}
 
 	private CasoWordFileResponse wordFileresponse(CasoPojo caso) {
-		return CasoWordFileResponse.builder().denominacionCaso(caso.getDescripcionCaso())
-				.ordenInspeccion(caso.getOrdenInspeccion()).fechaInicio(caso.getFechaInicio())
-				.estadoCaso(estadoCaso(caso.getActuaciones())).etapa(etapaCaso(caso.getActuaciones()))
-				.resumen(caso.getDescripcionAdicional()).origenCaso("--")
-				.trabajadoresInvolucrados(caso.getTrabajadoresInvolucrados())
-				.multaPotencial(caso.getMultaPotencial().doubleValue()).provisiones("--")
+		Integer trabajadoresInvolucrados = caso.getTrabajadoresInvolucrados();
+		return CasoWordFileResponse.builder()
+				.denominacionCaso(caso.getDescripcionCaso())
+				.ordenInspeccion(caso.getOrdenInspeccion())
+				.fechaInicio(caso.getFechaInicio())
+				.estadoCaso(estadoCaso(caso.getActuaciones()))
+				.etapa(etapaCaso(caso.getActuaciones()))
+				.resumen(caso.getDescripcionAdicional())
+				.origenCaso("--")
+				.trabajadoresInvolucrados(trabajadoresInvolucrados != null ? trabajadoresInvolucrados : 0)
+				.multaPotencial(caso.getMultaPotencial().doubleValue())
+				.provisiones("--")
 				.riesgo(externalAws.tableInfraccion(caso.getId()).getNivelRiesgo().getLabel())
 				.actuaciones(generateMap(caso.getActuaciones())).build();
 	}
