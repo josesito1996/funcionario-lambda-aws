@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.javatechie.aws.lambda.aws.ActuacionPojo;
+import com.javatechie.aws.lambda.aws.AnalisisRiesgoPojo;
 import com.javatechie.aws.lambda.aws.CasoPojo;
 import com.javatechie.aws.lambda.aws.ExternalDbAws;
 import com.javatechie.aws.lambda.domain.response.CasoWordFileResponse;
@@ -38,7 +39,7 @@ public class WordFileServiceImpl implements WordFileService {
 	@Override
 	public ResponseEntity<ByteArrayResource> getWordFileCaso(String idCaso, HttpHeaders headers) {
 		CasoPojo caso = externalAws.tableCaso(idCaso);
-		log.info("CAso AWS : {}", caso);
+		log.info("Caso {} ", caso);
 		headers.setContentType(new MediaType("application", "force-download"));
 		headers.set(HttpHeaders.CONTENT_DISPOSITION,
 				"attachment; filename=" + caso.getDescripcionCaso().concat(".docx"));
@@ -46,6 +47,7 @@ public class WordFileServiceImpl implements WordFileService {
 	}
 
 	private CasoWordFileResponse wordFileresponse(CasoPojo caso) {
+		AnalisisRiesgoPojo analisis = externalAws.tableInfraccion(caso.getId());
 		Integer trabajadoresInvolucrados = caso.getTrabajadoresInvolucrados();
 		return CasoWordFileResponse.builder()
 				.denominacionCaso(caso.getDescripcionCaso())
@@ -54,11 +56,11 @@ public class WordFileServiceImpl implements WordFileService {
 				.estadoCaso(estadoCaso(caso.getActuaciones()))
 				.etapa(etapaCaso(caso.getActuaciones()))
 				.resumen(caso.getDescripcionAdicional())
-				.origenCaso("--")
+				.origenCaso(analisis.getOrigenCaso().getLabel())
 				.trabajadoresInvolucrados(trabajadoresInvolucrados != null ? trabajadoresInvolucrados : 0)
 				.multaPotencial(caso.getMultaPotencial().doubleValue())
 				.provisiones("--")
-				.riesgo(externalAws.tableInfraccion(caso.getId()).getNivelRiesgo().getLabel())
+				.riesgo(analisis.getNivelRiesgo().getLabel())
 				.actuaciones(generateMap(caso.getActuaciones())).build();
 	}
 

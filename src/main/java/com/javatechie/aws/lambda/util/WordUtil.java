@@ -68,7 +68,7 @@ public class WordUtil {
 			table2.setWidth("100%");
 			XWPFTableRow tableRowOne2 = table2.getRow(0);
 			tableRowOne2.getCell(0).setText("Origen del Caso");
-			tableRowOne2.addNewTableCell().setText(response.getOrdenInspeccion());
+			tableRowOne2.addNewTableCell().setText(response.getOrigenCaso());
 			XWPFTableRow tableRowTwo2 = table2.createRow();
 			tableRowTwo2.getCell(0).setText("Trabajadores involucrados");
 			tableRowTwo2.getCell(1).setText(response.getTrabajadoresInvolucrados().toString());

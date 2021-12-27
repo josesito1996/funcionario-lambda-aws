@@ -48,7 +48,7 @@ public class CasoPojo {
 
     //private List<DynamoBodyGenerico> sedes;
 
-    //private DynamoBodyGenerico origenInspeccion;
+    private DynamoBodyGenericoPojo origenInspeccion;
 
     private Integer trabajadoresInvolucrados;
 
