@@ -192,10 +192,17 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 	public void registrarArticulos() {
 		List<Articulo> articulos = articuloService.listar();
 		if (articulos.isEmpty()) {
+			/*
 			for (int i = 23; i <= 46; i++) {
 				articuloService.registrar(
 						Articulo.builder().nroArticulo(String.valueOf(i)).nombreArticulo("Articulo nro " + i).build());
 			}
+			*/
+		} else {
+			articulos.forEach(articulo ->{
+				articulo.setNombreArticulo("Articulo " + articulo.getNroArticulo());
+				articuloService.modificar(articulo);
+			});
 		}
 	}
 

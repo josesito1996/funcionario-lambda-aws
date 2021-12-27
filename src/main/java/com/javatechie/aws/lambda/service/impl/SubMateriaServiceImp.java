@@ -107,7 +107,7 @@ public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
         }
         return InfraccionResponseBody.builder().nombreMateria(materia.getNombreMateria())
                 .nombreSubMateria(subMateria.getNombreSubMateria())
-                .infracciones("DECRETO SUPREMPO....... N° XX-XXXX")
+                .infracciones("Decreto Supremo N° 019-2006-TR. Reglamento de la Ley General de Inspección del Trabajo")
                 .articulos(articuloResponseBodySorted(articulos)).build();
     }
 
