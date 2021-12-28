@@ -67,7 +67,9 @@ public class TipoActuacionServiceImpl extends CrudImpl<TipoActuacion, String>
     @Override
     public List<ReactSelectResponse> listarTipoActuacionParaReact() {
 
-        return listarTipoActuacionPorEstado(true).stream().map(this::transformFrom)
+        return listarTipoActuacionPorEstado(true).stream()
+        		.sorted(Comparator.comparing(TipoActuacion::getNombreTipoActuacion))
+        		.map(this::transformFrom)
                 .collect(Collectors.toList());
     }
 

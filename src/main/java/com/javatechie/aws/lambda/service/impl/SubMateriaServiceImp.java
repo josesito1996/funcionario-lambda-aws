@@ -3,6 +3,7 @@ package com.javatechie.aws.lambda.service.impl;
 import static com.javatechie.aws.lambda.util.ListUtils.articuloResponseBodySorted;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,11 +129,10 @@ public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
     @Override
     public List<ReactSelectResponse> listarSelectPorIdMateria(String idMateria) {
         List<SubMateria> materiasPorId = listarPorIdMateria(idMateria);
-        List<ReactSelectResponse> newList = new ArrayList<ReactSelectResponse>();
-        for (SubMateria sub : materiasPorId) {
-            newList.add(new ReactSelectResponse(sub.getIdSubMateria(), sub.getNombreSubMateria(),
-                    null, null));
-        }
-        return newList;
+        return materiasPorId.stream()
+				.sorted(Comparator.comparing(SubMateria::getNombreSubMateria))
+				.map(materia -> {
+			return new ReactSelectResponse(materia.getIdSubMateria(), materia.getNombreSubMateria(), null, null);
+		}).collect(Collectors.toList());
     }
 }
