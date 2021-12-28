@@ -13,6 +13,7 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.javatechie.aws.lambda.domain.request.ReactSelectRequest;
 
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +61,9 @@ public class ExternalDbAws {
 		if (casoItem == null) {
 			return CasoPojo.builder().actuaciones(new ArrayList<>()).build();
 		}
-		final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);;
+		final ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);;
 		return mapper.convertValue(casoItem.asMap(), CasoPojo.class);
 	}
 

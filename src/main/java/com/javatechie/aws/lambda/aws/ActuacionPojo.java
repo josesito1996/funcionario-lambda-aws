@@ -1,5 +1,7 @@
 package com.javatechie.aws.lambda.aws;
 
+import java.time.LocalDate;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,7 +22,7 @@ public class ActuacionPojo {
 	@JsonProperty("id_actuacion")
 	private String idActuacion;
 	
-	private String fechaActuacion;
+	private LocalDate fechaActuacion;
 	
 	private String fechaRegistro;
 	

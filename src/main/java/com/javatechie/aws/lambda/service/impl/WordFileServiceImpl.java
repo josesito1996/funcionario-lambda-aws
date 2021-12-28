@@ -3,6 +3,7 @@ package com.javatechie.aws.lambda.service.impl;
 import static com.javatechie.aws.lambda.util.ListUtils.estadoCaso;
 import static com.javatechie.aws.lambda.util.ListUtils.etapaCaso;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,9 +66,11 @@ public class WordFileServiceImpl implements WordFileService {
 	}
 
 	private List<Map<String, String>> generateMap(List<ActuacionPojo> actuaciones) {
-		return actuaciones.stream().map(item -> {
+		return actuaciones.stream()
+				.sorted(Comparator.comparing(ActuacionPojo::getFechaActuacion))
+				.map(item -> {
 			Map<String, String> newMap = new HashMap<>();
-			newMap.put("fecha", item.getFechaActuacion());
+			newMap.put("fecha", item.getFechaActuacion().toString());
 			newMap.put("tipoActuacion", item.getTipoActuacion().getNombreTipoActuacion());
 			return newMap;
 		}).collect(Collectors.toList());
