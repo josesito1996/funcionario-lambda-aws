@@ -109,7 +109,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 		// updateInfraccion();
 		// testStoredProcedure();
 		// updateInspector();
-		//testJDBC();
+		// testJDBC();
 		// updateInfraccion();
 		// puntuacionTest();
 		// log.info(jdbc.resolucionesRecientesAgregadasQuery(7).toString());
@@ -167,39 +167,25 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 	}
 
 	public void updateInfraccion() {
-		infraccionService.listar().forEach(item -> {
-			Infraccion infraccion = item;
-			if (infraccion.getGravedad() != null) {
-				switch (infraccion.getGravedad()) {
-				case "LEVE":
-					infraccion.setPuntajeGravedad(1);
-					break;
-				case "GRAVE":
-					infraccion.setPuntajeGravedad(2);
-					break;
-				case "MUY GRAVE":
-					infraccion.setPuntajeGravedad(3);
-					break;
-				default:
-					infraccion.setPuntajeGravedad(0);
-					break;
-				}
-				infraccionService.modificar(infraccion);
-			}
-		});
+		Arrays.asList(new Infraccion("ac1ef67a-550e-4a4e-96aa-6087f9839b08", null, "46.60", null, null, null, null,
+				null, null, null)).forEach(infraccion -> {
+					Infraccion infra = infraccionService.verPorIdInfraccion(infraccion.getIdInfraccion());
+					infra.setBaseLegal(infraccion.getBaseLegal());
+					log.info("Infra {}", infraccionService.modificar(infra));
+				});
+		;
 	}
 
 	public void registrarArticulos() {
 		List<Articulo> articulos = articuloService.listar();
 		if (articulos.isEmpty()) {
 			/*
-			for (int i = 23; i <= 46; i++) {
-				articuloService.registrar(
-						Articulo.builder().nroArticulo(String.valueOf(i)).nombreArticulo("Articulo nro " + i).build());
-			}
-			*/
+			 * for (int i = 23; i <= 46; i++) { articuloService.registrar(
+			 * Articulo.builder().nroArticulo(String.valueOf(i)).
+			 * nombreArticulo("Articulo nro " + i).build()); }
+			 */
 		} else {
-			articulos.forEach(articulo ->{
+			articulos.forEach(articulo -> {
 				articulo.setNombreArticulo("Articulo " + articulo.getNroArticulo());
 				articuloService.modificar(articulo);
 			});
@@ -210,13 +196,10 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 		inspectorJdbc.inspectores().forEach(item -> {
 			Inspector inspector = inspectorService.buscarPorNombre(item.getNombreInspector());
 			if (inspector == null) {
-				Inspector nuevoInspector = inspectorService.registrar(Inspector.builder()
-						.tipo("TRABAJO")
+				Inspector nuevoInspector = inspectorService.registrar(Inspector.builder().tipo("TRABAJO")
 						.telefono(String.valueOf(numberRandomGenerator(900000000, 999999999)))
-						.correo(generateCorreo(item.getNombreInspector()))
-						.nombreInspector(item.getNombreInspector())
-						.identity(item.getIndex())
-						.build());
+						.correo(generateCorreo(item.getNombreInspector())).nombreInspector(item.getNombreInspector())
+						.identity(item.getIndex()).build());
 				log.info("Nuevo Inspector {}", nuevoInspector);
 			}
 		});
@@ -224,14 +207,75 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 
 	@Transactional
 	public void updateInspector() {
-		inspectorService.listar().forEach(item -> {
-			item.setCargo("Inspector");
-			// item.setCorreo(generateCorreo(item.getNombreInspector()));
-			// item.setTelefono(String.valueOf(numberRandomGenerator(900000000,
-			// 999999999)));
-			Inspector inspector = inspectorService.modificar(item);
-			log.info("Inspecor Actualizado {}", inspector);
-		});
+		Arrays.asList(
+				new Inspector(null, null, "Carlos Gil Vela Gonzáles", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"978469955", "Sancionador", true),
+				new Inspector(null, null, "Carlos Lizandro Zamata Torres", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"935300024", "Sancionador", true),
+				new Inspector(null, null, "Carolina Lucy Valer Ramos", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"939549055", "Sancionador", true),
+				new Inspector(null, null, "David Josué Condori Catunta", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"939199936", "Sancionador", true),
+				new Inspector(null, null, "Eduardo Fernando Espinoza Acosta", "TRABAJO", "Resolutor",
+						"correo@gmail,com", "953427501", "Sancionador", true),
+				new Inspector(null, null, "Edward Venero Ramos", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"912394160", "Sancionador", true),
+				new Inspector(null, null, "Ena Armida Espinoza Cañoli", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"937207678", "Sancionador", true),
+				new Inspector(null, null, "Fernando Llantoy Baños", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"917253525", "Sancionador", true),
+				new Inspector(null, null, "Flor Marina Cruz Rodríguez", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"974924710", "Sancionador", true),
+				new Inspector(null, null, "Flor Milagritos Reategui Velez", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"915636592", "Sancionador", true),
+				new Inspector(null, null, "Freddy Jose Maria Solano Gonzales", "TRABAJO", "Resolutor",
+						"correo@gmail,com", "950885497", "Sancionador", true),
+				new Inspector(null, null, "Fredy Augusto Morales Flores", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"993475867", "Sancionador", true),
+				new Inspector(null, null, "Gina Isabel Hidalgo Casanova", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"971110589", "Sancionador", true),
+				new Inspector(null, null, "Hipólito Carlos Javier Brañez", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"907770134", "Sancionador", true),
+				new Inspector(null, null, "Jorge Eduardo Maguiña Aliaga", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"939806052", "Sancionador", true),
+				new Inspector(null, null, "Jorge Eduardo Olaya Ramos", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"971567340", "Sancionador", true),
+				new Inspector(null, null, "José Luis Zolezzi Ibárcena", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"971674840", "Sancionador", true),
+				new Inspector(null, null, "Juan Carlos Vásquez Baneo", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"974709581", "Sancionador", true),
+				new Inspector(null, null, "Julio Alfonso Hoyos Estela", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"932625793", "Sancionador", true),
+				new Inspector(null, null, "Julio César Matheus López", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"902056167", "Sancionador", true),
+				new Inspector(null, null, "Luis Alberto Morán Canales", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"981055125", "Sancionador", true),
+				new Inspector(null, null, "Luis Jorge Pitta Pereyra", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"996829981", "Sancionador", true),
+				new Inspector(null, null, "Maria del Carmen Solorzano Mercado", "TRABAJO", "Resolutor",
+						"correo@gmail,com", "993507413", "Sancionador", true),
+				new Inspector(null, null, "Maria Eliana Villa Zambrano", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"981769242", "Sancionador", true),
+				new Inspector(null, null, "Maylin Jassira Wong Uribe", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"950026258", "Sancionador", true),
+				new Inspector(null, null, "Miguel Angel Castro Zavala", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"957587997", "Sancionador", true),
+				new Inspector(null, null, "Omara Susana Ramírez Niño", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"974716736", "Sancionador", true),
+				new Inspector(null, null, "Orlando Francisco Añazco Núnjar", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"955712094", "Sancionador", true),
+				new Inspector(null, null, "Oscar Humberto Moreno Rubiños", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"927690318", "Sancionador", true),
+				new Inspector(null, null, "Pedro Enrique Prado Prado", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"939265781", "Sancionador", true),
+				new Inspector(null, null, "Sally Veronica Tamayo Olivas", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"946782906", "Sancionador", true),
+				new Inspector(null, null, "Tatiana Julissa Guerrero Cuevas", "TRABAJO", "Resolutor", "correo@gmail,com",
+						"989567877", "Sancionador", true),
+				new Inspector(null, null, "Vanessa Victoria Vargas Chafloque", "TRABAJO", "Resolutor",
+						"correo@gmail,com", "992918254", "Sancionador", true)).forEach(item ->{
+							log.info("Nuevo Inspector {}", inspectorService.registrar(item));
+						});
 	}
 
 	public void testStoredProcedure() {

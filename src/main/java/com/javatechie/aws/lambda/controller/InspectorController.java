@@ -69,8 +69,8 @@ public class InspectorController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InspectorResponse.class))) })
 	@GetMapping(path = "/searchByTipo/{tipo}")
-	public List<ReactSelectResponse> buscarPorNombre(@PathVariable String tipo) {
-		return service.listarInspectoresPorTipo(tipo);
+	public List<ReactSelectResponse> buscarPorNombre(@PathVariable String tipo, @RequestParam(required = false) String etapa) {
+		return service.listarInspectoresPorTipo(tipo, etapa);
 	}
 
 	@Operation(summary = "Registra el un Inspector")

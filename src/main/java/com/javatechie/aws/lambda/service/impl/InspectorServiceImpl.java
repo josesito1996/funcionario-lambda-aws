@@ -96,10 +96,17 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 	}
 
 	@Override
-	public List<ReactSelectResponse> listarInspectoresPorTipo(String tipo) {
-		List<ReactSelectResponse> list = repo.findByTipoAndEstado(tipo, true).stream().map(this::reactREponse)
-				.collect(Collectors.toList());
-		list.sort(Comparator.comparing(ReactSelectResponse::getLabel));
+	public List<ReactSelectResponse> listarInspectoresPorTipo(String tipo, String etapa) {
+		List<ReactSelectResponse> list = new ArrayList<>();
+		if (etapa != null) {
+			list = repo.findByTipoAndEtapaAndEstado(tipo, etapa, true).stream().map(this::reactREponse)
+					.sorted(Comparator.comparing(ReactSelectResponse::getLabel))
+					.collect(Collectors.toList());
+		} else {
+			list = repo.findByTipoAndEstado(tipo, true).stream().map(this::reactREponse)
+					.sorted(Comparator.comparing(ReactSelectResponse::getLabel))
+					.collect(Collectors.toList());
+		}
 		return list;
 	}
 

@@ -16,4 +16,6 @@ public interface RepoInspector extends GenericRepo<Inspector, String> {
 	List<Inspector> findByNombreInspectorContaining(String nombreInspector);
 
 	List<Inspector> findByTipoAndEstado(String tipo, Boolean estado);
+	
+	List<Inspector> findByTipoAndEtapaAndEstado(String tipo, String etapa, Boolean estado);
 }
