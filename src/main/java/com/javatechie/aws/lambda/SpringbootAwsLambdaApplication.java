@@ -20,6 +20,7 @@ import com.javatechie.aws.lambda.domain.Etapa;
 import com.javatechie.aws.lambda.domain.Infraccion;
 import com.javatechie.aws.lambda.domain.Insight;
 import com.javatechie.aws.lambda.domain.Inspector;
+import com.javatechie.aws.lambda.domain.Intendencia;
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.Origen;
 import com.javatechie.aws.lambda.domain.SubMateria;
@@ -34,6 +35,7 @@ import com.javatechie.aws.lambda.service.EtapaService;
 import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.InsightService;
 import com.javatechie.aws.lambda.service.InspectorService;
+import com.javatechie.aws.lambda.service.IntendenciaService;
 import com.javatechie.aws.lambda.service.JurisprudenciaService;
 //import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.MateriaService;
@@ -91,6 +93,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 	@Autowired
 	SubMateriaService subMateriaService;
 
+	@Autowired
+	IntendenciaService intendenciaService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootAwsLambdaApplication.class, args);
 	}
@@ -113,6 +118,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 		// updateInfraccion();
 		// puntuacionTest();
 		// log.info(jdbc.resolucionesRecientesAgregadasQuery(7).toString());
+		// intendenciaRegister();
 	}
 
 	public void cargarMaterias() {
@@ -273,9 +279,10 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 				new Inspector(null, null, "Tatiana Julissa Guerrero Cuevas", "TRABAJO", "Resolutor", "correo@gmail,com",
 						"989567877", "Sancionador", true),
 				new Inspector(null, null, "Vanessa Victoria Vargas Chafloque", "TRABAJO", "Resolutor",
-						"correo@gmail,com", "992918254", "Sancionador", true)).forEach(item ->{
-							log.info("Nuevo Inspector {}", inspectorService.registrar(item));
-						});
+						"correo@gmail,com", "992918254", "Sancionador", true))
+				.forEach(item -> {
+					log.info("Nuevo Inspector {}", inspectorService.registrar(item));
+				});
 	}
 
 	public void testStoredProcedure() {
@@ -389,5 +396,45 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 				log.info("SubMateria : {}", subMateriaService.modificar(item));
 			});
 		}
+	}
+
+	public void intendenciaRegister() {
+		Arrays.asList(new Intendencia(null, "Amazonas", "Segunda", "Intendencia Regional de Amazonas", true),
+				new Intendencia(null, "Ancash", "Segunda", "Intendencia Regional de Ancash", true),
+				new Intendencia(null, "Ancash", "", "Zona de Trabajo de Ancash (Chimbote)", true),
+				new Intendencia(null, "Apurímac", "Segunda", "Intendencia Regional de Apurímac", true),
+				new Intendencia(null, "Arequipa", "Segunda", "Intendencia Regional de Arequipa", true),
+				new Intendencia(null, "Ayacucho", "Segunda", "Intendencia Regional de Ayacucho", true),
+				new Intendencia(null, "Cajamarca", "Segunda", "Intendencia Regional de Cajamarca", true),
+				new Intendencia(null, "Cajamarca", "Primera", "Sub Intendencia de Resolución", true),
+				new Intendencia(null, "Callao", "Segunda", "Intendencia Regional de Callao", true),
+				new Intendencia(null, "Cusco", "Segunda", "Intendencia Regional de Cusco", true),
+				new Intendencia(null, "Huancavelica", "Segunda", "Intendencia Regional de Huancavelica", true),
+				new Intendencia(null, "Huanuco", "Segunda", "Intendencia Regional de Huanuco", true),
+				new Intendencia(null, "Ica", "Segunda", "Intendencia Regional de Ica", true),
+				new Intendencia(null, "Junín", "Primera", "Sub Intendencia de Resolución", true),
+				new Intendencia(null, "Junín", "Segunda", "Intendencia Regional de Junín", true),
+				new Intendencia(null, "La Libertad", "Segunda", "Intendencia Regional de La Libertad", true),
+				new Intendencia(null, "Lambayeque", "Segunda", "Intendencia Regional de Lambayeque", true),
+				new Intendencia(null, "Lima", "Primera", "Sub Intendencia de Resolución 5", true),
+				new Intendencia(null, "Lima", "Segunda", "Intendencia Regional de Lima", true),
+				new Intendencia(null, "Lima", "Primera", "Sub Intendencia de Resolución 4", true),
+				new Intendencia(null, "Lima", "Primera", "Sub Intendencia de Resolución 3", true),
+				new Intendencia(null, "Lima", "Primera", "Sub Intendencia de Resolución 2", true),
+				new Intendencia(null, "Lima", "Primera", "Sub Intendencia de Resolución 1", true),
+				new Intendencia(null, "Lima Metropolitana", "Segunda", "Intendencia Regional de Lima Metropolitana",
+						true),
+				new Intendencia(null, "Loreto", "Segunda", "Intendencia Regional de Loreto", true),
+				new Intendencia(null, "Madre de Dios", "Segunda", "Intendencia Regional de Madre de Dios", true),
+				new Intendencia(null, "Moquegua", "Segunda", "Intendencia Regional de Moquegua", true),
+				new Intendencia(null, "Pasco", "Segunda", "Intendencia Regional de Pasco", true),
+				new Intendencia(null, "Piura", "Segunda", "Intendencia Regional de Piura", true),
+				new Intendencia(null, "Puno", "Segunda", "Intendencia Regional de Puno", true),
+				new Intendencia(null, "San Martín", "Segunda", "Intendencia Regional de San Martín", true),
+				new Intendencia(null, "Tacna", "Segunda", "Intendencia Regional de Tacna", true),
+				new Intendencia(null, "Tumbes", "Segunda", "Intendencia Regional de Tumbes", true),
+				new Intendencia(null, "Ucayali", "Segunda", "Intendencia Regional de Ucayali", true)).forEach(item ->{
+					log.info("Intendencia {}", intendenciaService.registrar(item));
+				});
 	}
 }
