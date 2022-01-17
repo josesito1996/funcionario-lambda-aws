@@ -1,7 +1,8 @@
 package com.javatechie.aws.lambda.domain.response;
 
 import java.io.Serializable;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,5 +25,15 @@ public class ResourceSamiCreateResponse implements Serializable {
 	
 	private String nombreArchivo;
 	
+	private String description;
+	
 	private String base64;
+	
+	private LocalDateTime upLoadDate;
+	
+	private String type;
+	
+	private Boolean esUtil;
+	
+	private Boolean esFavorito;
 }

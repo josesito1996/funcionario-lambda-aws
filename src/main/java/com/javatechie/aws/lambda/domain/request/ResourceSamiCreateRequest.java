@@ -36,7 +36,7 @@ public class ResourceSamiCreateRequest implements Serializable {
 	
 	@NotNull
 	@NotEmpty
-	private String base64;
+	private Integer size;
 	
 	@NotNull
 	@NotEmpty

@@ -39,7 +39,7 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 				.type(request.getType())
 				.isUtil(false)
 				.isFavorite(false)
-				.bytes(request.getBase64().getBytes().length)
+				.bytes(request.getSize())
 				.isRemoved(false)
 				.userName(request.getUserName())
 				.category(request.getCategory())
