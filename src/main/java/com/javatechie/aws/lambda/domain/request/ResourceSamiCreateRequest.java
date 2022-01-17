@@ -35,7 +35,6 @@ public class ResourceSamiCreateRequest implements Serializable {
 	private String category;
 	
 	@NotNull
-	@NotEmpty
 	private Integer size;
 	
 	@NotNull
