@@ -81,4 +81,8 @@ public class Utils {
 		resultado = (resultado / Math.pow(10, numeroDecimales)) + parteEntera;
 		return resultado;
 	}
+	
+	public static String getExtension(String fileName) {
+		return fileName.substring(fileName.indexOf("."), fileName.length());
+	}
 }
