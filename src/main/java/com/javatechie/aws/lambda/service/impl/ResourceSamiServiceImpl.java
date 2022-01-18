@@ -1,7 +1,6 @@
 package com.javatechie.aws.lambda.service.impl;
 
 import static com.javatechie.aws.lambda.util.Utils.getExtension;
-
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,7 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 	private ResourceSami transformRequest(ResourceSamiCreateRequest request) {
 		return ResourceSami.builder()
 				.fileName(request.getFileName())
+				.customFileName(request.getFileNameAux().concat(getExtension(request.getFileName())))
 				.description(request.getDescription())
 				.uploadDate(LocalDateTime.now().toString())
 				.type(request.getType())

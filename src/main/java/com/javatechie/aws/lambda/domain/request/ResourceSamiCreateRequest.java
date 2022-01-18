@@ -25,6 +25,10 @@ public class ResourceSamiCreateRequest implements Serializable {
 	@NotNull
 	@NotEmpty
 	private String fileName;
+	
+	@NotNull
+	@NotEmpty
+	private String fileNameAux;
 
 	@NotNull
 	@NotEmpty

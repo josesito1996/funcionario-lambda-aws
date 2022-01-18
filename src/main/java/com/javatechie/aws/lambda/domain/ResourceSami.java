@@ -35,6 +35,9 @@ public class ResourceSami implements Serializable {
 	
 	@DynamoDBAttribute
 	private String fileName;
+	
+	@DynamoDBAttribute
+	private String customFileName;
 
 	@DynamoDBAttribute
 	private String description;
