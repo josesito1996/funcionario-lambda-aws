@@ -4,10 +4,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
+
 
 public class Utils {
 
@@ -19,6 +21,16 @@ public class Utils {
 		return name.replaceAll(" ", "").toLowerCase().concat("@gmail.com");
 	}
 
+	public static LocalDateTime convertToLocalDateTime(String dateTime) {
+		return LocalDateTime.parse(dateTime);
+	}
+	
+	public static String fechaFormateadaOther(LocalDateTime fecha) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY hh:mm:s");
+		String fechaFormateada = fecha.format(formatter);
+		return fechaFormateada;
+	}
+	
 	public static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
 		return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}

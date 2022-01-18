@@ -1,8 +1,9 @@
 package com.javatechie.aws.lambda.domain.response;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,15 +26,24 @@ public class ResourceSamiCreateResponse implements Serializable {
 	
 	private String nombreArchivo;
 	
+	@JsonInclude(Include.NON_NULL)
+	private String categoria;
+	
+	@JsonInclude(Include.NON_NULL)
 	private String description;
 	
+	@JsonInclude(Include.NON_NULL)
 	private String base64;
 	
-	private LocalDateTime upLoadDate;
+	@JsonInclude(Include.NON_NULL)
+	private String upLoadDate;
 	
+	@JsonInclude(Include.NON_NULL)
 	private String type;
 	
+	@JsonInclude(Include.NON_NULL)
 	private Boolean esUtil;
 	
+	@JsonInclude(Include.NON_NULL)
 	private Boolean esFavorito;
 }
