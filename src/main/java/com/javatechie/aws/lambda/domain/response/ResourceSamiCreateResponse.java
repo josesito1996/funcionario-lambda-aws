@@ -24,6 +24,10 @@ public class ResourceSamiCreateResponse implements Serializable {
 
 	private String idFile;
 	
+	@JsonInclude(Include.NON_NULL)
+	private String idFileExtension;
+
+	@JsonInclude(Include.NON_NULL)
 	private String nombreArchivo;
 	
 	@JsonInclude(Include.NON_NULL)

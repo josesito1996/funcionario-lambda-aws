@@ -74,6 +74,7 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 	private ResourceSamiCreateResponse transformResponse(ResourceSami resourceSami) {
 		return ResourceSamiCreateResponse.builder()
 				.idFile(resourceSami.getId())
+				.idFileExtension(resourceSami.getId().concat(getExtension(resourceSami.getFileName())))
 				.nombreArchivo(resourceSami.getCustomFileName())
 				.description(resourceSami.getDescription())
 				.categoria(resourceSami.getCategory())
