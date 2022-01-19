@@ -55,7 +55,7 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 	public List<ResourceGroupResponse> listByUserName(String userName) {
 		List<ResourceSami> listado = repo.findByUserName(userName)
 				.stream()
-				.filter(item -> !item.getIsRemoved())
+				.filter(item -> item.getIsRemoved()!=null && !item.getIsRemoved())
 				.collect(Collectors.toList());
 		Map<String, List<ResourceSamiCreateResponse>> mapGroup = listado.stream()
 		.map(this::transformResponse)
@@ -99,7 +99,7 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 				.isUtil(null)
 				.isFavorite(null)
 				.bytes(request.getSize())
-				.isRemoved(null)
+				.isRemoved(false)
 				.userName(request.getUserName())
 				.category(request.getCategory())
 				.build();
