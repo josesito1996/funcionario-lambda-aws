@@ -96,10 +96,10 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 				.description(request.getDescription())
 				.uploadDate(LocalDateTime.now().toString())
 				.type(request.getType())
-				.isUtil(false)
-				.isFavorite(false)
+				.isUtil(null)
+				.isFavorite(null)
 				.bytes(request.getSize())
-				.isRemoved(false)
+				.isRemoved(null)
 				.userName(request.getUserName())
 				.category(request.getCategory())
 				.build();
