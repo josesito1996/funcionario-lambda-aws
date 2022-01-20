@@ -97,4 +97,12 @@ public class Utils {
 	public static String getExtension(String fileName) {
 		return fileName.substring(fileName.indexOf("."), fileName.length());
 	}
+	
+	public static String getBase64Fragment(String base64) {
+		if (!base64.isEmpty()) {
+			String [] cadenas = base64.split(",");
+			return cadenas[1];
+		}
+		return "";
+	}
 }
