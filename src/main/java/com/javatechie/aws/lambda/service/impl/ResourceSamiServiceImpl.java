@@ -108,6 +108,7 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 				.categoria(resourceSami.getCategory())
 				.upLoadDate(fechaFormateadaOther(convertToLocalDateTime(resourceSami.getUploadDate())))
 				.esUtil(resourceSami.getIsUtil()).esFavorito(resourceSami.getIsFavorite()).type(resourceSami.getType())
+				.url(resourceSami.getUrl())
 				.build();
 	}
 

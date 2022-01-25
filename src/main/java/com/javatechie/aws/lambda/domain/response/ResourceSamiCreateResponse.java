@@ -50,4 +50,7 @@ public class ResourceSamiCreateResponse implements Serializable {
 	
 	@JsonInclude(Include.NON_NULL)
 	private Boolean esFavorito;
+	
+	@JsonInclude(Include.NON_NULL)
+	private String url;
 }
