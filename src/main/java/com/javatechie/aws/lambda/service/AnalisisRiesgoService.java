@@ -11,4 +11,6 @@ public interface AnalisisRiesgoService extends ICrud<AnalisisRiesgo, String> {
     
     AnalisisRiesgo buscarPorId(String id);
     
+    InfraccionAnalisisRequest verPorIdAnalisis(String idAnalisis);
+    
 }

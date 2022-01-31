@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import com.javatechie.aws.lambda.aws.ActuacionPojo;
 import com.javatechie.aws.lambda.domain.Infraccion;
+import com.javatechie.aws.lambda.domain.ReactSelect;
 import com.javatechie.aws.lambda.domain.SubMateria;
+import com.javatechie.aws.lambda.domain.request.ReactSelectRequest;
 import com.javatechie.aws.lambda.domain.response.ArticuloResponseBody;
 import com.javatechie.aws.lambda.domain.response.EtapaResponse;
 import com.javatechie.aws.lambda.domain.response.InfraccionResponse;
@@ -77,4 +79,8 @@ public class ListUtils {
 		return actuaciones.get(sizeActuacion - 1).getEtapa().getNombreEtapa();
 	}
 
+	public static ReactSelectRequest transformFromReactSelect(ReactSelect item){
+			return new ReactSelectRequest(item.getValue(), item.getLabel(), null);
+	}
+	
 }

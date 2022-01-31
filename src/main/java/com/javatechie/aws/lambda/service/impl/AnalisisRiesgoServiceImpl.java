@@ -1,5 +1,7 @@
 package com.javatechie.aws.lambda.service.impl;
 
+import static com.javatechie.aws.lambda.util.ListUtils.transformFromReactSelect;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,8 +104,35 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
     public AnalisisRiesgo buscarPorId(String id) {
         Optional<AnalisisRiesgo> optional = verPorId(id);
         if (!optional.isPresent()) {
-            return AnalisisRiesgo.builder().build();
+            throw new NotFoundException("No existe Registro relacionado al ID : " + id);
         }
         return optional.get();
     }
+
+	@Override
+	public InfraccionAnalisisRequest verPorIdAnalisis(String idAnalisis) {
+		AnalisisRiesgo analisis = buscarPorId(idAnalisis);
+		ReactSelect origenCaso = analisis.getOrigenCaso();
+		List<InfraccionItem> infracciones = analisis.getInfracciones();
+		return InfraccionAnalisisRequest.builder()
+				.origenCaso(transformFromReactSelect(origenCaso))
+				.nameAsesor(analisis.getNombreAsesor())
+				.infractions(infracciones.stream().map(item -> {
+					return InfraccionItemRequest.builder()
+							.materia(transformFromReactSelect(item.getMateria()))
+							.selectSubmateria(transformFromReactSelect(item.getSubMaterias()))
+							.selectBaseLegal(transformFromReactSelect(item.getBaseLegal()))
+							.gravedad(item.getGravedad())
+							.provision(item.getProvision())
+							.descripcion(item.getDescripcion())
+							.afectados(item.getTrabajadoresAfectados())
+							.uitMultaPotencial(item.getUitMultaPotencial())
+							.multaPotencial(item.getMultaPotencial())
+							.build();
+				}).collect(Collectors.toList()))
+				.nivelRiesgo(transformFromReactSelect(analisis.getNivelRiesgo()))
+				.cantInvolucrados(analisis.getCantidadInvolucrados())
+				.idCaso(idAnalisis)
+				.build();
+	}
 }
