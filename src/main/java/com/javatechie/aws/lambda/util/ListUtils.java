@@ -80,7 +80,7 @@ public class ListUtils {
 	}
 
 	public static ReactSelectRequest transformFromReactSelect(ReactSelect item){
-			return new ReactSelectRequest(item.getValue(), item.getLabel(), null);
+			return new ReactSelectRequest(item.getValue(), item.getLabel(), item.getCampoAux());
 	}
 	
 }
