@@ -31,4 +31,8 @@ public interface MateriaService extends ICrud<Materia, String> {
     List<Map<String, Object>> verSubMaterias(SubMateriaRequestBody request);
     
     List<ReactSelectResponse> listarInfraccionesParaReactSelect(List<SubMateria> subMaterias);
+    
+    List<Object> materiaPieChartResponses();
+    
+    List<Object> materiaPieChartSancionadasResponses();
 }

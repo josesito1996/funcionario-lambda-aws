@@ -90,5 +90,15 @@ public class MateriaController {
             @Valid @RequestBody SubMateriaRequestBody request) {
         return service.verSubMaterias(request);
     }
+    
+    @GetMapping(path = "/mostInspectedSubjects")
+    public List<Object> materiaPieChartResponses() {
+        return service.materiaPieChartResponses();
+    }
+    
+    @GetMapping(path = "/mostSanctionedSubjects")
+    public List<Object> materiaPieSancionadaChartResponses() {
+        return service.materiaPieChartSancionadasResponses();
+    }
 
 }

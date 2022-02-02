@@ -3,6 +3,7 @@ package com.javatechie.aws.lambda.service.impl;
 import static com.javatechie.aws.lambda.util.ListUtils.subMateriaResponseProccesor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.SubMateria;
+import com.javatechie.aws.lambda.domain.jdbc.MateriaInspeccionadasQuery;
 import com.javatechie.aws.lambda.domain.request.MateriaBody;
 import com.javatechie.aws.lambda.domain.request.SubMateriaRequestBody;
 import com.javatechie.aws.lambda.domain.response.MateriaResponse;
@@ -23,14 +25,21 @@ import com.javatechie.aws.lambda.domain.response.SubMateriaResponse;
 import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoMateria;
+import com.javatechie.aws.lambda.respository.jdbc.MateriasJdbc;
 import com.javatechie.aws.lambda.service.MateriaService;
 import com.javatechie.aws.lambda.service.SubMateriaService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class MateriaServiceImpl extends CrudImpl<Materia, String> implements MateriaService {
 
 	@Autowired
 	private RepoMateria repo;
+
+	@Autowired
+	private MateriasJdbc materiaJdbc;
 
 	@Autowired
 	private SubMateriaService subMateriaService;
@@ -134,10 +143,30 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
 	@Override
 	public List<ReactSelectResponse> listarReactSelect() {
 		List<Materia> materias = listar();
-		return materias.stream()
-				.sorted(Comparator.comparing(Materia::getNombreMateria))
-				.map(materia -> {
+		return materias.stream().sorted(Comparator.comparing(Materia::getNombreMateria)).map(materia -> {
 			return new ReactSelectResponse(materia.getIdMateria(), materia.getNombreMateria(), null, null);
 		}).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Object> materiaPieChartResponses() {
+		List<Object> items = new ArrayList<>();
+		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasInspeccionadasQueries();
+		materias.forEach(item -> {
+			items.add(Arrays.asList(item.getNombreMateria(), item.getCantidad()));
+		});
+		log.info("Materias {}", items);
+		return items;
+	}
+
+	@Override
+	public List<Object> materiaPieChartSancionadasResponses() {
+		List<Object> items = new ArrayList<>();
+		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasSancionadasQueries();
+		materias.forEach(item -> {
+			items.add(Arrays.asList(item.getNombreMateria(), item.getCantidad()));
+		});
+		log.info("Materias {}", items);
+		return items;
 	}
 }
