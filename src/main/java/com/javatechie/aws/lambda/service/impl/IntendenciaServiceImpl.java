@@ -28,7 +28,7 @@ public class IntendenciaServiceImpl extends CrudImpl<Intendencia, String> implem
 	public List<ReactSelectResponse> listIntendencias() {
 
 		return listar().stream().map(item -> {
-			return new ReactSelectResponse(item.getIdIntendencia(), item.getDepartamento(), null, null);
+			return new ReactSelectResponse(item.getIdIntendencia(), item.getOficina(), null, null);
 		}).sorted(Comparator.comparing(ReactSelectResponse::getLabel)).collect(Collectors.toList());
 	}
 
