@@ -27,9 +27,13 @@ public class IntendenciaServiceImpl extends CrudImpl<Intendencia, String> implem
 	@Override
 	public List<ReactSelectResponse> listIntendencias() {
 
-		return listar().stream().map(item -> {
+		return listar()
+				.stream()
+				.filter(item -> !item.getNoMostrar())
+				.map(item -> {
 			return new ReactSelectResponse(item.getIdIntendencia(), item.getOficina(), null, null);
-		}).sorted(Comparator.comparing(ReactSelectResponse::getLabel)).collect(Collectors.toList());
+		})
+				.sorted(Comparator.comparing(ReactSelectResponse::getLabel)).collect(Collectors.toList());
 	}
 
 }

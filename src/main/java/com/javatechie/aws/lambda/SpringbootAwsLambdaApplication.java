@@ -20,7 +20,6 @@ import com.javatechie.aws.lambda.domain.Etapa;
 import com.javatechie.aws.lambda.domain.Infraccion;
 import com.javatechie.aws.lambda.domain.Insight;
 import com.javatechie.aws.lambda.domain.Inspector;
-import com.javatechie.aws.lambda.domain.Intendencia;
 import com.javatechie.aws.lambda.domain.Materia;
 import com.javatechie.aws.lambda.domain.Origen;
 import com.javatechie.aws.lambda.domain.SubMateria;
@@ -399,6 +398,11 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 	}
 
 	public void intendenciaRegister() {
+		intendenciaService.listar().forEach(item -> {
+			item.setNoMostrar(false);
+			intendenciaService.modificar(item);
+		});
+		/*
 		Arrays.asList(new Intendencia(null, "Amazonas", "Segunda", "Intendencia Regional de Amazonas", true),
 				new Intendencia(null, "Ancash", "Segunda", "Intendencia Regional de Ancash", true),
 				new Intendencia(null, "Ancash", "", "Zona de Trabajo de Ancash (Chimbote)", true),
@@ -436,5 +440,6 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 				new Intendencia(null, "Ucayali", "Segunda", "Intendencia Regional de Ucayali", true)).forEach(item ->{
 					log.info("Intendencia {}", intendenciaService.registrar(item));
 				});
+				*/
 	}
 }

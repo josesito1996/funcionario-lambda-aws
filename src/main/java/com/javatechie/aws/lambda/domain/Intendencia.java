@@ -38,6 +38,9 @@ public class Intendencia implements Serializable {
 	private String oficina;
 	
 	@DynamoDBAttribute
+	private Boolean noMostrar;
+	
+	@DynamoDBAttribute
 	private boolean estado;
 	
 }
