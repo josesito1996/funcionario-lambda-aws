@@ -32,73 +32,72 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequestMapping("/api-materia")
 public class MateriaController {
 
-    @Autowired
-    private MateriaService service;
+	@Autowired
+	private MateriaService service;
 
-    @GetMapping(path = "/listReactSelect")
-    public List<ReactSelectResponse> listarSelectReact(){
-        return service.listarReactSelect();
-    }
-    
-    @Operation(summary = "Lista Todas las materias de la BD")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = MateriaResponse.class)))) })
-    @GetMapping(path = "/listAll")
-    public List<MateriaResponse> listarTodos() {
-        return service.ListarMateriaResponse();
-    }
+	@GetMapping(path = "/listReactSelect")
+	public List<ReactSelectResponse> listarSelectReact() {
+		return service.listarReactSelect();
+	}
 
-    @Operation(summary = "Lista las materias activas de la BD")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = MateriaResponse.class)))) })
-    @GetMapping(path = "/listAllActives")
-    public List<MateriaResponse> lsitarActivos() {
-        return service.listarMateriasPorEstado(true);
-    }
+	@Operation(summary = "Lista Todas las materias de la BD")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = MateriaResponse.class)))) })
+	@GetMapping(path = "/listAll")
+	public List<MateriaResponse> listarTodos() {
+		return service.ListarMateriaResponse();
+	}
 
-    @Operation(summary = "Busca una Materia por ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = MateriaResponse.class))) })
-    @GetMapping(path = "/findById/{id}")
-    public MateriaResponse buscarPorId(@PathVariable String id) {
-        return service.verPorIdMateria(id);
-    }
+	@Operation(summary = "Lista las materias activas de la BD")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = MateriaResponse.class)))) })
+	@GetMapping(path = "/listAllActives")
+	public List<MateriaResponse> lsitarActivos() {
+		return service.listarMateriasPorEstado(true);
+	}
 
-    @Operation(summary = "Registra una nueva materia")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = MateriaResponse.class))) })
-    @PostMapping(path = "/save")
-    public MateriaResponse registrar(@Valid @RequestBody MateriaBody request) {
-        return service.registrar(request);
-    }
+	@Operation(summary = "Busca una Materia por ID")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = MateriaResponse.class))) })
+	@GetMapping(path = "/findById/{id}")
+	public MateriaResponse buscarPorId(@PathVariable String id) {
+		return service.verPorIdMateria(id);
+	}
 
-    @Operation(summary = "Actualiza la materia")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = MateriaResponse.class))) })
-    @PutMapping(path = "/update")
-    public MateriaResponse modificar(@Valid @RequestBody MateriaBody request) {
-        return service.actualizar(request);
-    }
+	@Operation(summary = "Registra una nueva materia")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = MateriaResponse.class))) })
+	@PostMapping(path = "/save")
+	public MateriaResponse registrar(@Valid @RequestBody MateriaBody request) {
+		return service.registrar(request);
+	}
 
-    @GetMapping(path = "/listMateriasAndSubmaterias")
-    public List<MateriaResponse> listarMateriasYSubmateria() {
-        return service.ListarMateriasYSubmaterias();
-    }
+	@Operation(summary = "Actualiza la materia")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = MateriaResponse.class))) })
+	@PutMapping(path = "/update")
+	public MateriaResponse modificar(@Valid @RequestBody MateriaBody request) {
+		return service.actualizar(request);
+	}
 
-    @PostMapping(path = "/listSubMaterias")
-    public List<Map<String, Object>> verSubMateriasDelaMateria(
-            @Valid @RequestBody SubMateriaRequestBody request) {
-        return service.verSubMaterias(request);
-    }
-    
-    @GetMapping(path = "/mostInspectedSubjects")
-    public List<Object> materiaPieChartResponses() {
-        return service.materiaPieChartResponses();
-    }
-    
-    @GetMapping(path = "/mostSanctionedSubjects")
-    public List<Object> materiaPieSancionadaChartResponses() {
-        return service.materiaPieChartSancionadasResponses();
-    }
+	@GetMapping(path = "/listMateriasAndSubmaterias")
+	public List<MateriaResponse> listarMateriasYSubmateria() {
+		return service.ListarMateriasYSubmaterias();
+	}
+
+	@PostMapping(path = "/listSubMaterias")
+	public List<Map<String, Object>> verSubMateriasDelaMateria(@Valid @RequestBody SubMateriaRequestBody request) {
+		return service.verSubMaterias(request);
+	}
+
+	@GetMapping(path = "/mostInspectedSubjects")
+	public Map<String, Object> materiaPieChartResponses() {
+		return service.materiaPieChartResponses();
+	}
+
+	@GetMapping(path = "/mostSanctionedSubjects")
+	public Map<String, Object> materiaPieSancionadaChartResponses() {
+		return service.materiaPieChartSancionadasResponses();
+	}
 
 }

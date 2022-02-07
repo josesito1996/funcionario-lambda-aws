@@ -1,9 +1,8 @@
 package com.javatechie.aws.lambda.service.impl;
 
 import static com.javatechie.aws.lambda.util.ListUtils.subMateriaResponseProccesor;
-
+import static com.javatechie.aws.lambda.util.Utils.generateColorList;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -149,24 +148,38 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
 	}
 
 	@Override
-	public List<Object> materiaPieChartResponses() {
-		List<Object> items = new ArrayList<>();
+	public Map<String, Object> materiaPieChartResponses() {
+		log.info("MateriaServiceImpl.materiaPieChartResponses");
 		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasInspeccionadasQueries();
-		materias.forEach(item -> {
-			items.add(Arrays.asList(item.getNombreMateria(), item.getCantidad()));
-		});
-		log.info("Materias {}", items);
-		return items;
+		log.info("Materias {}", materias);
+		if (!materias.isEmpty()) {
+			Map<String, Object> map = new HashMap<>();
+			List<String> materiasName = materias.stream().map(item->item.getNombreMateria()).collect(Collectors.toList());
+			List<Integer> materiasCant = materias.stream().map(item->item.getCantidad()).collect(Collectors.toList());
+			List<String> colores = generateColorList(materias.size()); 
+			map.put("materias", materiasName);
+			map.put("materiasCant", materiasCant);
+			map.put("colores", colores);
+			return map;
+		}
+		return new HashMap<>();
 	}
 
 	@Override
-	public List<Object> materiaPieChartSancionadasResponses() {
-		List<Object> items = new ArrayList<>();
+	public Map<String, Object> materiaPieChartSancionadasResponses() {
+		log.info("MateriaServiceImpl.materiaPieChartSancionadasResponses");
 		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasSancionadasQueries();
-		materias.forEach(item -> {
-			items.add(Arrays.asList(item.getNombreMateria(), item.getCantidad()));
-		});
-		log.info("Materias {}", items);
-		return items;
+		log.info("Materias {}", materias);
+		if (!materias.isEmpty()) {
+			Map<String, Object> map = new HashMap<>();
+			List<String> materiasName = materias.stream().map(item->item.getNombreMateria()).collect(Collectors.toList());
+			List<Integer> materiasCant = materias.stream().map(item->item.getCantidad()).collect(Collectors.toList());
+			List<String> colores = generateColorList(materias.size()); 
+			map.put("materias", materiasName);
+			map.put("materiasCant", materiasCant);
+			map.put("colores", colores);
+			return map;
+		}
+		return new HashMap<>();
 	}
 }

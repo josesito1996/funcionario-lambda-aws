@@ -32,7 +32,7 @@ public interface MateriaService extends ICrud<Materia, String> {
     
     List<ReactSelectResponse> listarInfraccionesParaReactSelect(List<SubMateria> subMaterias);
     
-    List<Object> materiaPieChartResponses();
+    Map<String, Object> materiaPieChartResponses();
     
-    List<Object> materiaPieChartSancionadasResponses();
+    Map<String, Object> materiaPieChartSancionadasResponses();
 }
