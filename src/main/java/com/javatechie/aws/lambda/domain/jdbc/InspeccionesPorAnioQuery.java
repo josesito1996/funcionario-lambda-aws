@@ -15,13 +15,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class InspeccionesPorAñoQuery implements Serializable {
+public class InspeccionesPorAnioQuery implements Serializable {
 	/**
 	* 
 	*/
 	private static final long serialVersionUID = -7189298965501691879L;
 
-	private Integer año;
+	private Integer anio;
 	
 	private Integer cantidad;
 	

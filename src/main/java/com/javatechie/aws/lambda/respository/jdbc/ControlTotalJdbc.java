@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.stereotype.Repository;
 
 import com.javatechie.aws.lambda.domain.jdbc.ControlTotalesQuery;
-import com.javatechie.aws.lambda.domain.jdbc.InspeccionesPorAñoQuery;
+import com.javatechie.aws.lambda.domain.jdbc.InspeccionesPorAnioQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspeccionesPorMesQuery;
 
 import lombok.extern.slf4j.Slf4j;
@@ -58,8 +58,8 @@ public class ControlTotalJdbc {
 		return ControlTotalesQuery.builder().build();
 	}
 
-	public List<InspeccionesPorAñoQuery> inspeccionesPorAño() {
-		return jdbcTemplate.query("CALL SP_INSPECCIONES_POR_ANIO()", new InspeccionesPorAñoMapper());
+	public List<InspeccionesPorAnioQuery> inspeccionesPorAño() {
+		return jdbcTemplate.query("CALL SP_INSPECCIONES_POR_ANIO()", new InspeccionesPorAnioMapper());
 	}
 
 	public List<InspeccionesPorMesQuery> inspeccionesPorMes(Integer año) {

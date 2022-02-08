@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.javatechie.aws.lambda.domain.jdbc.ControlTotalesQuery;
-import com.javatechie.aws.lambda.domain.jdbc.InspeccionesPorAñoQuery;
+import com.javatechie.aws.lambda.domain.jdbc.InspeccionesPorAnioQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspeccionesPorMesQuery;
 import com.javatechie.aws.lambda.domain.response.chart.BarChartResponse;
 import com.javatechie.aws.lambda.respository.jdbc.ControlTotalJdbc;
@@ -38,13 +38,13 @@ public class DashboardServiceImpl implements DashboardService {
 
 	@Override
 	public BarChartResponse inspeccionesPorMes() {
-		List<InspeccionesPorAñoQuery> inspecciones = controlJdbc.inspeccionesPorAño();
+		List<InspeccionesPorAnioQuery> inspecciones = controlJdbc.inspeccionesPorAño();
 		if (inspecciones.isEmpty()) {
 			return BarChartResponse.builder().build();
 		}
 		return BarChartResponse.builder()
-				.items(inspecciones.stream().map(item -> String.valueOf(item.getAño())).collect(Collectors.toList()))
-				.totales(inspecciones.stream().map(InspeccionesPorAñoQuery::getCantidad).collect(Collectors.toList()))
+				.items(inspecciones.stream().map(item -> String.valueOf(item.getAnio())).collect(Collectors.toList()))
+				.totales(inspecciones.stream().map(InspeccionesPorAnioQuery::getCantidad).collect(Collectors.toList()))
 				.build();
 	}
 
