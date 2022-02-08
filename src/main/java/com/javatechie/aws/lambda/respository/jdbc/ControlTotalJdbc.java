@@ -14,6 +14,8 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.stereotype.Repository;
 
 import com.javatechie.aws.lambda.domain.jdbc.ControlTotalesQuery;
+import com.javatechie.aws.lambda.domain.jdbc.InspeccionesPorAñoQuery;
+import com.javatechie.aws.lambda.domain.jdbc.InspeccionesPorMesQuery;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,7 +46,8 @@ public class ControlTotalJdbc {
 			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> newList = (List<Map<String, Object>>) result;
 			for (Map<String, Object> map : newList) {
-				response = response.builder().totalInspecciones(Integer.parseInt(map.get("total_inspecciones").toString()))
+				response = response.builder()
+						.totalInspecciones(Integer.parseInt(map.get("total_inspecciones").toString()))
 						.totalPrimera(Integer.parseInt(map.get("total_primera").toString()))
 						.totalSegunda(Integer.parseInt(map.get("total_segunda").toString()))
 						.totalTfl(Integer.parseInt(map.get("total_tfl").toString())).build();
@@ -53,6 +56,15 @@ public class ControlTotalJdbc {
 			return response;
 		}
 		return ControlTotalesQuery.builder().build();
+	}
+
+	public List<InspeccionesPorAñoQuery> inspeccionesPorAño() {
+		return jdbcTemplate.query("CALL SP_INSPECCIONES_POR_ANIO()", new InspeccionesPorAñoMapper());
+	}
+
+	public List<InspeccionesPorMesQuery> inspeccionesPorMes(Integer año) {
+		return jdbcTemplate.query("CALL SP_INSPECCIONES_POR_MES(?)", new InspeccionesPorMesMapper(),
+				new Object[] { año });
 	}
 
 }
