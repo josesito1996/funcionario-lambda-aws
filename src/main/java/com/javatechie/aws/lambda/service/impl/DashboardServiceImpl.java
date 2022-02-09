@@ -38,7 +38,9 @@ public class DashboardServiceImpl implements DashboardService {
 
 	@Override
 	public BarChartResponse inspeccionesPorMes() {
-		List<InspeccionesPorAnioQuery> inspecciones = controlJdbc.inspeccionesPorAño();
+		List<InspeccionesPorAnioQuery> inspecciones = controlJdbc.inspeccionesPorAño().stream().filter(item -> {
+			return item.getAnio() > 2018;
+		}).collect(Collectors.toList());
 		if (inspecciones.isEmpty()) {
 			return BarChartResponse.builder().build();
 		}
