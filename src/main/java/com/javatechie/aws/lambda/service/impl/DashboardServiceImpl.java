@@ -46,7 +46,10 @@ public class DashboardServiceImpl implements DashboardService {
 			return item.getAnio() > 2018;
 		}).collect(Collectors.toList());
 		if (inspecciones.isEmpty()) {
-			return BarChartResponse.builder().build();
+			return BarChartResponse.builder()
+					.items(new ArrayList<>())
+					.totales(new ArrayList<>())
+					.build();
 		}
 		return BarChartResponse.builder()
 				.items(inspecciones.stream().map(item -> String.valueOf(item.getAnio())).collect(Collectors.toList()))
