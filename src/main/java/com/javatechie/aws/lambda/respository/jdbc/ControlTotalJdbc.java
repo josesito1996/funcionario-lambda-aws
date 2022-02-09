@@ -58,13 +58,14 @@ public class ControlTotalJdbc {
 		return ControlTotalesQuery.builder().build();
 	}
 
-	public List<InspeccionesPorAnioQuery> inspeccionesPorAño() {
-		return jdbcTemplate.query("CALL SP_INSPECCIONES_POR_ANIO()", new InspeccionesPorAnioMapper());
+	public List<InspeccionesPorAnioQuery> inspeccionesPorAño(String dpto) {
+		return jdbcTemplate.query("CALL SP_INSPECCIONES_POR_ANIO(?)", new InspeccionesPorAnioMapper(),
+				new Object[] { dpto });
 	}
 
-	public List<InspeccionesPorMesQuery> inspeccionesPorMes(Integer año) {
-		return jdbcTemplate.query("CALL SP_INSPECCIONES_POR_MES(?)", new InspeccionesPorMesMapper(),
-				new Object[] { año });
+	public List<InspeccionesPorMesQuery> inspeccionesPorMes(Integer año, String dpto) {
+		return jdbcTemplate.query("CALL SP_INSPECCIONES_POR_MES(?,?)", new InspeccionesPorMesMapper(),
+				new Object[] { año, dpto });
 	}
 
 }

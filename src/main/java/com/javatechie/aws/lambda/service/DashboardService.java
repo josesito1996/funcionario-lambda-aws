@@ -5,10 +5,10 @@ import com.javatechie.aws.lambda.domain.response.chart.BarChartResponse;
 
 public interface DashboardService {
 
-	public BarChartResponse inspeccionesPorMesesByAnio(Integer anio);
-	
+	public BarChartResponse inspeccionesPorMesesByAnio(Integer anio, String dpto);
+
 	public ControlTotalesQuery totales();
-	
-	public BarChartResponse inspeccionesPorMes();
-	
+
+	public BarChartResponse inspeccionesPorMes(String dpto);
+
 }

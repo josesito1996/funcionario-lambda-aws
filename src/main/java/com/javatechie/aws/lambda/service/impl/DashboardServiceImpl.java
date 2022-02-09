@@ -20,8 +20,8 @@ public class DashboardServiceImpl implements DashboardService {
 	private ControlTotalJdbc controlJdbc;
 
 	@Override
-	public BarChartResponse inspeccionesPorMesesByAnio(Integer anio) {
-		List<InspeccionesPorMesQuery> inspecciones = controlJdbc.inspeccionesPorMes(anio);
+	public BarChartResponse inspeccionesPorMesesByAnio(Integer anio, String dpto) {
+		List<InspeccionesPorMesQuery> inspecciones = controlJdbc.inspeccionesPorMes(anio, dpto);
 		if (inspecciones.isEmpty()) {
 			return BarChartResponse.builder().build();
 		}
@@ -37,8 +37,8 @@ public class DashboardServiceImpl implements DashboardService {
 	}
 
 	@Override
-	public BarChartResponse inspeccionesPorMes() {
-		List<InspeccionesPorAnioQuery> inspecciones = controlJdbc.inspeccionesPorAño().stream().filter(item -> {
+	public BarChartResponse inspeccionesPorMes(String dpto) {
+		List<InspeccionesPorAnioQuery> inspecciones = controlJdbc.inspeccionesPorAño(dpto).stream().filter(item -> {
 			return item.getAnio() > 2018;
 		}).collect(Collectors.toList());
 		if (inspecciones.isEmpty()) {
