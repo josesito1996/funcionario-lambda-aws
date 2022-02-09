@@ -1,5 +1,6 @@
 package com.javatechie.aws.lambda.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,10 @@ public class DashboardServiceImpl implements DashboardService {
 	public BarChartResponse inspeccionesPorMesesByAnio(Integer anio, String dpto) {
 		List<InspeccionesPorMesQuery> inspecciones = controlJdbc.inspeccionesPorMes(anio, dpto);
 		if (inspecciones.isEmpty()) {
-			return BarChartResponse.builder().build();
+			return BarChartResponse.builder()
+					.items(new ArrayList<>())
+					.totales(new ArrayList<>())
+					.build();
 		}
 		return BarChartResponse.builder()
 				.items(inspecciones.stream().map(InspeccionesPorMesQuery::getNombreMes).collect(Collectors.toList()))
