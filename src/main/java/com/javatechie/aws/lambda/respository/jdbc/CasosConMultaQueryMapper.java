@@ -12,8 +12,9 @@ public class CasosConMultaQueryMapper implements RowMapper<CasosConMultaQuery> {
 	@Override
 	public CasosConMultaQuery mapRow(ResultSet rs, int rowNum) throws SQLException {
 		return CasosConMultaQuery.builder()
-				.nroOrdenInspeccion(rs.getString("orden_inspeccion"))
-				.totalMulta(rs.getInt("cantidad_infracciones"))
+				.cantidadMulta(rs.getInt("cantidad_multa"))
+				.cantidadSinMulta(rs.getInt("cantidad_sin_multa"))
+				.cantidadTotal(rs.getInt("cantidad_total"))
 				.build();
 	}
 

@@ -19,8 +19,10 @@ public class CasosConMultaQuery implements Serializable {
 
 	private static final long serialVersionUID = -1032665042762736317L;
 
-	private String nroOrdenInspeccion;
+	private Integer cantidadMulta;
 
-	private Integer totalMulta;
+	private Integer cantidadSinMulta;
+	
+	private Integer cantidadTotal;
 
 }

@@ -62,18 +62,19 @@ public class DashboardServiceImpl implements DashboardService {
 	@Override
 	public DonnutChartCustomResponse graficosDeDonnas(String intendencia) {
 		log.info("DashboardServiceImpl.graficosDeDonnas");
-		List<CasosConMultaQuery> casosConMulta = controlJdbc.casosConMultaQueries(intendencia);
+		CasosConMultaQuery casosConMulta = controlJdbc.casosConMultaQueries(intendencia);
 		log.info("casos {}", casosConMulta);
-		int cantidad = casosConMulta.size();
-		Long cantidadCasosConMulta = casosConMulta.stream().filter(item -> item.getTotalMulta() > 0).count();
+		Long cantidadCasosConMulta = casosConMulta.getCantidadMulta().longValue();
 		log.info("CAsos con multa {}", cantidadCasosConMulta);
-		Integer porcentaje = getPorcentaje(cantidadCasosConMulta.intValue(), cantidad);
+		Integer porcentaje = getPorcentaje(cantidadCasosConMulta.intValue(), casosConMulta.getCantidadTotal());
+		log.info("CAsos con multa {}", cantidadCasosConMulta);
+		Integer porcentajeIn = getPorcentaje(cantidadCasosConMulta.intValue(), cantidadCasosConMulta.intValue() + casosConMulta.getCantidadSinMulta());
 		/*
 		 * Para el Segundo Chart
 		 */
 		return DonnutChartCustomResponse.builder()
 				.chart1(DonnutChart1Response.builder().intendencia(intendencia).porcentaje(porcentaje).build())
-				.chart2(Arrays.asList(Arrays.asList("Si", porcentaje), Arrays.asList("No", 100 - porcentaje))).build();
+				.chart2(Arrays.asList(Arrays.asList("Si", porcentajeIn), Arrays.asList("No", 100 - porcentajeIn))).build();
 	}
 
 }

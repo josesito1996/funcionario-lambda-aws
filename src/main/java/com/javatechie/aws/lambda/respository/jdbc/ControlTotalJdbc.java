@@ -69,9 +69,9 @@ public class ControlTotalJdbc {
 				new Object[] { año, dpto });
 	}
 
-	public List<CasosConMultaQuery> casosConMultaQueries(String intendencia) {
+	public CasosConMultaQuery casosConMultaQueries(String intendencia) {
 		return jdbcTemplate.query("call SP_LISTAR_CASOS_CON_MULTA(?)", new CasosConMultaQueryMapper(),
-				new Object[] { intendencia });
+				new Object[] { intendencia }).stream().findFirst().orElse(CasosConMultaQuery.builder().build());
 	}
 
 }
