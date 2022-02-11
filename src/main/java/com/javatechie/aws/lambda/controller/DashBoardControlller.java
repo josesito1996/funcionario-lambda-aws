@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.jdbc.ControlTotalesQuery;
 import com.javatechie.aws.lambda.domain.response.chart.BarChartResponse;
+import com.javatechie.aws.lambda.domain.response.chart.DonnutChartCustomResponse;
 import com.javatechie.aws.lambda.service.DashboardService;
 
 @RequestMapping("/api-dash")
@@ -31,6 +32,11 @@ public class DashBoardControlller {
 	@GetMapping(path = "/inspectionsPerYear/{anio}")
 	public BarChartResponse ins(@PathVariable Integer anio, @RequestParam(required = false) String dpto) {
 		return service.inspeccionesPorMesesByAnio(anio,dpto);
+	}
+	
+	@GetMapping(path = "/finesForMayor/{intendencia}")
+	public DonnutChartCustomResponse chartDonnuts(@PathVariable String intendencia) {
+		return service.graficosDeDonnas(intendencia);
 	}
 
 }

@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.stereotype.Repository;
 
+import com.javatechie.aws.lambda.domain.jdbc.CasosConMultaQuery;
 import com.javatechie.aws.lambda.domain.jdbc.ControlTotalesQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspeccionesPorAnioQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspeccionesPorMesQuery;
@@ -66,6 +67,11 @@ public class ControlTotalJdbc {
 	public List<InspeccionesPorMesQuery> inspeccionesPorMes(Integer año, String dpto) {
 		return jdbcTemplate.query("CALL SP_INSPECCIONES_POR_MES(?,?)", new InspeccionesPorMesMapper(),
 				new Object[] { año, dpto });
+	}
+
+	public List<CasosConMultaQuery> casosConMultaQueries(String intendencia) {
+		return jdbcTemplate.query("call SP_LISTAR_CASOS_CON_MULTA(?)", new CasosConMultaQueryMapper(),
+				new Object[] { intendencia });
 	}
 
 }

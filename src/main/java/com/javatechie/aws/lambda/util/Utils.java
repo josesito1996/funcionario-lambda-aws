@@ -123,4 +123,9 @@ public class Utils {
 		}
 		return items;
 	}
+
+	public static Integer getPorcentaje(int cantidad, int cantidadTotal) {
+		Double porcentaje = ((double) cantidad / (double) cantidadTotal) * 100;
+		return porcentaje.intValue();
+	}
 }
