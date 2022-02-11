@@ -73,7 +73,10 @@ public class DashboardServiceImpl implements DashboardService {
 		 * Para el Segundo Chart
 		 */
 		return DonnutChartCustomResponse.builder()
-				.chart1(DonnutChart1Response.builder().intendencia(intendencia).porcentaje(porcentaje).build())
+				.chart1(DonnutChart1Response.builder()
+						.cantidadTotal(casosConMulta.getCantidadTotal())
+						.cantidadDiaria(cantidadCasosConMulta.intValue())
+						.intendencia(intendencia).porcentaje(porcentaje).build())
 				.chart2(Arrays.asList(Arrays.asList("Si", porcentajeIn), Arrays.asList("No", 100 - porcentajeIn))).build();
 	}
 

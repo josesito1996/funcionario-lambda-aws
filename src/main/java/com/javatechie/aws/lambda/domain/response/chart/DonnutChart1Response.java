@@ -23,4 +23,8 @@ public class DonnutChart1Response implements Serializable {
 	
 	private Integer porcentaje;
 	
+	private Integer cantidadTotal;
+	
+	private Integer cantidadDiaria;
+	
 }
