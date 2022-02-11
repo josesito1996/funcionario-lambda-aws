@@ -90,14 +90,14 @@ public class MateriaController {
 		return service.verSubMaterias(request);
 	}
 
-	@GetMapping(path = "/mostInspectedSubjects")
-	public Map<String, Object> materiaPieChartResponses() {
-		return service.materiaPieChartResponses();
+	@GetMapping(path = "/mostInspectedSubjects/{intendencia}")
+	public Map<String, Object> materiaPieChartResponses(@PathVariable String intendencia) {
+		return service.materiaPieChartResponses(intendencia);
 	}
 
-	@GetMapping(path = "/mostSanctionedSubjects")
-	public Map<String, Object> materiaPieSancionadaChartResponses() {
-		return service.materiaPieChartSancionadasResponses();
+	@GetMapping(path = "/mostSanctionedSubjects/{intendencia}")
+	public Map<String, Object> materiaPieSancionadaChartResponses(@PathVariable String intendencia) {
+		return service.materiaPieChartSancionadasResponses(intendencia);
 	}
 
 }

@@ -17,18 +17,19 @@ public class MateriasJdbc {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	public List<MateriaInspeccionadasQuery> materiasInspeccionadasQueries() {
+	public List<MateriaInspeccionadasQuery> materiasInspeccionadasQueries(String intendencia) {
 		log.info("MateriasJdbc.materiasInspeccionadasQueries");
-		List<MateriaInspeccionadasQuery> materias = jdbcTemplate.query("CALL SP_VIEW_MATERIAS_MAS_INSPECCIONADAS()",
-				new MateriaInspeccionMapper());
+		log.info("Intendencia {}", intendencia);
+		List<MateriaInspeccionadasQuery> materias = jdbcTemplate.query("CALL SP_VIEW_MATERIAS_MAS_INSPECCIONADAS(?)",
+				new MateriaInspeccionMapper(), new Object[] { intendencia });
 		log.info("MateriaInspeccionadasQuery {}", materias);
 		return materias;
 	}
-	
-	public List<MateriaInspeccionadasQuery> materiasSancionadasQueries() {
+
+	public List<MateriaInspeccionadasQuery> materiasSancionadasQueries(String intendencia) {
 		log.info("MateriasJdbc.materiasSancionadasQueries");
-		List<MateriaInspeccionadasQuery> materias = jdbcTemplate.query("CALL SP_VIEW_MATERIAS_MAS_SANCIONADAS()",
-				new MateriaInspeccionMapper());
+		List<MateriaInspeccionadasQuery> materias = jdbcTemplate.query("CALL SP_VIEW_MATERIAS_MAS_SANCIONADAS(?)",
+				new MateriaInspeccionMapper(), new Object[] { intendencia });
 		log.info("MateriaInspeccionadasQuery {}", materias);
 		return materias;
 	}
