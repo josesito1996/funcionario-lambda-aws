@@ -24,5 +24,7 @@ public class CasosConMultaQuery implements Serializable {
 	private Integer cantidadSinMulta;
 	
 	private Integer cantidadTotal;
+	
+	private Integer cantidadTotalSinMulta;
 
 }

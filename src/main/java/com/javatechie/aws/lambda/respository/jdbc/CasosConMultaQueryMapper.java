@@ -15,6 +15,7 @@ public class CasosConMultaQueryMapper implements RowMapper<CasosConMultaQuery> {
 				.cantidadMulta(rs.getInt("cantidad_multa"))
 				.cantidadSinMulta(rs.getInt("cantidad_sin_multa"))
 				.cantidadTotal(rs.getInt("cantidad_total"))
+				.cantidadTotalSinMulta(rs.getInt("cantidad_total_sin_multa"))
 				.build();
 	}
 

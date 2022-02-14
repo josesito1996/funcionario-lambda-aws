@@ -66,7 +66,7 @@ public class DashboardServiceImpl implements DashboardService {
 		log.info("casos {}", casosConMulta);
 		Long cantidadCasosConMulta = casosConMulta.getCantidadMulta().longValue();
 		log.info("CAsos con multa {}", cantidadCasosConMulta);
-		Integer porcentaje = getPorcentaje(cantidadCasosConMulta.intValue(), casosConMulta.getCantidadTotal());
+		Integer porcentaje = getPorcentaje(cantidadCasosConMulta.intValue(), casosConMulta.getCantidadTotal()-casosConMulta.getCantidadTotalSinMulta());
 		log.info("CAsos con multa {}", cantidadCasosConMulta);
 		Integer porcentajeIn = getPorcentaje(cantidadCasosConMulta.intValue(), cantidadCasosConMulta.intValue() + casosConMulta.getCantidadSinMulta());
 		/*
@@ -76,7 +76,8 @@ public class DashboardServiceImpl implements DashboardService {
 				.chart1(DonnutChart1Response.builder()
 						.cantidadTotal(casosConMulta.getCantidadTotal())
 						.cantidadDiaria(cantidadCasosConMulta.intValue())
-						.intendencia(intendencia).porcentaje(porcentaje).build())
+						.intendencia(intendencia)
+						.porcentaje(porcentaje).build())
 				.chart2(Arrays.asList(Arrays.asList("Si", porcentajeIn), Arrays.asList("No", 100 - porcentajeIn))).build();
 	}
 
