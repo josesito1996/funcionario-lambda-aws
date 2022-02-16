@@ -21,6 +21,8 @@ public class InspeccionesPorMesQuery implements Serializable {
 	*/
 	private static final long serialVersionUID = -7189298965501691879L;
 
+	private Integer anioNumber;
+	
 	private Integer numeroMes;
 	
 	private String nombreMes;

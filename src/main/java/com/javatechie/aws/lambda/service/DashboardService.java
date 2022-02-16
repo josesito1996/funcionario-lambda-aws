@@ -2,6 +2,7 @@ package com.javatechie.aws.lambda.service;
 
 import com.javatechie.aws.lambda.domain.jdbc.ControlTotalesQuery;
 import com.javatechie.aws.lambda.domain.response.chart.BarChartResponse;
+import com.javatechie.aws.lambda.domain.response.chart.BarChartResponseV2;
 import com.javatechie.aws.lambda.domain.response.chart.DonnutChartCustomResponse;
 
 public interface DashboardService {
@@ -10,7 +11,7 @@ public interface DashboardService {
 
 	public ControlTotalesQuery totales();
 
-	public BarChartResponse inspeccionesPorMes(String dpto);
+	public BarChartResponseV2 inspeccionesPorMes(String dpto);
 	
 	public DonnutChartCustomResponse graficosDeDonnas(String intendencia);
 

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.jdbc.ControlTotalesQuery;
 import com.javatechie.aws.lambda.domain.response.chart.BarChartResponse;
+import com.javatechie.aws.lambda.domain.response.chart.BarChartResponseV2;
 import com.javatechie.aws.lambda.domain.response.chart.DonnutChartCustomResponse;
 import com.javatechie.aws.lambda.service.DashboardService;
 
@@ -25,7 +26,7 @@ public class DashBoardControlller {
 	}
 
 	@GetMapping(path = "/inspectionsPerMonth")
-	public BarChartResponse inspeccionesPorMes(@RequestParam(required = false) String dpto) {
+	public BarChartResponseV2 inspeccionesPorMes(@RequestParam(required = false) String dpto) {
 		return service.inspeccionesPorMes(dpto);
 	}
 

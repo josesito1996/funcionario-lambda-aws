@@ -16,12 +16,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class BarChartResponse implements Serializable {
+public class SeriesResponse implements Serializable {
 
-	private static final long serialVersionUID = -810968814995000570L;
+	private static final long serialVersionUID = -1075928851767453026L;
+	
+	private String name;
+	
+	private List<Integer> data;
 
-	private List<String> items;
-
-	private List<SeriesResponse> totales;
-
+	private String color;
+	
 }

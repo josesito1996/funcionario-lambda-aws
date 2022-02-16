@@ -12,6 +12,7 @@ public class InspeccionesPorMesMapper implements RowMapper<InspeccionesPorMesQue
 	@Override
 	public InspeccionesPorMesQuery mapRow(ResultSet rs, int rowNum) throws SQLException {
 		return InspeccionesPorMesQuery.builder()
+				.anioNumber(rs.getInt("anio_number"))
 				.numeroMes(rs.getInt("numero_mes"))
 				.nombreMes(rs.getString("mes"))
 				.cantidad(rs.getInt("cantidad"))
