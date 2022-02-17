@@ -17,19 +17,19 @@ public class MateriasJdbc {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	public List<MateriaInspeccionadasQuery> materiasInspeccionadasQueries(String intendencia) {
+	public List<MateriaInspeccionadasQuery> materiasInspeccionadasQueries(String intendencia,String desde,String hasta) {
 		log.info("MateriasJdbc.materiasInspeccionadasQueries");
 		log.info("Intendencia {}", intendencia);
-		List<MateriaInspeccionadasQuery> materias = jdbcTemplate.query("CALL SP_VIEW_MATERIAS_MAS_INSPECCIONADAS(?)",
-				new MateriaInspeccionMapper(), new Object[] { intendencia });
+		List<MateriaInspeccionadasQuery> materias = jdbcTemplate.query("CALL SP_VIEW_MATERIAS_MAS_INSPECCIONADAS(?,?,?)",
+				new MateriaInspeccionMapper(), new Object[] { intendencia, desde, hasta });
 		log.info("MateriaInspeccionadasQuery {}", materias);
 		return materias;
 	}
 
-	public List<MateriaInspeccionadasQuery> materiasSancionadasQueries(String intendencia) {
+	public List<MateriaInspeccionadasQuery> materiasSancionadasQueries(String intendencia,String desde,String hasta) {
 		log.info("MateriasJdbc.materiasSancionadasQueries");
-		List<MateriaInspeccionadasQuery> materias = jdbcTemplate.query("CALL SP_VIEW_MATERIAS_MAS_SANCIONADAS(?)",
-				new MateriaInspeccionMapper(), new Object[] { intendencia });
+		List<MateriaInspeccionadasQuery> materias = jdbcTemplate.query("CALL SP_VIEW_MATERIAS_MAS_SANCIONADAS(?,?,?)",
+				new MateriaInspeccionMapper(), new Object[] { intendencia, desde, hasta});
 		log.info("MateriaInspeccionadasQuery {}", materias);
 		return materias;
 	}

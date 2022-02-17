@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.request.MateriaBody;
@@ -91,13 +92,13 @@ public class MateriaController {
 	}
 
 	@GetMapping(path = "/mostInspectedSubjects/{intendencia}")
-	public Map<String, Object> materiaPieChartResponses(@PathVariable String intendencia) {
-		return service.materiaPieChartResponses(intendencia);
+	public Map<String, Object> materiaPieChartResponses(@PathVariable String intendencia,@RequestParam String desde,@RequestParam String hasta) {
+		return service.materiaPieChartResponses(intendencia,desde,hasta);
 	}
 
 	@GetMapping(path = "/mostSanctionedSubjects/{intendencia}")
-	public Map<String, Object> materiaPieSancionadaChartResponses(@PathVariable String intendencia) {
-		return service.materiaPieChartSancionadasResponses(intendencia);
+	public Map<String, Object> materiaPieSancionadaChartResponses(@PathVariable String intendencia,@RequestParam String desde,@RequestParam String hasta) {
+		return service.materiaPieChartSancionadasResponses(intendencia,desde,hasta);
 	}
 
 }

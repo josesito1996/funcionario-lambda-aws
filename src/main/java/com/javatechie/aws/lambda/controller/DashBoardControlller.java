@@ -26,15 +26,17 @@ public class DashBoardControlller {
 	}
 
 	@GetMapping(path = "/inspectionsPerMonth")
-	public BarChartResponseV2 inspeccionesPorMes(@RequestParam(required = false) String dpto) {
-		return service.inspeccionesPorMes(dpto);
+	public BarChartResponseV2 inspeccionesPorMes(@RequestParam(required = false) String dpto,
+			@RequestParam String desde, @RequestParam String hasta) {
+		return service.inspeccionesPorMes(dpto, desde, hasta);
 	}
 
 	@GetMapping(path = "/inspectionsPerYear/{anio}")
-	public BarChartResponse ins(@PathVariable Integer anio, @RequestParam(required = false) String dpto) {
-		return service.inspeccionesPorMesesByAnio(anio,dpto);
+	public BarChartResponse ins(@PathVariable Integer anio, @RequestParam(required = false) String dpto,
+			@RequestParam String desde, @RequestParam String hasta) {
+		return service.inspeccionesPorMesesByAnio(anio, dpto,desde, hasta);
 	}
-	
+
 	@GetMapping(path = "/finesForMayor/{intendencia}")
 	public DonnutChartCustomResponse chartDonnuts(@PathVariable String intendencia) {
 		return service.graficosDeDonnas(intendencia);

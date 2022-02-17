@@ -148,9 +148,9 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
 	}
 
 	@Override
-	public Map<String, Object> materiaPieChartResponses(String intendencia) {
+	public Map<String, Object> materiaPieChartResponses(String intendencia,String desde,String hasta) {
 		log.info("MateriaServiceImpl.materiaPieChartResponses");
-		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasInspeccionadasQueries(intendencia);
+		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasInspeccionadasQueries(intendencia,desde,hasta);
 		log.info("Materias {}", materias);
 		if (!materias.isEmpty()) {
 			Map<String, Object> map = new HashMap<>();
@@ -166,9 +166,9 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
 	}
 
 	@Override
-	public Map<String, Object> materiaPieChartSancionadasResponses(String intendencia) {
+	public Map<String, Object> materiaPieChartSancionadasResponses(String intendencia,String desde,String hasta) {
 		log.info("MateriaServiceImpl.materiaPieChartSancionadasResponses");
-		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasSancionadasQueries(intendencia);
+		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasSancionadasQueries(intendencia, desde,hasta);
 		log.info("Materias {}", materias);
 		if (!materias.isEmpty()) {
 			Map<String, Object> map = new HashMap<>();

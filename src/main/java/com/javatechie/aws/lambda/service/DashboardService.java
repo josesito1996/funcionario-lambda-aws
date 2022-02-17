@@ -7,11 +7,11 @@ import com.javatechie.aws.lambda.domain.response.chart.DonnutChartCustomResponse
 
 public interface DashboardService {
 
-	public BarChartResponse inspeccionesPorMesesByAnio(Integer anio, String dpto);
+	public BarChartResponse inspeccionesPorMesesByAnio(Integer anio, String dpto,String desde,String hasta);
 
 	public ControlTotalesQuery totales();
 
-	public BarChartResponseV2 inspeccionesPorMes(String dpto);
+	public BarChartResponseV2 inspeccionesPorMes(String dpto, String desde, String hasta);
 	
 	public DonnutChartCustomResponse graficosDeDonnas(String intendencia);
 
