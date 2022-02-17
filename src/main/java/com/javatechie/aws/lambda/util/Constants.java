@@ -7,4 +7,7 @@ public class Constants {
     public static final String REGEX_EMAIL = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)"
             + "+[a-zA-Z]{2,6}$";
     
+    public static String color2019 = "#6196b8";
+    public static String color2020 = "#d6664b";
+    public static String color2021 = "#e4cc25";
 }

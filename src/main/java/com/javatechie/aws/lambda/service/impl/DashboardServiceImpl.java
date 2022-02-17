@@ -3,12 +3,17 @@ package com.javatechie.aws.lambda.service.impl;
 import static com.javatechie.aws.lambda.util.Utils.generateRandomColor;
 import static com.javatechie.aws.lambda.util.Utils.getPorcentaje;
 
+import static com.javatechie.aws.lambda.util.Constants.color2019;
+import static com.javatechie.aws.lambda.util.Constants.color2020;
+import static com.javatechie.aws.lambda.util.Constants.color2021;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.catalina.startup.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,7 @@ import com.javatechie.aws.lambda.domain.response.chart.SeriesResponse;
 import com.javatechie.aws.lambda.respository.jdbc.ControlTotalJdbc;
 import com.javatechie.aws.lambda.service.DashboardService;
 
+import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -43,16 +49,27 @@ public class DashboardServiceImpl implements DashboardService {
 		Map<Integer, List<InspeccionesPorMesQuery>> map = inspecciones.stream().collect(Collectors.groupingBy(InspeccionesPorMesQuery::getAnioNumber));
 		List<SeriesResponse> series = new ArrayList<>();
 		map.forEach((key,value) ->{
-			log.info("Meses {}", value.stream().map(item -> item.getNombreMes()).collect(Collectors.toList()));
 			series.add(SeriesResponse.builder()
 					.name(key.toString())
 					.data(value.stream().map(item -> item.getCantidad()).collect(Collectors.toList()))
-					.color(generateRandomColor())
 					.build());
 		});
+		List<SeriesResponse> seriesNew = new ArrayList<>();
+		int contador = 0;
+		for (SeriesResponse response : series) {
+			if (contador==0) {
+				response.setColor(color2019);
+			} else if (contador == 1) {
+				response.setColor(color2020);
+			} else {
+				response.setColor(color2021);
+			}
+			contador++;
+			seriesNew.add(response);
+		}
 		return BarChartResponse.builder()
 				.items(inspecciones.stream().map(InspeccionesPorMesQuery::getNombreMes).distinct().collect(Collectors.toList()))
-				.totales(series)
+				.totales(seriesNew)
 				.build();
 	}
 
