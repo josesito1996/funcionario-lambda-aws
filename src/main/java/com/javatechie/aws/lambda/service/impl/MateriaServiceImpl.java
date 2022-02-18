@@ -148,36 +148,39 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
 	}
 
 	@Override
-	public Map<String, Object> materiaPieChartResponses(String intendencia,String desde,String hasta) {
+	public Map<String, Object> materiaPieChartResponses(String intendencia, String desde, String hasta) {
 		log.info("MateriaServiceImpl.materiaPieChartResponses");
-		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasInspeccionadasQueries(intendencia,desde,hasta);
+		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasInspeccionadasQueries(intendencia, desde,
+				hasta);
 		log.info("Materias {}", materias);
 		if (!materias.isEmpty()) {
 			Map<String, Object> map = new HashMap<>();
-			List<String> materiasName = materias.stream().map(item->item.getNombreMateria()).collect(Collectors.toList());
-			List<Integer> materiasCant = materias.stream().map(item->item.getCantidad()).collect(Collectors.toList());
-			List<String> colores = generateColorList(materias.size()); 
-			map.put("materias", materiasName);
-			map.put("materiasCant", materiasCant);
-			map.put("colores", colores);
+			List<String> materiasName = materias.stream().map(item -> item.getNombreMateria())
+					.collect(Collectors.toList());
+			List<Integer> materiasCant = materias.stream().map(item -> item.getCantidad()).collect(Collectors.toList());
+			List<String> colores = generateColorList(materias.size());
+			map.put("materias", materiasName == null ? new ArrayList<>() : materiasName);
+			map.put("materiasCant", materiasCant == null ? new ArrayList<>() : materiasCant);
+			map.put("colores", colores == null ? new ArrayList<>() : colores);
 			return map;
 		}
 		return new HashMap<>();
 	}
 
 	@Override
-	public Map<String, Object> materiaPieChartSancionadasResponses(String intendencia,String desde,String hasta) {
+	public Map<String, Object> materiaPieChartSancionadasResponses(String intendencia, String desde, String hasta) {
 		log.info("MateriaServiceImpl.materiaPieChartSancionadasResponses");
-		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasSancionadasQueries(intendencia, desde,hasta);
+		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasSancionadasQueries(intendencia, desde, hasta);
 		log.info("Materias {}", materias);
 		if (!materias.isEmpty()) {
 			Map<String, Object> map = new HashMap<>();
-			List<String> materiasName = materias.stream().map(item->item.getNombreMateria()).collect(Collectors.toList());
-			List<Integer> materiasCant = materias.stream().map(item->item.getCantidad()).collect(Collectors.toList());
-			List<String> colores = generateColorList(materias.size()); 
-			map.put("materias", materiasName);
-			map.put("materiasCant", materiasCant);
-			map.put("colores", colores);
+			List<String> materiasName = materias.stream().map(item -> item.getNombreMateria())
+					.collect(Collectors.toList());
+			List<Integer> materiasCant = materias.stream().map(item -> item.getCantidad()).collect(Collectors.toList());
+			List<String> colores = generateColorList(materias.size());
+			map.put("materias", materiasName == null ? new ArrayList<>() : materiasName);
+			map.put("materiasCant", materiasCant == null ? new ArrayList<>() : materiasCant);
+			map.put("colores", colores == null ? new ArrayList<>() : colores);
 			return map;
 		}
 		return new HashMap<>();
