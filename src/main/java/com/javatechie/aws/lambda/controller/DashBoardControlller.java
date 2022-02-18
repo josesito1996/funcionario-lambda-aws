@@ -21,8 +21,9 @@ public class DashBoardControlller {
 	private DashboardService service;
 
 	@GetMapping(path = "/total")
-	public ControlTotalesQuery totales() {
-		return service.totales();
+	public ControlTotalesQuery totales(@RequestParam(required = false) String dpto, @RequestParam String desde,
+			@RequestParam String hasta) {
+		return service.totales(dpto, desde, hasta);
 	}
 
 	@GetMapping(path = "/inspectionsPerMonth")
@@ -34,7 +35,7 @@ public class DashBoardControlller {
 	@GetMapping(path = "/inspectionsPerYear/{anio}")
 	public BarChartResponse ins(@PathVariable Integer anio, @RequestParam(required = false) String dpto,
 			@RequestParam String desde, @RequestParam String hasta) {
-		return service.inspeccionesPorMesesByAnio(anio, dpto,desde, hasta);
+		return service.inspeccionesPorMesesByAnio(anio, dpto, desde, hasta);
 	}
 
 	@GetMapping(path = "/finesForMayor/{intendencia}")

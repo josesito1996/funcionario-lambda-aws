@@ -67,8 +67,8 @@ public class DashboardServiceImpl implements DashboardService {
 	}
 
 	@Override
-	public ControlTotalesQuery totales() {
-		return controlJdbc.controlTotalesQuery();
+	public ControlTotalesQuery totales(String dpto, String desde, String hasta) {
+		return controlJdbc.controlTotalesQuery(dpto, desde, hasta);
 	}
 
 	@Override

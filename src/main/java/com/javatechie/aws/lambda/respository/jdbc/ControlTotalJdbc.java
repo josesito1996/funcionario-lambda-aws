@@ -3,7 +3,8 @@ package com.javatechie.aws.lambda.respository.jdbc;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Types;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +29,17 @@ public class ControlTotalJdbc {
 	private JdbcTemplate jdbcTemplate;
 
 	@SuppressWarnings("static-access")
-	public ControlTotalesQuery controlTotalesQuery() {
+	public ControlTotalesQuery controlTotalesQuery(String dpto, String desde, String hasta) {
 		log.info("ControlTotalJdbc.controlTotalesQuery");
-		List<SqlParameter> parameters = new ArrayList<>();
+		List<SqlParameter> parameters = Arrays.asList(new SqlParameter(Types.NVARCHAR),
+				new SqlParameter(Types.NVARCHAR), new SqlParameter(Types.NVARCHAR));
 		Map<String, Object> queryResult = jdbcTemplate.call(new CallableStatementCreator() {
 			@Override
 			public CallableStatement createCallableStatement(Connection con) throws SQLException {
-				CallableStatement cs = con.prepareCall("{call SP_CONTROL_TOTALES()}");
+				CallableStatement cs = con.prepareCall("{call SP_CONTROL_TOTALES(?,?,?)}");
+				cs.setString(1, dpto);
+				cs.setString(2, desde);
+				cs.setString(3, hasta);
 				return cs;
 			}
 		}, parameters);
@@ -64,9 +69,9 @@ public class ControlTotalJdbc {
 				new Object[] { dpto, desde, hasta });
 	}
 
-	public List<InspeccionesPorMesQuery> inspeccionesPorMes(Integer año, String dpto,String desde, String hasta) {
+	public List<InspeccionesPorMesQuery> inspeccionesPorMes(Integer año, String dpto, String desde, String hasta) {
 		return jdbcTemplate.query("CALL SP_INSPECCIONES_POR_MES(?,?,?,?)", new InspeccionesPorMesMapper(),
-				new Object[] { año, dpto, desde, hasta});
+				new Object[] { año, dpto, desde, hasta });
 	}
 
 	public CasosConMultaQuery casosConMultaQueries(String intendencia) {

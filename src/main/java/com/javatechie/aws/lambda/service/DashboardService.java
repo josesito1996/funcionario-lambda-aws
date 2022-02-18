@@ -9,7 +9,7 @@ public interface DashboardService {
 
 	public BarChartResponse inspeccionesPorMesesByAnio(Integer anio, String dpto,String desde,String hasta);
 
-	public ControlTotalesQuery totales();
+	public ControlTotalesQuery totales(String dpto, String desde, String hasta);
 
 	public BarChartResponseV2 inspeccionesPorMes(String dpto, String desde, String hasta);
 	
