@@ -153,8 +153,8 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
 		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasInspeccionadasQueries(intendencia, desde,
 				hasta);
 		log.info("Materias {}", materias);
+		Map<String, Object> map = new HashMap<>();
 		if (!materias.isEmpty()) {
-			Map<String, Object> map = new HashMap<>();
 			List<String> materiasName = materias.stream().map(item -> item.getNombreMateria())
 					.collect(Collectors.toList());
 			List<Integer> materiasCant = materias.stream().map(item -> item.getCantidad()).collect(Collectors.toList());
@@ -164,7 +164,10 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
 			map.put("colores", colores == null ? new ArrayList<>() : colores);
 			return map;
 		}
-		return new HashMap<>();
+		map.put("materias", new ArrayList<>());
+		map.put("materiasCant", new ArrayList<>());
+		map.put("colores", new ArrayList<>());
+		return map;
 	}
 
 	@Override
@@ -172,8 +175,8 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
 		log.info("MateriaServiceImpl.materiaPieChartSancionadasResponses");
 		List<MateriaInspeccionadasQuery> materias = materiaJdbc.materiasSancionadasQueries(intendencia, desde, hasta);
 		log.info("Materias {}", materias);
+		Map<String, Object> map = new HashMap<>();
 		if (!materias.isEmpty()) {
-			Map<String, Object> map = new HashMap<>();
 			List<String> materiasName = materias.stream().map(item -> item.getNombreMateria())
 					.collect(Collectors.toList());
 			List<Integer> materiasCant = materias.stream().map(item -> item.getCantidad()).collect(Collectors.toList());
@@ -183,6 +186,9 @@ public class MateriaServiceImpl extends CrudImpl<Materia, String> implements Mat
 			map.put("colores", colores == null ? new ArrayList<>() : colores);
 			return map;
 		}
-		return new HashMap<>();
+		map.put("materias", new ArrayList<>());
+		map.put("materiasCant", new ArrayList<>());
+		map.put("colores", new ArrayList<>());
+		return map;
 	}
 }
