@@ -84,7 +84,7 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
                 .nivelRiesgo(ReactSelect.builder().label(request.getNivelRiesgo().getLabel())
                         .value(request.getNivelRiesgo().getValue()).build())
                 .cantidadInvolucrados(request.getCantInvolucrados())
-                .fechaRegistro(LocalDate.now().toString())
+                .fechaRegistro(LocalDate.now())
                 .build();
     }
 
@@ -156,6 +156,7 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
 			throw new BadRequestException("Caso con el ID " + idCaso + " no existe");
 		}
 		List<AnalisisRiesgo> analisis = listarPorIdCaso(idCaso);
+	
 		
 		return AnalisisRiesgoDetalle.builder()
 				.nombreCaso(caso.getDescripcionCaso())
