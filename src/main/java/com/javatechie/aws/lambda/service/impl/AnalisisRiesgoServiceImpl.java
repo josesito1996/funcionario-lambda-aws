@@ -2,6 +2,7 @@ package com.javatechie.aws.lambda.service.impl;
 
 import static com.javatechie.aws.lambda.util.ListUtils.transformFromReactSelect;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,12 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.javatechie.aws.lambda.aws.CasoPojo;
 import com.javatechie.aws.lambda.aws.ExternalDbAws;
 import com.javatechie.aws.lambda.domain.AnalisisRiesgo;
 import com.javatechie.aws.lambda.domain.InfraccionItem;
 import com.javatechie.aws.lambda.domain.ReactSelect;
 import com.javatechie.aws.lambda.domain.request.InfraccionAnalisisRequest;
 import com.javatechie.aws.lambda.domain.request.InfraccionItemRequest;
+import com.javatechie.aws.lambda.domain.response.AnalisisRiesgoDetalle;
+import com.javatechie.aws.lambda.domain.response.chart.BarChartResponse;
+import com.javatechie.aws.lambda.exception.BadRequestException;
 import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoAnalisisRiesgo;
@@ -71,14 +76,16 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
      * Pasar a un clase Aparte
      */
     private AnalisisRiesgo transformAnalisisRiesgo(InfraccionAnalisisRequest request) {
-        return AnalisisRiesgo.builder().idAnalisis(request.getIdCaso()).idCaso(request.getIdCaso())
+        return AnalisisRiesgo.builder().idCaso(request.getIdCaso())
                 .origenCaso(ReactSelect.builder().label(request.getOrigenCaso().getLabel())
                         .value(request.getOrigenCaso().getValue()).build())
                 .nombreAsesor(request.getNameAsesor())
                 .infracciones(transformInfraccionItems(request.getInfractions()))
                 .nivelRiesgo(ReactSelect.builder().label(request.getNivelRiesgo().getLabel())
                         .value(request.getNivelRiesgo().getValue()).build())
-                .cantidadInvolucrados(request.getCantInvolucrados()).build();
+                .cantidadInvolucrados(request.getCantInvolucrados())
+                .fechaRegistro(LocalDate.now().toString())
+                .build();
     }
 
     private List<InfraccionItem> transformInfraccionItems(List<InfraccionItemRequest> requests) {
@@ -133,6 +140,30 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String>
 				.nivelRiesgo(transformFromReactSelect(analisis.getNivelRiesgo()))
 				.cantInvolucrados(analisis.getCantidadInvolucrados())
 				.idCaso(idAnalisis)
+				.build();
+	}
+
+
+	@Override
+	public List<AnalisisRiesgo> listarPorIdCaso(String idCaso) {
+		return repo.findByIdCaso(idCaso);
+	}
+	
+	@Override
+	public AnalisisRiesgoDetalle verPorIdCaso(String idCaso) {
+		CasoPojo caso = external.tableCaso(idCaso);
+		if (caso.getId()==null) {
+			throw new BadRequestException("Caso con el ID " + idCaso + " no existe");
+		}
+		List<AnalisisRiesgo> analisis = listarPorIdCaso(idCaso);
+		
+		return AnalisisRiesgoDetalle.builder()
+				.nombreCaso(caso.getDescripcionCaso())
+				.nroOrdenInspeccion(caso.getOrdenInspeccion())
+				.barChart(BarChartResponse.builder()
+						.items(null)
+						.totales(null)
+						.build())
 				.build();
 	}
 }

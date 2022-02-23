@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.javatechie.aws.lambda.domain.AnalisisRiesgo;
 import com.javatechie.aws.lambda.domain.request.InfraccionAnalisisRequest;
+import com.javatechie.aws.lambda.domain.response.AnalisisRiesgoDetalle;
 import com.javatechie.aws.lambda.service.AnalisisRiesgoService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +50,11 @@ public class AnalisisRiesgoController {
     public Map<String, Object> registrarAnalisis(
             @Valid @RequestBody InfraccionAnalisisRequest request) {
         return service.registrarAnalisisRiesgo(request);
+    }
+    
+    @GetMapping(path = "/searchByIdCase/{idCaso}")
+    public AnalisisRiesgoDetalle verPorIdCaso(@PathVariable String idCaso) {
+    	return service.verPorIdCaso(idCaso);
     }
 
 }
