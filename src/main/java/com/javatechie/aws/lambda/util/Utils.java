@@ -31,6 +31,13 @@ public class Utils {
 		String fechaFormateada = fecha.format(formatter);
 		return fechaFormateada;
 	}
+	
+	public static String fechaFormateadaMes(LocalDate fecha) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM YYYY");
+		String fechaFormateada = fecha.format(formatter);
+		return fechaFormateada;
+	}
+	
 
 	public static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
 		return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -128,4 +135,10 @@ public class Utils {
 		Double porcentaje = ((double) cantidad / (double) cantidadTotal) * 100;
 		return porcentaje.intValue();
 	}
+	
+	/*
+	public static void main(String...args) {
+		System.out.println(fechaFormateadaMes(LocalDate.now()));
+	}
+	*/
 }

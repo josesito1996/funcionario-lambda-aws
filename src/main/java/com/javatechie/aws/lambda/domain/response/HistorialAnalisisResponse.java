@@ -1,6 +1,9 @@
 package com.javatechie.aws.lambda.domain.response;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.javatechie.aws.lambda.domain.AnalisisRiesgoTableResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,22 +22,8 @@ public class HistorialAnalisisResponse implements Serializable  {
 
 	private static final long serialVersionUID = -5408116156671462695L;
 
-	private String materia;
+	private String fecha;
 	
-	private String subMateria;
-	
-	private String baseLegal;
-	
-	private Integer trabajadoresAfectados;
-	
-	private String gravedad;
-	
-	private Integer uitsMulta;
-	
-	private Double multaPotencial;
-	
-	private Double provision;
-	
-	private String descripcion;
+	private List<AnalisisRiesgoTableResponse> table;
 	
 }
