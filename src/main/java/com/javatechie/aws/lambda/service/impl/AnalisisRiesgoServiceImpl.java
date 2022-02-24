@@ -150,9 +150,11 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String> 
 		if (caso.getId() == null) {
 			throw new BadRequestException("Caso con el ID " + idCaso + " no existe");
 		}
-		List<AnalisisRiesgo> analisis = listarPorIdCaso(idCaso);
+		List<AnalisisRiesgo> analisis = listarPorIdCaso(idCaso).stream()
+				.sorted(Comparator.comparing(AnalisisRiesgo::getFechaRegistro))
+				.collect(Collectors.toList());
 		List<AnalisisRiesgoDto> analisisDto = analisis.stream()
-				.sorted(Comparator.comparing(AnalisisRiesgo::getFechaRegistro)).map(item -> {
+				.map(item -> {
 					return AnalisisRiesgoDto.builder().idAnalisis(item.getIdAnalisis()).idCaso(item.getIdCaso())
 							.sumaMultaPotencial(item.getSumaMultaPotencial()).sumaProvision(item.getSumaProvision())
 							.fecha(Utils.fechaFormateadaMes(item.getFechaRegistro())).build();
@@ -169,12 +171,13 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String> 
 		series.add(SeriesResponse.builder().data(
 				mapProvisiones.entrySet().stream().map(item -> item.getValue().intValue()).collect(Collectors.toList()))
 				.build());
-
+		List<String> meses = analisisDto.stream().map(item -> item.getFecha()).distinct()
+				.collect(Collectors.toList());
+		log.info("Meses {}",meses);
 		return AnalisisRiesgoDetalle.builder().nombreCaso(caso.getDescripcionCaso())
 				.nroOrdenInspeccion(caso.getOrdenInspeccion())
 				.barChart(BarChartResponse.builder()
-						.items(analisisDto.stream().map(item -> item.getFecha()).distinct()
-								.collect(Collectors.toList()))
+						.items(meses)
 						.totales(series).build())
 				.totalMultaPotencial(mapMultaPotencial.entrySet().stream().mapToDouble(item -> item.getValue()).sum())
 				.totalProvision(mapProvisiones.entrySet().stream().mapToDouble(item -> item.getValue()).sum())
