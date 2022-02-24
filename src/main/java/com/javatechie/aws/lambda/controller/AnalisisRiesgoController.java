@@ -41,6 +41,12 @@ public class AnalisisRiesgoController {
         return service.listar();
     }
     
+    @GetMapping(path = "/findById/{idCaso}")
+    public List<AnalisisRiesgo> listarPorIdCaso(@PathVariable String idCaso)  {
+        return service.listarPorIdCaso(idCaso);
+    }
+    
+    
     @GetMapping(path = "/searchById/{idAnalisis}")
     public InfraccionAnalisisRequest verPorId(@PathVariable String idAnalisis) {
     	return service.verPorIdAnalisis(idAnalisis);
