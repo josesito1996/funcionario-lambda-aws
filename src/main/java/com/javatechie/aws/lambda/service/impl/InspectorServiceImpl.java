@@ -29,6 +29,7 @@ import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoInspector;
 import com.javatechie.aws.lambda.respository.jdbc.InspectorJdbc;
+import com.javatechie.aws.lambda.service.ComentarioService;
 import com.javatechie.aws.lambda.service.InspectorService;
 import com.javatechie.aws.lambda.service.PuntuacionService;
 
@@ -46,6 +47,9 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 
 	@Autowired
 	private PuntuacionService puntuacionService;
+	
+	@Autowired
+	private ComentarioService comentarioService;
 
 	@Override
 	public InspectorResponse registrar(InspectorBody request) {
@@ -158,7 +162,9 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 				.contact(ContactResponse.builder().email(inspector.getCorreo()).phone(inspector.getTelefono()).build())
 				.name(inspector.getNombreInspector()).position(inspector.getCargo())
 				.score(transformScoreResponse(puntuacionService.listarPromedioPuntajeInspector(inspector.getId())))
-				.recentCases(recentCases).build();
+				.recentCases(recentCases)
+				.comments(comentarioService.listarPorIdFuncionario(inspector.getId()))
+				.build();
 	}
 
 	private List<ScoreResponse> transformScoreResponse(List<PromedioPuntajeInspectorQuery> queryList) {

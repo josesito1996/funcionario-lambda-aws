@@ -4,6 +4,7 @@ import static com.javatechie.aws.lambda.util.Utils.primeraLetraMayuscula;
 import static com.javatechie.aws.lambda.util.Utils.generateCorreo;
 import static com.javatechie.aws.lambda.util.Utils.numberRandomGenerator;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.javatechie.aws.lambda.domain.Articulo;
+import com.javatechie.aws.lambda.domain.Comentario;
 import com.javatechie.aws.lambda.domain.EstadoCaso;
 import com.javatechie.aws.lambda.domain.Etapa;
 import com.javatechie.aws.lambda.domain.Infraccion;
@@ -30,6 +32,7 @@ import com.javatechie.aws.lambda.domain.documents.PlanPrecio;
 import com.javatechie.aws.lambda.respository.jdbc.ControlTotalJdbc;
 import com.javatechie.aws.lambda.respository.jdbc.InspectorJdbc;
 import com.javatechie.aws.lambda.service.ArticuloService;
+import com.javatechie.aws.lambda.service.ComentarioService;
 import com.javatechie.aws.lambda.service.EstadoCasoService;
 import com.javatechie.aws.lambda.service.EtapaService;
 import com.javatechie.aws.lambda.service.InfraccionService;
@@ -97,6 +100,9 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 	IntendenciaService intendenciaService;
 
 	@Autowired
+	ComentarioService comentarioService;
+
+	@Autowired
 	ControlTotalJdbc jdbcControl;
 
 	public static void main(String[] args) {
@@ -105,6 +111,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		buildComentario();
 		// log.info(jdbcControl.controlTotalesQuery() + "");
 		// cargarMaterias();
 		// cargarEtapas();
@@ -454,5 +461,33 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 		 * "Intendencia Regional de Ucayali", true)).forEach(item ->{
 		 * log.info("Intendencia {}", intendenciaService.registrar(item)); });
 		 */
+	}
+
+	public void buildComentario() {
+		List<Comentario> comentarios = comentarioService.listar();
+		if (comentarios.isEmpty()) {
+			Arrays.asList(Comentario.builder().usuario("campos@gmail.com").fechaRegistro(LocalDateTime.now())
+					.identificador("5de7eef3-1def-4459-b4dd-2551c90febf8")
+					.comentario("Este es un comentario para este inspector u.u").puntuacion(3).activo(true).build(),
+					Comentario.builder().usuario("shfiestas@gmail.com").fechaRegistro(LocalDateTime.now())
+							.identificador("5de7eef3-1def-4459-b4dd-2551c90febf8")
+							.comentario("Este es un comentario para este inspector x2").puntuacion(4).activo(true)
+							.build(),
+					Comentario.builder().usuario("shfiestas@gmail.com").fechaRegistro(LocalDateTime.now())
+							.identificador("5de7eef3-1def-4459-b4dd-2551c90febf8")
+							.comentario("Este es un comentario para este inspector x3").puntuacion(5).activo(true)
+							.build(),
+					Comentario.builder().usuario("campos@gmail.com").fechaRegistro(LocalDateTime.now())
+							.identificador("5de7eef3-1def-4459-b4dd-2551c90febf8")
+							.comentario("Este es un comentario para este inspector x4").puntuacion(3).activo(true)
+							.build(),
+					Comentario.builder().usuario("shfiestas@gmail.com").fechaRegistro(LocalDateTime.now())
+							.identificador("5de7eef3-1def-4459-b4dd-2551c90febf8")
+							.comentario("Este es un comentario para este inspector u.u").puntuacion(3).activo(true)
+							.build())
+					.forEach(item -> {
+						log.info("Nuevo Comentario {}", comentarioService.registrar(item));
+					});
+		}
 	}
 }

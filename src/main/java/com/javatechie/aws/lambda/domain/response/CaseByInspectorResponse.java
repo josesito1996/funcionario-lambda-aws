@@ -51,5 +51,7 @@ public class CaseByInspectorResponse implements Serializable {
     
     @Schema(title = "Recent cases", name = "recentCases")
     private List<RecentCaseResponse> recentCases;
+    
+    private List<ComentarioResponse> comments;
 }
 
