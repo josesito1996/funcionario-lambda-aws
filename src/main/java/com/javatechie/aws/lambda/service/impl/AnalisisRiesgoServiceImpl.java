@@ -188,7 +188,7 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String> 
 										.subMateria(element.getSubMaterias().getLabel())
 										.baseLegal(element.getBaseLegal().getCampoAux())
 										.trabajadoresAfectados(element.getTrabajadoresAfectados())
-										.gravedad(element.getGravedad())
+										.gravedad(item.getNivelRiesgo().getLabel())
 										.uitsMulta(element.getUitMultaPotencial())
 										.multaPotencial(element.getMultaPotencial())
 										.provision(element.getProvision())
