@@ -68,4 +68,7 @@ public class ResourceSami implements Serializable {
 	
 	@DynamoDBAttribute
 	private String pngFileName;
+	
+	@DynamoDBAttribute
+	private String typeResource;
 }

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import com.javatechie.aws.lambda.domain.ResourceSami;
 import com.javatechie.aws.lambda.domain.lambda.Attachment;
 import com.javatechie.aws.lambda.domain.lambda.LambdaFileBase64Request;
 import com.javatechie.aws.lambda.domain.lambda.LambdaMailRequestSendgrid;
+import com.javatechie.aws.lambda.domain.request.ContractSamiCreateRequest;
 import com.javatechie.aws.lambda.domain.request.ResourceSamiChangeRequest;
 import com.javatechie.aws.lambda.domain.request.ResourceSamiCreateRequest;
 import com.javatechie.aws.lambda.domain.request.ResourceSendFileMailRequest;
@@ -33,7 +35,6 @@ import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoResourceSami;
 import com.javatechie.aws.lambda.service.LambdaService;
 import com.javatechie.aws.lambda.service.ResourceSamiService;
-
 
 @Service
 public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> implements ResourceSamiService {
@@ -65,6 +66,12 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 	}
 
 	@Override
+	public ResourceSamiCreateResponse createContract(ContractSamiCreateRequest request) {
+
+		return transformResponse(registrar(transformRequestContract(request)));
+	}
+
+	@Override
 	public List<ResourceGroupResponse> listByUserName(String userName) {
 		List<ResourceSami> listado = repo.findByUserName(userName).stream()
 				.filter(item -> item.getIsRemoved() != null && !item.getIsRemoved()).collect(Collectors.toList());
@@ -76,6 +83,20 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 		}
 		return newList.stream().sorted(Comparator.comparing(ResourceGroupResponse::getCategory))
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Map<String, Object>> listContractsByUserName(String userName) {
+
+		return listar().stream()
+				.filter(item -> item.getTypeResource() != null && item.getTypeResource().equals("CONTRACT"))
+				.map(item -> {
+					Map<String, Object> map = new HashMap<>();
+					map.put("id", item.getId());
+					map.put("idFileExtension", item.getId().concat(getExtension(item.getFileName())));
+					map.put("nombreArchivo", item.getCustomFileName());
+					return map;
+				}).collect(Collectors.toList());
 	}
 
 	@Override
@@ -93,6 +114,14 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 		return transformResponse(modificar(resource));
 	}
 
+	private ResourceSami transformRequestContract(ContractSamiCreateRequest request) {
+		return ResourceSami.builder().fileName(request.getFileName())
+				.customFileName(request.getFileNameAux().concat(getExtension(request.getFileName())))
+				.description(request.getDescription()).uploadDate(LocalDateTime.now().toString())
+				.type(request.getType()).isUtil(null).isFavorite(null).bytes(request.getSize()).isRemoved(false)
+				.userName(request.getUserName()).typeResource("CONTRACT").build();
+	}
+
 	private ResourceSami transformRequest(ResourceSamiCreateRequest request) {
 		return ResourceSami.builder().fileName(request.getFileName())
 				.customFileName(request.getFileNameAux().concat(getExtension(request.getFileName())))
@@ -108,8 +137,7 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 				.categoria(resourceSami.getCategory())
 				.upLoadDate(fechaFormateadaOther(convertToLocalDateTime(resourceSami.getUploadDate())))
 				.esUtil(resourceSami.getIsUtil()).esFavorito(resourceSami.getIsFavorite()).type(resourceSami.getType())
-				.url(resourceSami.getUrl())
-				.build();
+				.url(resourceSami.getUrl()).build();
 	}
 
 	@Override
