@@ -95,6 +95,7 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 					map.put("id", item.getId());
 					map.put("idFileExtension", item.getId().concat(getExtension(item.getFileName())));
 					map.put("nombreArchivo", item.getCustomFileName());
+					map.put("url", item.getUrl());
 					return map;
 				}).collect(Collectors.toList());
 	}
