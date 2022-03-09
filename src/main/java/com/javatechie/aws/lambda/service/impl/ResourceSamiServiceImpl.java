@@ -26,6 +26,7 @@ import com.javatechie.aws.lambda.domain.lambda.LambdaMailRequestSendgrid;
 import com.javatechie.aws.lambda.domain.request.ContractSamiCreateRequest;
 import com.javatechie.aws.lambda.domain.request.ResourceSamiChangeRequest;
 import com.javatechie.aws.lambda.domain.request.ResourceSamiCreateRequest;
+import com.javatechie.aws.lambda.domain.request.ResourceSamiUpdateRequest;
 import com.javatechie.aws.lambda.domain.request.ResourceSendFileMailRequest;
 import com.javatechie.aws.lambda.domain.response.ResourceSamiCreateResponse;
 import com.javatechie.aws.lambda.domain.response.custom.ResourceGroupResponse;
@@ -65,6 +66,14 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 		return transformResponse(registrar(transformRequest(request)));
 	}
 
+
+	@Override
+	public ResourceSamiCreateResponse updateContract(ResourceSamiUpdateRequest request) {
+		ResourceSami resource = verUnoPorId(request.getId());
+		resource.setUrl(request.getUrl());
+		return transformResponse(modificar(resource));
+	}
+	
 	@Override
 	public ResourceSamiCreateResponse createContract(ContractSamiCreateRequest request) {
 
