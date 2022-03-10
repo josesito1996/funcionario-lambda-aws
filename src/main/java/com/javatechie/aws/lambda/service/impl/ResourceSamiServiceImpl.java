@@ -83,7 +83,7 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 	@Override
 	public List<ResourceGroupResponse> listByUserName(String userName) {
 		List<ResourceSami> listado = repo.findByUserName(userName).stream()
-				.filter(item -> item.getIsRemoved() != null && !item.getIsRemoved()).collect(Collectors.toList());
+				.filter(item -> item.getIsRemoved() != null && !item.getIsRemoved() && item.getCategory()!=null).collect(Collectors.toList());
 		Map<String, List<ResourceSamiCreateResponse>> mapGroup = listado.stream().map(this::transformResponse)
 				.collect(Collectors.groupingBy(ResourceSamiCreateResponse::getCategoria));
 		List<ResourceGroupResponse> newList = new ArrayList<>();
