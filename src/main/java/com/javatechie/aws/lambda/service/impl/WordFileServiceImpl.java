@@ -57,7 +57,7 @@ public class WordFileServiceImpl implements WordFileService {
 				.estadoCaso(estadoCaso(caso.getActuaciones()))
 				.etapa(etapaCaso(caso.getActuaciones()))
 				.resumen(caso.getDescripcionAdicional())
-				.origenCaso(analisis.getOrigenCaso().getLabel())
+				.origenCaso(caso.getOrigenInspeccion().getLabel())
 				.trabajadoresInvolucrados(trabajadoresInvolucrados != null ? trabajadoresInvolucrados : 0)
 				.multaPotencial(caso.getMultaPotencial().doubleValue())
 				.provisiones("--")
