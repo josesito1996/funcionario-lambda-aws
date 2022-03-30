@@ -61,16 +61,18 @@ public class InspectorController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InspectorResponse.class))) })
 	@GetMapping(path = "/filterByName")
-	public List<InspectorResponse> filtraPorNombre(@ParameterObject @RequestParam("name") String name, @RequestParam("type") String type) {
+	public List<InspectorResponse> filtraPorNombre(@ParameterObject @RequestParam("name") String name,
+			@RequestParam("type") String type) {
 		return service.buscarPorNombreFiltro(name, type);
 	}
-	
+
 	@Operation(summary = "Busca inspector por tipo")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InspectorResponse.class))) })
 	@GetMapping(path = "/searchByTipo/{tipo}")
-	public List<ReactSelectResponse> buscarPorNombre(@PathVariable String tipo, @RequestParam(required = false) String etapa) {
-		return service.listarInspectoresPorTipo(tipo, etapa);
+	public List<ReactSelectResponse> buscarPorNombre(@PathVariable String tipo,
+			@RequestParam(required = false) String etapa, @RequestParam(required = false) String region) {
+		return service.listarInspectoresPorTipo(tipo, etapa, region);
 	}
 
 	@Operation(summary = "Registra el un Inspector")
@@ -88,27 +90,30 @@ public class InspectorController {
 	public InspectorResponse modificar(@Valid @RequestBody InspectorBody request) {
 		return service.actualizar(request);
 	}
-	
+
 	@Operation(summary = "Actualiza Tefono y Correo de un inspector")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InspectorResponse.class))) })
-    @PutMapping(path = "/updateData")
-    public InspectorResponse actualizarDatos(@Valid @RequestBody InspectorUpdateRequest request) {
-        return service.actualizar(request);
-    }
-	
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = InspectorResponse.class))) })
+	@PutMapping(path = "/updateData")
+	public InspectorResponse actualizarDatos(@Valid @RequestBody InspectorUpdateRequest request) {
+		return service.actualizar(request);
+	}
+
 	/**
-	 * Aqui se esta modificando el Id Inspector por el name para que busque en la BD por nombre
+	 * Aqui se esta modificando el Id Inspector por el name para que busque en la BD
+	 * por nombre
+	 * 
 	 * @param idInspector
 	 * @return
 	 */
 	@GetMapping(path = "/searchCasesByInspectorId/{idInspector}")
 	public CaseByInspectorResponse findCasesByInspector(@PathVariable String idInspector) {
-	    return service.casosPorInspector(idInspector);
+		return service.casosPorInspector(idInspector);
 	}
-	
+
 	@GetMapping(path = "/searchByNameInspector/{nombreInspector}")
-	public List<InspectorPorNombreResponse> inspectorPorNombreResponses(@PathVariable @Size(min = 4, message = "Minimo 4 letras") String nombreInspector){
+	public List<InspectorPorNombreResponse> inspectorPorNombreResponses(
+			@PathVariable @Size(min = 4, message = "Minimo 4 letras") String nombreInspector) {
 		return service.inspectorPorNombreResponses(nombreInspector);
 	}
 

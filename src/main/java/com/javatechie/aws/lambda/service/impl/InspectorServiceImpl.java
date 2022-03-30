@@ -15,6 +15,7 @@ import com.javatechie.aws.lambda.domain.Inspector;
 import com.javatechie.aws.lambda.domain.jdbc.CasosPorInspectorQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspectorPorNombreQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspectorQuery;
+import com.javatechie.aws.lambda.domain.jdbc.IntendenciaPorRegionQuery;
 import com.javatechie.aws.lambda.domain.jdbc.PromedioPuntajeInspectorQuery;
 import com.javatechie.aws.lambda.domain.request.InspectorBody;
 import com.javatechie.aws.lambda.domain.request.InspectorUpdateRequest;
@@ -25,6 +26,7 @@ import com.javatechie.aws.lambda.domain.response.InspectorResponse;
 import com.javatechie.aws.lambda.domain.response.ReactSelectResponse;
 import com.javatechie.aws.lambda.domain.response.RecentCaseResponse;
 import com.javatechie.aws.lambda.domain.response.ScoreResponse;
+import com.javatechie.aws.lambda.exception.BadRequestException;
 import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoInspector;
@@ -47,7 +49,7 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 
 	@Autowired
 	private PuntuacionService puntuacionService;
-	
+
 	@Autowired
 	private ComentarioService comentarioService;
 
@@ -100,22 +102,27 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 	}
 
 	@Override
-	public List<ReactSelectResponse> listarInspectoresPorTipo(String tipo, String etapa) {
-		List<ReactSelectResponse> list = new ArrayList<>();
+	public List<ReactSelectResponse> listarInspectoresPorTipo(String tipo, String etapa, String region) {
+		List<ReactSelectResponse> list = null;
 		if (etapa != null) {
-			list = repo.findByTipoAndEtapaAndEstado(tipo, etapa, true).stream().map(this::reactREponse)
-					.sorted(Comparator.comparing(ReactSelectResponse::getLabel))
+			if (region == null) {
+				throw new BadRequestException("Parametro region es obligatorio");
+			}
+			list = inspectorJdbc.intendenciasPorRegion(region).stream().map(this::reactResponse)
 					.collect(Collectors.toList());
 		} else {
-			list = repo.findByTipoAndEstado(tipo, true).stream().map(this::reactREponse)
-					.sorted(Comparator.comparing(ReactSelectResponse::getLabel))
-					.collect(Collectors.toList());
+			list = repo.findByTipoAndEstado(tipo, true).stream().map(this::reactResponse)
+					.sorted(Comparator.comparing(ReactSelectResponse::getLabel)).collect(Collectors.toList());
 		}
 		return list;
 	}
 
-	private ReactSelectResponse reactREponse(Inspector inspector) {
+	private ReactSelectResponse reactResponse(Inspector inspector) {
 		return new ReactSelectResponse(inspector.getId(), inspector.getNombreInspector(), null, null);
+	}
+
+	private ReactSelectResponse reactResponse(IntendenciaPorRegionQuery intendencia) {
+		return new ReactSelectResponse(intendencia.getIndex().toString(), intendencia.getOficina(), null, null);
 	}
 
 	@Override
@@ -136,7 +143,7 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 		 * Se cambia el IdInspector por el nombre
 		 */
 		Inspector inspector = buscarPorNombre(idInspector);
-		log.info("Inspector {}",inspector);
+		log.info("Inspector {}", inspector);
 		String nombreInspector = inspector.getNombreInspector();
 		List<CasosPorInspectorQuery> casosInspector = storedProcedure(nombreInspector);
 		List<RecentCaseResponse> recentCases = new ArrayList<RecentCaseResponse>();
@@ -155,16 +162,13 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 				contador++;
 			}
 		}
-		return CaseByInspectorResponse.builder()
-				.idInspector(inspector.getId())
+		return CaseByInspectorResponse.builder().idInspector(inspector.getId())
 				.hasDataContact(inspector.getCorreo() != null && inspector.getTelefono() != null)
 				.casesFound(casosInspector.size()).fineCases(acumuladorMulta)
 				.contact(ContactResponse.builder().email(inspector.getCorreo()).phone(inspector.getTelefono()).build())
 				.name(inspector.getNombreInspector()).position(inspector.getCargo())
 				.score(transformScoreResponse(puntuacionService.listarPromedioPuntajeInspector(inspector.getId())))
-				.recentCases(recentCases)
-				.comments(comentarioService.listarPorIdFuncionario(inspector.getId()))
-				.build();
+				.recentCases(recentCases).comments(comentarioService.listarPorIdFuncionario(inspector.getId())).build();
 	}
 
 	private List<ScoreResponse> transformScoreResponse(List<PromedioPuntajeInspectorQuery> queryList) {
@@ -172,10 +176,8 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 	}
 
 	private ScoreResponse transformScoreResponse(PromedioPuntajeInspectorQuery query) {
-		return ScoreResponse.builder()
-				.idItem(query.getIdItem())
-				.itemScore(query.getItemScore()).max(query.getMax()).score(query.getScore())
-				.build();
+		return ScoreResponse.builder().idItem(query.getIdItem()).itemScore(query.getItemScore()).max(query.getMax())
+				.score(query.getScore()).build();
 	}
 
 	@Override
@@ -205,12 +207,8 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 	public List<InspectorPorNombreResponse> inspectorPorNombreResponses(String nombreInspector) {
 		List<InspectorPorNombreQuery> inspectores = inspectorJdbc.inspectorPorNombreQueries(nombreInspector);
 		return inspectores.stream().map(item -> {
-			return InspectorPorNombreResponse
-					.builder()
-					.nombreFuncionario(item.getNombreFuncionario())
-					.cantidadCasos(item.getCantidadCasos())
-					.fechaRegistro(item.getFechaAsignacion())
-					.build();
+			return InspectorPorNombreResponse.builder().nombreFuncionario(item.getNombreFuncionario())
+					.cantidadCasos(item.getCantidadCasos()).fechaRegistro(item.getFechaAsignacion()).build();
 		}).collect(Collectors.toList());
 	}
 }

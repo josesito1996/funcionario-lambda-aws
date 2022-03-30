@@ -28,7 +28,7 @@ public interface InspectorService extends ICrud<Inspector, String> {
 	
 	List<InspectorResponse> buscarPorNombreFiltro(String nombreInspector, String tipo);
 	
-	List<ReactSelectResponse> listarInspectoresPorTipo(String tipo, String etapa);
+	List<ReactSelectResponse> listarInspectoresPorTipo(String tipo, String etapa, String region);
 	
 	List<InspectorResponse> listarInspectores();
 	

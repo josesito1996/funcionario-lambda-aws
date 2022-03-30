@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import com.javatechie.aws.lambda.domain.jdbc.CasosPorInspectorQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspectorPorNombreQuery;
 import com.javatechie.aws.lambda.domain.jdbc.InspectorQuery;
+import com.javatechie.aws.lambda.domain.jdbc.IntendenciaPorRegionQuery;
 
 @Repository
 public class InspectorJdbc {
@@ -66,6 +67,11 @@ public class InspectorJdbc {
 	public List<InspectorPorNombreQuery> inspectorPorNombreQueries(String nombreInspector) {
 		return jdbcTemplate.query("call SP_BUSQUEDA_INSPECTOR_POR_NOMBRE(?)", new InspectorPorNombreQueryMapper(),
 				new Object[] { nombreInspector });
+	}
+
+	public List<IntendenciaPorRegionQuery> intendenciasPorRegion(String region) {
+		return jdbcTemplate.query("call SP_VER_INTENDENCIAS_POR_REGION(?)", new IntendenciaPorRegionMapper(),
+				new Object[] { region });
 	}
 
 }
