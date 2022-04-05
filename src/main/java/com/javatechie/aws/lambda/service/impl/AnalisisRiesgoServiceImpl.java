@@ -182,7 +182,7 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String> 
 						.totales(series).build())
 				.totalMultaPotencial(mapMultaPotencial.entrySet().stream().mapToDouble(Entry::getValue).sum())
 				.totalProvision(mapProvisiones.entrySet().stream().mapToDouble(Entry::getValue).sum())
-				.historial(analisis.stream().map(item -> {
+				.historial(analisis.stream().sorted(Comparator.comparing(AnalisisRiesgo::getFechaRegistro).reversed()).map(item -> {
 					return HistorialAnalisisResponse.builder()
 							.fecha(Utils
 									.fechaFormateadaOther(LocalDateTime.of(item.getFechaRegistro(), LocalTime.now())))
