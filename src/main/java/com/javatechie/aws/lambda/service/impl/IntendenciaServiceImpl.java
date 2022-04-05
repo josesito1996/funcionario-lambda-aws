@@ -27,13 +27,12 @@ public class IntendenciaServiceImpl extends CrudImpl<Intendencia, String> implem
 	@Override
 	public List<ReactSelectResponse> listIntendencias() {
 
-		return listar()
-				.stream()
-				.filter(item -> !item.getNoMostrar())
-				.map(item -> {
-			return new ReactSelectResponse(item.getIdIntendencia(), item.getDepartamento(), null, null);
-		})
-				.sorted(Comparator.comparing(ReactSelectResponse::getLabel)).collect(Collectors.toList());
+		return listar().stream().filter(item -> !item.getNoMostrar()).map(item -> {
+			String departamento = item.getOficina().equals("Zona de Trabajo de Ancash (Chimbote)")
+					? "Zona de Trabajo de Ancash (Chimbote)"
+					: item.getDepartamento();
+			return new ReactSelectResponse(item.getIdIntendencia(), departamento, null, null);
+		}).sorted(Comparator.comparing(ReactSelectResponse::getLabel)).collect(Collectors.toList());
 	}
 
 }

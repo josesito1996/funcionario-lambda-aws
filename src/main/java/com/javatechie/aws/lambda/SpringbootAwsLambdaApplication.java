@@ -1,8 +1,6 @@
 package com.javatechie.aws.lambda;
 
 import static com.javatechie.aws.lambda.util.Utils.primeraLetraMayuscula;
-import static com.javatechie.aws.lambda.util.Utils.generateCorreo;
-import static com.javatechie.aws.lambda.util.Utils.numberRandomGenerator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -111,7 +109,7 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		buildComentario();
+		// buildComentario();
 		// log.info(jdbcControl.controlTotalesQuery() + "");
 		// cargarMaterias();
 		// cargarEtapas();
@@ -212,12 +210,17 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 	public void testJDBC() {
 		inspectorJdbc.inspectores().forEach(item -> {
 			Inspector inspector = inspectorService.buscarPorNombre(item.getNombreInspector());
-			if (inspector == null) {
+			if (inspector != null) {
+				/** 
 				Inspector nuevoInspector = inspectorService.registrar(Inspector.builder().tipo("TRABAJO")
 						.telefono(String.valueOf(numberRandomGenerator(900000000, 999999999)))
 						.correo(generateCorreo(item.getNombreInspector())).nombreInspector(item.getNombreInspector())
 						.identity(item.getIndex()).build());
-				log.info("Nuevo Inspector {}", nuevoInspector);
+			    **/
+				inspector.setCorreo("");
+				inspector.setTelefono("");
+				Inspector updateInspector = inspectorService.modificar(inspector);
+				log.info("Nuevo Inspector {}", updateInspector);
 			}
 		});
 	}
