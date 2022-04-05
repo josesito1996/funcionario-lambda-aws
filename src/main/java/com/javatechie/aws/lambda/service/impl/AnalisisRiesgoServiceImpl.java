@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -179,8 +180,8 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String> 
 				.barChart(BarChartResponse.builder()
 						.items(meses)
 						.totales(series).build())
-				.totalMultaPotencial(mapMultaPotencial.entrySet().stream().mapToDouble(item -> item.getValue()).sum())
-				.totalProvision(mapProvisiones.entrySet().stream().mapToDouble(item -> item.getValue()).sum())
+				.totalMultaPotencial(mapMultaPotencial.entrySet().stream().mapToDouble(Entry::getValue).sum())
+				.totalProvision(mapProvisiones.entrySet().stream().mapToDouble(Entry::getValue).sum())
 				.historial(analisis.stream().map(item -> {
 					return HistorialAnalisisResponse.builder()
 							.fecha(Utils
