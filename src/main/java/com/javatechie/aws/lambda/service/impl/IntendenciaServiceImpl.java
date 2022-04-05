@@ -29,7 +29,7 @@ public class IntendenciaServiceImpl extends CrudImpl<Intendencia, String> implem
 
 		return listar().stream().filter(item -> !item.getNoMostrar()).map(item -> {
 			String departamento = item.getOficina().equals("Zona de Trabajo de Ancash (Chimbote)")
-					? "Zona de Trabajo de Ancash (Chimbote)"
+					? "Ancash (Chimbote)"
 					: item.getDepartamento();
 			return new ReactSelectResponse(item.getIdIntendencia(), departamento, null, null);
 		}).sorted(Comparator.comparing(ReactSelectResponse::getLabel)).collect(Collectors.toList());
