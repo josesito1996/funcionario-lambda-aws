@@ -122,7 +122,8 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String> 
 
 	@Override
 	public InfraccionAnalisisRequest verPorIdAnalisis(String idAnalisis) {
-		AnalisisRiesgo analisis = listarPorIdCaso(idAnalisis).stream().reduce((first,second)-> second).orElse(AnalisisRiesgo.builder().build());
+		AnalisisRiesgo analisis = listarPorIdCaso(idAnalisis).stream().reduce((first, second) -> second)
+				.orElse(AnalisisRiesgo.builder().build());
 		if (analisis.getIdAnalisis() == null) {
 			throw new BadRequestException("Caso con el ID " + idAnalisis + " no existe");
 		}
@@ -152,53 +153,54 @@ public class AnalisisRiesgoServiceImpl extends CrudImpl<AnalisisRiesgo, String> 
 			throw new BadRequestException("Caso con el ID " + idCaso + " no existe");
 		}
 		List<AnalisisRiesgo> analisis = listarPorIdCaso(idCaso).stream()
-				.sorted(Comparator.comparing(AnalisisRiesgo::getFechaRegistro))
-				.collect(Collectors.toList());
-		List<AnalisisRiesgoDto> analisisDto = analisis.stream()
-				.map(item -> {
-					return AnalisisRiesgoDto.builder().idAnalisis(item.getIdAnalisis()).idCaso(item.getIdCaso())
-							.sumaMultaPotencial(item.getSumaMultaPotencial()).sumaProvision(item.getSumaProvision())
-							.fecha(Utils.fechaFormateadaMes(item.getFechaRegistro())).build();
-				}).collect(Collectors.toList());
+				.sorted(Comparator.comparing(AnalisisRiesgo::getFechaRegistro)).collect(Collectors.toList());
+		AnalisisRiesgo ultimoAnalisis = analisis.stream().reduce((first, second) -> second)
+				.orElse(AnalisisRiesgo.builder().sumaMultaPotencial(0.0).sumaProvision(0.0).build());
+		
+		List<AnalisisRiesgoDto> analisisDto = analisis.stream().map(item -> {
+			return AnalisisRiesgoDto.builder().idAnalisis(item.getIdAnalisis()).idCaso(item.getIdCaso())
+					.sumaMultaPotencial(item.getSumaMultaPotencial()).sumaProvision(item.getSumaProvision())
+					.fecha(Utils.fechaFormateadaMes(item.getFechaRegistro())).build();
+		}).collect(Collectors.toList());
 
 		List<SeriesResponse> series = new ArrayList<>();
 		Map<String, Double> mapMultaPotencial = analisisDto.stream().collect(Collectors.groupingBy(
 				AnalisisRiesgoDto::getFecha, Collectors.summingDouble(item -> item.getSumaMultaPotencial())));
-		Map<String, Double> mapProvisiones = analisisDto.stream().collect(Collectors
-				.groupingBy(AnalisisRiesgoDto::getFecha, Collectors.summingDouble(item -> item.getSumaProvision())));
+		Map<String, Double> mapProvisiones = analisisDto.stream().collect(Collectors.groupingBy(
+				AnalisisRiesgoDto::getFecha, Collectors.summingDouble(AnalisisRiesgoDto::getSumaProvision)));
 
 		series.add(SeriesResponse.builder().data(mapMultaPotencial.entrySet().stream()
 				.map(item -> item.getValue().intValue()).collect(Collectors.toList())).build());
 		series.add(SeriesResponse.builder().data(
 				mapProvisiones.entrySet().stream().map(item -> item.getValue().intValue()).collect(Collectors.toList()))
 				.build());
-		List<String> meses = analisisDto.stream().map(item -> item.getFecha()).distinct()
-				.collect(Collectors.toList());
-		log.info("Meses {}",meses);
+		List<String> meses = analisisDto.stream().map(item -> item.getFecha()).distinct().collect(Collectors.toList());
+		log.info("Meses {}", meses);
 		return AnalisisRiesgoDetalle.builder().nombreCaso(caso.getDescripcionCaso())
 				.nroOrdenInspeccion(caso.getOrdenInspeccion())
-				.barChart(BarChartResponse.builder()
-						.items(meses)
-						.totales(series).build())
-				.totalMultaPotencial(mapMultaPotencial.entrySet().stream().mapToDouble(Entry::getValue).sum())
-				.totalProvision(mapProvisiones.entrySet().stream().mapToDouble(Entry::getValue).sum())
-				.historial(analisis.stream().sorted(Comparator.comparing(AnalisisRiesgo::getFechaRegistro).reversed()).map(item -> {
-					return HistorialAnalisisResponse.builder()
-							.fecha(Utils
-									.fechaFormateadaOther(LocalDateTime.of(item.getFechaRegistro(), LocalTime.now())))
-							.table(item.getInfracciones().stream().map(element -> {
-								return AnalisisRiesgoTableResponse.builder()
-										.materia(element.getMateria().getLabel())
-										.subMateria(element.getSubMaterias().getLabel())
-										.baseLegal(element.getBaseLegal().getCampoAux())
-										.trabajadoresAfectados(element.getTrabajadoresAfectados())
-										.gravedad(item.getNivelRiesgo().getLabel())
-										.uitsMulta(element.getUitMultaPotencial())
-										.multaPotencial(element.getMultaPotencial())
-										.provision(element.getProvision())
-										.descripcion(element.getDescripcion())
-										.build();
-							}).collect(Collectors.toList())).build();
-				}).collect(Collectors.toList())).build();
+				.barChart(BarChartResponse.builder().items(meses).totales(series).build())
+				//.totalMultaPotencial(mapMultaPotencial.entrySet().stream().mapToDouble(Entry::getValue).sum())
+				//.totalProvision(mapProvisiones.entrySet().stream().mapToDouble(Entry::getValue).sum())
+				.totalMultaPotencial(ultimoAnalisis.getSumaMultaPotencial())
+				.totalProvision(ultimoAnalisis.getSumaProvision())
+				.historial(analisis.stream().sorted(Comparator.comparing(AnalisisRiesgo::getFechaRegistro).reversed())
+						.map(item -> {
+							return HistorialAnalisisResponse.builder()
+									.fecha(Utils.fechaFormateadaOther(
+											LocalDateTime.of(item.getFechaRegistro(), LocalTime.now())))
+									.table(item.getInfracciones().stream().map(element -> {
+										return AnalisisRiesgoTableResponse.builder()
+												.materia(element.getMateria().getLabel())
+												.subMateria(element.getSubMaterias().getLabel())
+												.baseLegal(element.getBaseLegal().getCampoAux())
+												.trabajadoresAfectados(element.getTrabajadoresAfectados())
+												.gravedad(item.getNivelRiesgo().getLabel())
+												.uitsMulta(element.getUitMultaPotencial())
+												.multaPotencial(element.getMultaPotencial())
+												.provision(element.getProvision()).descripcion(element.getDescripcion())
+												.build();
+									}).collect(Collectors.toList())).build();
+						}).collect(Collectors.toList()))
+				.build();
 	}
 }
