@@ -1,4 +1,4 @@
-springdoc:  api-docs:    path: /api-docs
+springdoc:  api-docs:    path: /api-docsendpoints:  api-usuarios: http://samyappusuarios-env.eba-aja3zm2w.us-east-2.elasticbeanstalk.com/api-usuario/
 aws:
   config:
     region: us-east-2

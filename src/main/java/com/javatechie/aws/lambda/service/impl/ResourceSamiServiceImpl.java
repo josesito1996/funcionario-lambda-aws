@@ -34,6 +34,9 @@ import com.javatechie.aws.lambda.exception.BadRequestException;
 import com.javatechie.aws.lambda.exception.NotFoundException;
 import com.javatechie.aws.lambda.respository.GenericRepo;
 import com.javatechie.aws.lambda.respository.RepoResourceSami;
+import com.javatechie.aws.lambda.rest.model.ColaboradorPojo;
+import com.javatechie.aws.lambda.rest.model.ExternalEndpoint;
+import com.javatechie.aws.lambda.rest.model.UsuarioPojo;
 import com.javatechie.aws.lambda.service.LambdaService;
 import com.javatechie.aws.lambda.service.ResourceSamiService;
 
@@ -45,6 +48,9 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 
 	@Autowired
 	private LambdaService lambdaService;
+	
+	@Autowired
+	private ExternalEndpoint externalEndpoint;
 
 	@Override
 	protected GenericRepo<ResourceSami, String> getRepo() {
@@ -82,7 +88,7 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 
 	@Override
 	public List<ResourceGroupResponse> listByUserName(String userName) {
-		List<ResourceSami> listado = repo.findByUserName(userName).stream()
+		List<ResourceSami> listado = repo.findByUserName(getUserNamePrincipal(userName)).stream()
 				.filter(item -> item.getIsRemoved() != null && !item.getIsRemoved() && item.getCategory()!=null).collect(Collectors.toList());
 		Map<String, List<ResourceSamiCreateResponse>> mapGroup = listado.stream().map(this::transformResponse)
 				.collect(Collectors.groupingBy(ResourceSamiCreateResponse::getCategoria));
@@ -171,5 +177,14 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 						.build());
 		int statusCode = obj.get("code").getAsInt();
 		return statusCode == 202;
+	}
+	
+	private String getUserNamePrincipal(String userName) {
+		UsuarioPojo usuario = externalEndpoint.viewByUserName(userName);
+		if (usuario == null) {
+			ColaboradorPojo colaborador = externalEndpoint.viewColaboratorByUserName(userName);
+			return colaborador.getUserName();
+		}
+		return usuario.getNombreUsuario();
 	}
 }
