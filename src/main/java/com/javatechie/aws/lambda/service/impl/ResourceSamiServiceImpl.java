@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 
 	@Autowired
 	private LambdaService lambdaService;
-	
+
 	@Autowired
 	private ExternalEndpoint externalEndpoint;
 
@@ -72,14 +73,13 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 		return transformResponse(registrar(transformRequest(request)));
 	}
 
-
 	@Override
 	public ResourceSamiCreateResponse updateContract(ResourceSamiUpdateRequest request) {
 		ResourceSami resource = verUnoPorId(request.getId());
 		resource.setUrl(request.getUrl());
 		return transformResponse(modificar(resource));
 	}
-	
+
 	@Override
 	public ResourceSamiCreateResponse createContract(ContractSamiCreateRequest request) {
 
@@ -88,8 +88,9 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 
 	@Override
 	public List<ResourceGroupResponse> listByUserName(String userName) {
-		List<ResourceSami> listado = repo.findByUserName(getUserNamePrincipal(userName)).stream()
-				.filter(item -> item.getIsRemoved() != null && !item.getIsRemoved() && item.getCategory()!=null).collect(Collectors.toList());
+		List<ResourceSami> listado = getUserNamePrincipal(userName).stream()
+				.filter(item -> item.getIsRemoved() != null && !item.getIsRemoved() && item.getCategory() != null)
+				.collect(Collectors.toList());
 		Map<String, List<ResourceSamiCreateResponse>> mapGroup = listado.stream().map(this::transformResponse)
 				.collect(Collectors.groupingBy(ResourceSamiCreateResponse::getCategoria));
 		List<ResourceGroupResponse> newList = new ArrayList<>();
@@ -178,13 +179,22 @@ public class ResourceSamiServiceImpl extends CrudImpl<ResourceSami, String> impl
 		int statusCode = obj.get("code").getAsInt();
 		return statusCode == 202;
 	}
-	
-	private String getUserNamePrincipal(String userName) {
-		UsuarioPojo usuario = externalEndpoint.viewByUserName(userName);
-		if (usuario == null) {
-			ColaboradorPojo colaborador = externalEndpoint.viewColaboratorByUserName(userName);
-			return colaborador.getUserName();
+
+	private List<ResourceSami>  getUserNamePrincipal(String userName) {
+		UsuarioPojo usuarioPojo = externalEndpoint.viewByUserName(userName);
+		String usuario = "";
+		if (usuarioPojo == null) {
+			ColaboradorPojo colaboradorPojo = externalEndpoint.viewColaboratorByUserName(userName);
+			usuario = colaboradorPojo.getUserName();
+		} else {
+			usuario = usuarioPojo.getCorreo();
 		}
-		return usuario.getNombreUsuario();
+		List<String> colaborators = externalEndpoint.findColaboratorsByUserName(usuario);
+		List<ResourceSami> resourcesConcat = colaborators.parallelStream().flatMap(item -> {
+			return repo.findByUserName(item).stream();
+		}).collect(Collectors.toList());
+		List<ResourceSami> resourcesUsuario = repo.findByUserName(usuario);
+		Stream<ResourceSami> resultingStream = Stream.concat(resourcesConcat.stream(), resourcesUsuario.stream());
+		return resultingStream.collect(Collectors.toList());
 	}
 }

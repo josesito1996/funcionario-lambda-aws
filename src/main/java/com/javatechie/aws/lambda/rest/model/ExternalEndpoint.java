@@ -1,5 +1,8 @@
 package com.javatechie.aws.lambda.rest.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
@@ -37,5 +40,13 @@ public class ExternalEndpoint {
 		log.info("Response {} ", colaboradorResponse);
 		return colaboradorResponse;
 	}
-	
+	public List<String> findColaboratorsByUserName(String userName) {
+		log.info("ExternalEndpoint.findColaboratorsByUserName  : {} ", userName);
+		log.info("URL {}", apiUsuarios.concat("findColaboratorsByUserName").concat("/" + userName));
+		String [] response = restTemplate.getForObject(
+				apiUsuarios.concat("findColaboratorsByUserName/{userName}"), String[].class, userName);
+		List<String> colaborators = Arrays.asList(response);
+		log.info("Colaborators {}", colaborators);
+		return colaborators;
+	}
 }
