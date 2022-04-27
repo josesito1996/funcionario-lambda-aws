@@ -68,7 +68,10 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 	@Override
 	public InspectorResponse verPorIdInspector(String id) {
 		Optional<Inspector> option = verPorId(id);
-		return option.isPresent() ? transformToResponse(option.get()) : new InspectorResponse();
+		if (!option.isPresent()) {
+			throw new BadRequestException("Inspector con ID : " + id + " no existe");
+		}
+		return transformToResponse(option.get());
 	}
 
 	@Override
@@ -92,7 +95,7 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 	private InspectorResponse transformToResponse(Inspector inspector) {
 		return InspectorResponse.builder().id(inspector.getId()).nombresApellidos(inspector.getNombreInspector())
 				.tipoInspector(inspector.getTipo()).telefono(inspector.getTelefono()).correo(inspector.getCorreo())
-				.estado(inspector.getEstado()).build();
+				.cargo(inspector.getCargo()).estado(inspector.getEstado()).build();
 	}
 
 	private Inspector bodyToEntity(InspectorBody request) {

@@ -42,6 +42,10 @@ public class InspectorResponse implements Serializable {
 	@Schema(title = "Telefono", name = "telefono", example = "992894493")
 	private String telefono;
 	
+	@JsonInclude(Include.NON_NULL)
+	@Schema(title = "Cargo", name = "cargo", example = "Inspector Principal")
+	private String cargo;
+	
 	@Schema(title = "Estadode INspector", name = "estado", example = "false",type = "boolean", description = "Si esta activo o no en la BD")
 	private Boolean estado;
 }
