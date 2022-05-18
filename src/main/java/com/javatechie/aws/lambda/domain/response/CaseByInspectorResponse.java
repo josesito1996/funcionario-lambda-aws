@@ -24,9 +24,11 @@ public class CaseByInspectorResponse implements Serializable {
     
     private static final long serialVersionUID = -6365568019613633921L;
     
+    @JsonInclude(Include.NON_NULL)
     private String idInspector;
     
     @Schema(title = "Tiene casos", name = "hasDataContact", example = "true")
+    @JsonInclude(Include.NON_NULL)
     private boolean hasDataContact;
     
     @JsonInclude(Include.NON_NULL)
@@ -37,9 +39,11 @@ public class CaseByInspectorResponse implements Serializable {
     @Schema(title = "Position", name = "position", example = "Inspector", description = "Cargo del inspector")
     private String position;
     
+    @JsonInclude(Include.NON_NULL)
     @Schema(title = "Cases Found", name = "casesFound", example = "6", description = "Cantidad de casos que tiene el inspector")
     private int casesFound;
     
+    @JsonInclude(Include.NON_NULL)
     @Schema(title = "Fine Cases", name = "fineCases", example = "0", description = "Cantidad de casos con multa que tiene el inspector")
     private int fineCases;
     
@@ -47,11 +51,14 @@ public class CaseByInspectorResponse implements Serializable {
     @Schema(title = "Contact", name = "contact")
     private ContactResponse contact;
     
+    @JsonInclude(Include.NON_NULL)
     private List<ScoreResponse> score;
     
+    @JsonInclude(Include.NON_NULL)
     @Schema(title = "Recent cases", name = "recentCases")
     private List<RecentCaseResponse> recentCases;
     
+    @JsonInclude(Include.NON_NULL)
     private List<ComentarioResponse> comments;
 }
 
