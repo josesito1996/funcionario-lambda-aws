@@ -146,6 +146,9 @@ public class InspectorServiceImpl extends CrudImpl<Inspector, String> implements
 		 * Se cambia el IdInspector por el nombre
 		 */
 		Inspector inspector = buscarPorNombre(idInspector);
+		if (inspector == null) {
+			throw new BadRequestException("No existe inspector con el siguiente nombre o ID : " + idInspector);
+		}
 		log.info("Inspector {}", inspector);
 		String nombreInspector = inspector.getNombreInspector();
 		List<CasosPorInspectorQuery> casosInspector = storedProcedure(nombreInspector);
