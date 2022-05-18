@@ -1,0 +1,7 @@
+springdoc:  api-docs:    path: /api-docsendpoints:  api-usuarios: http://samyappusuarios-env.eba-aja3zm2w.us-east-2.elasticbeanstalk.com/api-usuario/
+aws:
+  config:
+    region: us-east-2
+    access-key: AKIA5Z6LZFXPAWUQ2LFZ
+    secret-key: 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
+    service-endpoint: dynamodb.us-east-2.amazonaws.com    spring:  datasource:    url: jdbc:mysql://database-master.cqnvgpqoyyuu.us-east-2.rds.amazonaws.com:3306/db_sunafil_dev    username: admin    password: 51st3ma$2021.    driver-class-name: com.mysql.cj.jdbc.Driver  secondDatasource:    url: jdbc:mysql://database-master.cqnvgpqoyyuu.us-east-2.rds.amazonaws.com:3306/samy    username: admin    password: 51st3ma$2021.    driver-class-name: com.mysql.cj.jdbc.Driver  
