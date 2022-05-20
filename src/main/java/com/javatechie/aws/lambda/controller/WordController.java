@@ -27,5 +27,4 @@ public class WordController {
 		log.info("Headers {} ", headers);
 		return service.getWordFileCaso(idCaso, headers);
 	}
-
 }

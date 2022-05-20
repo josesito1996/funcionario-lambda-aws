@@ -2,6 +2,7 @@ package com.javatechie.aws.lambda.config;
 
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @EnableDynamoDBRepositories(basePackages = "com.javatechie.aws.lambda.respository")
 @Slf4j
+@RefreshScope
 public class DynamoBdConfig {
 
 	@Value("${aws.config.region}")

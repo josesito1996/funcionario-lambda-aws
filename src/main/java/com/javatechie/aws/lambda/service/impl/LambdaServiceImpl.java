@@ -3,6 +3,7 @@ package com.javatechie.aws.lambda.service.impl;
 import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.lambda.AWSLambda;
@@ -25,6 +26,13 @@ public class LambdaServiceImpl implements LambdaService {
 
 	@Autowired
 	AWSLambda awsLambda;
+
+	@Value("${spring.profiles.active}")
+	private String enviroment;
+
+	private String prefixEnviromentBucket() {
+		return enviroment.equals("dev") ? "" : "-".concat(enviroment);
+	}
 
 	@Override
 	public JsonObject enviarCorreo(LambdaMailRequestSendgrid request) {
@@ -49,14 +57,16 @@ public class LambdaServiceImpl implements LambdaService {
 	public String obtenerBase64(LambdaFileBase64Request request) {
 		log.info("LambdaServiceImpl.obtenerBase64 {}", request);
 		try {
+			String bucketName = "lambda-test".concat(prefixEnviromentBucket());
+			log.info("BucketName : {}", bucketName);
 			Gson gson = new Gson();
 			String payLoad = gson.toJson(request);
-			InvokeRequest invokeRequest = new InvokeRequest().withFunctionName("lambda-test")
-					.withPayload(payLoad);
+			InvokeRequest invokeRequest = new InvokeRequest()
+					.withFunctionName(bucketName).withPayload(payLoad);
 			InvokeResult result = awsLambda.invoke(invokeRequest);
 			String ans = new String(result.getPayload().array(), StandardCharsets.UTF_8);
 			JsonElement element = JsonParser.parseString(ans);
-			return element.getAsString();	
+			return element.getAsString();
 		} catch (Exception e) {
 			log.error("Error al obtener base64 {}", e);
 			return "";

@@ -1,15 +1,8 @@
 package com.javatechie.aws.lambda.config;
 
-import javax.sql.DataSource;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-@Configuration
 public class JdbcConfig {
 
+	/*
     @Primary
     @Bean
     public DataSource mysqlDataSourceSamy() {
@@ -20,5 +13,6 @@ public class JdbcConfig {
         dataSource.setPassword("51st3ma$2021.");
         return dataSource;
     }
+    */
 
 }
