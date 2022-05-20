@@ -209,18 +209,28 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 
 	public void testJDBC() {
 		inspectorJdbc.inspectores().forEach(item -> {
+			log.info("Inspector {}", item);
 			Inspector inspector = inspectorService.buscarPorNombre(item.getNombreInspector());
 			if (inspector != null) {
-				/** 
-				Inspector nuevoInspector = inspectorService.registrar(Inspector.builder().tipo("TRABAJO")
-						.telefono(String.valueOf(numberRandomGenerator(900000000, 999999999)))
-						.correo(generateCorreo(item.getNombreInspector())).nombreInspector(item.getNombreInspector())
-						.identity(item.getIndex()).build());
-			    **/
+				/**
+				 * Inspector nuevoInspector =
+				 * inspectorService.registrar(Inspector.builder().tipo("TRABAJO")
+				 * .telefono(String.valueOf(numberRandomGenerator(900000000, 999999999)))
+				 * .correo(generateCorreo(item.getNombreInspector())).nombreInspector(item.getNombreInspector())
+				 * .identity(item.getIndex()).build());
+				 **/
 				inspector.setCorreo("");
 				inspector.setTelefono("");
 				Inspector updateInspector = inspectorService.modificar(inspector);
 				log.info("Nuevo Inspector {}", updateInspector);
+			} else {
+				log.info("Inspector nuevito {}", inspectorService.registrar(Inspector.builder()
+						.identity(item.getIndex())
+						.cargo("Inspector")
+						.tipo("TRABAJO")
+						.nombreInspector(item.getNombreInspector())
+						.estado(true)
+						.build()));
 			}
 		});
 	}
@@ -413,57 +423,50 @@ public class SpringbootAwsLambdaApplication implements CommandLineRunner {
 	}
 
 	public void intendenciaRegister() {
-		intendenciaService.listar().forEach(item -> {
-			item.setNoMostrar(false);
-			intendenciaService.modificar(item);
-		});
+		 intendenciaService.listar().forEach(item -> {
+		 item.setNoMostrar(false);
+		 intendenciaService.modificar(item);
+		 });
 		/*
-		 * Arrays.asList(new Intendencia(null, "Amazonas", "Segunda",
-		 * "Intendencia Regional de Amazonas", true), new Intendencia(null, "Ancash",
-		 * "Segunda", "Intendencia Regional de Ancash", true), new Intendencia(null,
-		 * "Ancash", "", "Zona de Trabajo de Ancash (Chimbote)", true), new
-		 * Intendencia(null, "Apurímac", "Segunda", "Intendencia Regional de Apurímac",
-		 * true), new Intendencia(null, "Arequipa", "Segunda",
-		 * "Intendencia Regional de Arequipa", true), new Intendencia(null, "Ayacucho",
-		 * "Segunda", "Intendencia Regional de Ayacucho", true), new Intendencia(null,
-		 * "Cajamarca", "Segunda", "Intendencia Regional de Cajamarca", true), new
-		 * Intendencia(null, "Cajamarca", "Primera", "Sub Intendencia de Resolución",
-		 * true), new Intendencia(null, "Callao", "Segunda",
-		 * "Intendencia Regional de Callao", true), new Intendencia(null, "Cusco",
-		 * "Segunda", "Intendencia Regional de Cusco", true), new Intendencia(null,
-		 * "Huancavelica", "Segunda", "Intendencia Regional de Huancavelica", true), new
-		 * Intendencia(null, "Huanuco", "Segunda", "Intendencia Regional de Huanuco",
-		 * true), new Intendencia(null, "Ica", "Segunda", "Intendencia Regional de Ica",
-		 * true), new Intendencia(null, "Junín", "Primera",
-		 * "Sub Intendencia de Resolución", true), new Intendencia(null, "Junín",
-		 * "Segunda", "Intendencia Regional de Junín", true), new Intendencia(null,
-		 * "La Libertad", "Segunda", "Intendencia Regional de La Libertad", true), new
-		 * Intendencia(null, "Lambayeque", "Segunda",
-		 * "Intendencia Regional de Lambayeque", true), new Intendencia(null, "Lima",
-		 * "Primera", "Sub Intendencia de Resolución 5", true), new Intendencia(null,
-		 * "Lima", "Segunda", "Intendencia Regional de Lima", true), new
-		 * Intendencia(null, "Lima", "Primera", "Sub Intendencia de Resolución 4",
-		 * true), new Intendencia(null, "Lima", "Primera",
-		 * "Sub Intendencia de Resolución 3", true), new Intendencia(null, "Lima",
-		 * "Primera", "Sub Intendencia de Resolución 2", true), new Intendencia(null,
-		 * "Lima", "Primera", "Sub Intendencia de Resolución 1", true), new
-		 * Intendencia(null, "Lima Metropolitana", "Segunda",
-		 * "Intendencia Regional de Lima Metropolitana", true), new Intendencia(null,
-		 * "Loreto", "Segunda", "Intendencia Regional de Loreto", true), new
-		 * Intendencia(null, "Madre de Dios", "Segunda",
-		 * "Intendencia Regional de Madre de Dios", true), new Intendencia(null,
-		 * "Moquegua", "Segunda", "Intendencia Regional de Moquegua", true), new
-		 * Intendencia(null, "Pasco", "Segunda", "Intendencia Regional de Pasco", true),
-		 * new Intendencia(null, "Piura", "Segunda", "Intendencia Regional de Piura",
-		 * true), new Intendencia(null, "Puno", "Segunda",
-		 * "Intendencia Regional de Puno", true), new Intendencia(null, "San Martín",
-		 * "Segunda", "Intendencia Regional de San Martín", true), new Intendencia(null,
-		 * "Tacna", "Segunda", "Intendencia Regional de Tacna", true), new
-		 * Intendencia(null, "Tumbes", "Segunda", "Intendencia Regional de Tumbes",
-		 * true), new Intendencia(null, "Ucayali", "Segunda",
-		 * "Intendencia Regional de Ucayali", true)).forEach(item ->{
-		 * log.info("Intendencia {}", intendenciaService.registrar(item)); });
-		 */
+		Arrays.asList(new Intendencia(null, "Amazonas", "Segunda", "Intendencia Regional de Amazonas", true),
+				new Intendencia(null, "Ancash", "Segunda", "Intendencia Regional de Ancash", true),
+				new Intendencia(null, "Ancash", "", "Zona de Trabajo de Ancash (Chimbote)", true),
+				new Intendencia(null, "Apurímac", "Segunda", "Intendencia Regional de Apurímac", true),
+				new Intendencia(null, "Arequipa", "Segunda", "Intendencia Regional de Arequipa", true),
+				new Intendencia(null, "Ayacucho", "Segunda", "Intendencia Regional de Ayacucho", true),
+				new Intendencia(null, "Cajamarca", "Segunda", "Intendencia Regional de Cajamarca", true),
+				new Intendencia(null, "Cajamarca", "Primera", "Sub Intendencia de Resolución", true),
+				new Intendencia(null, "Callao", "Segunda", "Intendencia Regional de Callao", true),
+				new Intendencia(null, "Cusco", "Segunda", "Intendencia Regional de Cusco", true),
+				new Intendencia(null, "Huancavelica", "Segunda", "Intendencia Regional de Huancavelica", true),
+				new Intendencia(null, "Huanuco", "Segunda", "Intendencia Regional de Huanuco", true),
+				new Intendencia(null, "Ica", "Segunda", "Intendencia Regional de Ica", true),
+				new Intendencia(null, "Junín", "Primera", "Sub Intendencia de Resolución", true),
+				new Intendencia(null, "Junín", "Segunda", "Intendencia Regional de Junín", true),
+				new Intendencia(null, "La Libertad", "Segunda", "Intendencia Regional de La Libertad", true),
+				new Intendencia(null, "Lambayeque", "Segunda", "Intendencia Regional de Lambayeque", true),
+				new Intendencia(null, "Lima", "Primera", "Sub Intendencia de Resolución 5", true),
+				new Intendencia(null, "Lima", "Segunda", "Intendencia Regional de Lima", true),
+				new Intendencia(null, "Lima", "Primera", "Sub Intendencia de Resolución 4", true),
+				new Intendencia(null, "Lima", "Primera", "Sub Intendencia de Resolución 3", true),
+				new Intendencia(null, "Lima", "Primera", "Sub Intendencia de Resolución 2", true),
+				new Intendencia(null, "Lima", "Primera", "Sub Intendencia de Resolución 1", true),
+				new Intendencia(null, "Lima Metropolitana", "Segunda", "Intendencia Regional de Lima Metropolitana",
+						true),
+				new Intendencia(null, "Loreto", "Segunda", "Intendencia Regional de Loreto", true),
+				new Intendencia(null, "Madre de Dios", "Segunda", "Intendencia Regional de Madre de Dios", true),
+				new Intendencia(null, "Moquegua", "Segunda", "Intendencia Regional de Moquegua", true),
+				new Intendencia(null, "Pasco", "Segunda", "Intendencia Regional de Pasco", true),
+				new Intendencia(null, "Piura", "Segunda", "Intendencia Regional de Piura", true),
+				new Intendencia(null, "Puno", "Segunda", "Intendencia Regional de Puno", true),
+				new Intendencia(null, "San Martín", "Segunda", "Intendencia Regional de San Martín", true),
+				new Intendencia(null, "Tacna", "Segunda", "Intendencia Regional de Tacna", true),
+				new Intendencia(null, "Tumbes", "Segunda", "Intendencia Regional de Tumbes", true),
+				new Intendencia(null, "Ucayali", "Segunda", "Intendencia Regional de Ucayali", true)).forEach(item -> {
+					log.info("Intendencia {}", intendenciaService.registrar(item));
+				});
+				*/
+
 	}
 
 	public void buildComentario() {
