@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
@@ -22,12 +23,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExternalDbAws {
 
+	@Value("${spring.profiles.active}")
+	private String env;
+
 	@Autowired
 	private DynamoDB dynamoDB;
 
+	private String getPrefixEnviroment() {
+		return env.equals("dev") ? "" : "_".concat(env);
+	}
+
 	public Map<String, Object> getTable(String idCaso) {
 		log.info("ExternalDbAws.getTable");
-		Table tableCasos = dynamoDB.getTable("casos");
+		Table tableCasos = dynamoDB.getTable("casos".concat(getPrefixEnviroment()));
 		GetItemSpec spec = new GetItemSpec().withPrimaryKey("id_caso", idCaso);
 		Item casoItem = tableCasos.getItem(spec);
 		if (casoItem == null) {
@@ -38,24 +46,23 @@ public class ExternalDbAws {
 
 	public AnalisisRiesgoPojo tableInfraccion(String idAnalisis) {
 		log.info("ExternalDbAws.tableInfraccion");
-		Table tableMaterias = dynamoDB.getTable("analisis-riesgo");
+		Table tableMaterias = dynamoDB.getTable("analisis-riesgo".concat(getPrefixEnviroment()));
 		GetItemSpec spec = new GetItemSpec().withPrimaryKey("id_analisis", idAnalisis);
 		Item materiaItem = tableMaterias.getItem(spec);
 		if (materiaItem == null) {
-			return AnalisisRiesgoPojo.builder()
-					.nivelRiesgo(new ReactSelectRequest())
-					.infracciones(new ArrayList<>()).build();
+			return AnalisisRiesgoPojo.builder().nivelRiesgo(new ReactSelectRequest()).infracciones(new ArrayList<>())
+					.build();
 		}
 		final ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(materiaItem.asMap(), AnalisisRiesgoPojo.class);
 	}
-	
+
 	/*
 	 * Nueva version pero con Clases
 	 */
 	public CasoPojo tableCaso(String idCaso) {
 		log.info("ExternalDbAws.tableCaso");
-		Table tableCaso = dynamoDB.getTable("casos");
+		Table tableCaso = dynamoDB.getTable("casos".concat(getPrefixEnviroment()));
 		GetItemSpec spec = new GetItemSpec().withPrimaryKey("id_caso", idCaso);
 		Item casoItem = tableCaso.getItem(spec);
 		if (casoItem == null) {
@@ -63,7 +70,8 @@ public class ExternalDbAws {
 		}
 		final ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JavaTimeModule());
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);;
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		;
 		return mapper.convertValue(casoItem.asMap(), CasoPojo.class);
 	}
 
