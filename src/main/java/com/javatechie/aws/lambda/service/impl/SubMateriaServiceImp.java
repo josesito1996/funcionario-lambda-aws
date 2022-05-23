@@ -30,7 +30,10 @@ import com.javatechie.aws.lambda.service.InfraccionService;
 import com.javatechie.aws.lambda.service.MateriaService;
 import com.javatechie.aws.lambda.service.SubMateriaService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
         implements SubMateriaService {
 
@@ -129,6 +132,7 @@ public class SubMateriaServiceImp extends CrudImpl<SubMateria, String>
     @Override
     public List<ReactSelectResponse> listarSelectPorIdMateria(String idMateria) {
         List<SubMateria> materiasPorId = listarPorIdMateria(idMateria);
+        log.info("SubMaterias {}", materiasPorId);
         return materiasPorId.stream()
 				.sorted(Comparator.comparing(SubMateria::getNombreSubMateria))
 				.map(materia -> {
